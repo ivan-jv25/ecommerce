@@ -1,4 +1,5 @@
 var lista_productos  = null;
+var lista_productos_favorito = null
 var lista_carro      = [];
 var lista_inventario = null;
 
@@ -36,6 +37,22 @@ function carga_productos(){
         }
     });
 }
+
+function carga_productos_favorito(){
+    $.ajax({
+        url: URL_PRODUCTOS_FAVORITO,
+        success: function(respuesta) {
+            lista_productos_favorito = respuesta;
+            mostrar_lista_producto_favorito(respuesta);
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+}
+
+
+
 
 function carga_bodega(){
     $.ajax({
@@ -79,9 +96,33 @@ function mostrar_lista_producto(lista){
     
     document.getElementById('lista_col2').innerHTML= lista_productos;
 }
+function mostrar_lista_producto_favorito(lista){
+    let lista_productos = '';
+    for (let i = 0; i < lista.length; i++) {
+        const element = lista[i];
+
+        lista_productos +='<div class="prod">'+
+        '<img class="thumb" src="img/productos/t2lite.png" alt="">'+
+        '<div class="detal">'+
+        '<h5>'+element.nombre.substring(0,30)+'</h5>'+
+        '<div class="nuevo" onclick="add_producto_favorito('+i+');">en Stock</div>'+
+        '</div>'+
+        '<div class="mas" onclick="add_producto_favorito('+i+');" ><i class="fa fa-plus fa-lg"></i></div>'+
+        '<div class="precio">$'+element.precio_venta+'</div>'+
+        '</div>';   
+    }
+    
+    document.getElementById('lista_col1').innerHTML= lista_productos;
+}
 
 function add_producto_simple(index){
     let producto    = lista_productos[index];
+    let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia };
+    add_carrito(obj_detalle);
+}
+
+function add_producto_favorito(index){
+    let producto    = lista_productos_favorito[index];
     let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia };
     add_carrito(obj_detalle);
 }
@@ -277,7 +318,7 @@ function get_categorias(){
             let lista = "<option value=''>Seleccionar Categorias</option>";
             for (let i = 0; i < categoria.length; i++) {
                 const element = categoria[i];
-                lista += "<option value=" + element.id + ">"+element.id+" " + element.nombre + "</option>";
+                lista += "<option value=" + element.id + ">"+ element.nombre + "</option>";
             }
             document.getElementById('lista_categoria').innerHTML = lista;
         },
@@ -288,7 +329,11 @@ function get_categorias(){
 }
 
 function filtro_categoria(id) {
-    let array_aux = lista_productos.filter(producto => producto.id_familia == id);
+    let id_categoria = parseInt(id);
+    let array_aux = lista_productos;
+    if(!isNaN(id_categoria)){
+        array_aux = lista_productos.filter(producto => producto.id_familia == id_categoria);
+    }
     mostrar_lista_producto(array_aux);
 }
 

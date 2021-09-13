@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="listado-productos">
-        <div class="col-1">
+        <div class="col-1" id="lista_col1">
           <div class="prod">
             <img class="thumb" src="img/productos/k2mini.png" alt="">
             <div class="detal">
@@ -116,7 +116,7 @@
         <div class="resultados">
           <form class="">
             <div class="row">
-              <div class="col-sm-6">
+              <div class="col-sm-6" hidden>
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon">Código dscto.</div>
@@ -124,9 +124,9 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-6" hidden>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-6" hidden>
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon">Descuento</div>
@@ -182,11 +182,9 @@
                     <label class="btn btn-primary">
                       <input type="radio" name="options_pago" id="option3" required value="mach"> Match
                     </label>
-                    <label class="btn btn-primary  active focus">
-                      <input type="radio" name="options_pago" id="option4" value="transbank"  checked="checked"> Transbank
-                    </label>
-                    <label class="btn btn-primary">
-                      <input type="radio" name="options_pago" id="option45" value="flow"> Flow
+                    
+                    <label class="btn btn-primary active focus">
+                      <input type="radio" name="options_pago" id="option45" value="flow" checked="checked"> Flow
                     </label>
                     <label class="btn btn-primary">
                       <input type="radio" name="options_pago" id="option6" value="trasferencia">Trasferencia

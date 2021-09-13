@@ -66,7 +66,7 @@
                                 <td>Productos</td>
                                 <td><a onclick="carga_productos()" class="btn btn-primary">Cargar Datos</a></td>
                                 <td id="td_carga_producto"></td>
-                                <td><a class="btn btn-primary">Gestion</a></td>
+                                <td> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalProductos" onclick="lista_productos();">Gestion</button> </td>
                             </tr>
                             <tr>
                                 <td>Sucursal</td>
@@ -96,7 +96,7 @@
                                 <td>Sub Familias</td>
                                 <td><a onclick="carga_subfamilia()" class="btn btn-primary">Cargar Datos</a></td>
                                 <td id="td_carga_subfamilia"></td>
-                                <td><a class="btn btn-primary">Gestion</a></td>
+                                <td> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalSubFamilia" onclick="lista_subfamilia();">Gestion</button> </td>
                             </tr>
                             <tr>
                                 <td>Lista de Precio</td>
@@ -129,10 +129,34 @@
 
 
 
-    
+@include('admin.modal.producto')
+@include('admin.modal.subfamilia')
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.0/css/dataTables.bootstrap4.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.bootstrap4.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.css"/>
+ 
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.0/js/dataTables.bootstrap4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.bootstrap4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.js"></script>
+
+
+
+<script src="{{ asset('js/lenguaje_datatable.js') }}"></script>
 <script src="{{ asset('js/obtenerToken.js') }}"></script>
 <script src="{{ asset('js/admin_panel_carga.js') }}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 
 <script>
@@ -144,6 +168,15 @@ var URL_CARGA_SUCURSAL    = "{{ route('ajax.obtener.carga.sucursal') }}";
 var URL_CARGA_FAMILIA     = "{{ route('ajax.obtener.carga.familia') }}";
 var URL_CARGA_SUBFAMILIA  = "{{ route('ajax.obtener.carga.subfamilia') }}";
 var URL_CARGA_INVENTARIO  = "{{ route('ajax.obtener.carga.inventario') }}";
+
+var URL_LISTA_PRODUCTOS   = "{{ route('ajax.lista.productos') }}";
+var URL_LISTA_SUBFAMILIA  = "{{ route('ajax.lista.subfamilia') }}";
+
+var URL_CAMBIO_PRODUCTOS_FAVORITO = "{{ route('ajax.producto.cambio.favorito') }}";
+var URL_CAMBIO_PRODUCTOS_ESTADO = "{{ route('ajax.producto.cambio.estado') }}";
+var URL_CAMBIO_SUBFAMILIA_ESTADO = "{{ route('ajax.subfamilia.cambio.estado') }}";
+
+
 var token                 = '{{csrf_token()}}';
 
 $(document).ready(function(){

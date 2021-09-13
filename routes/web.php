@@ -46,6 +46,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('Ajax/Obtener/Lista/Ventas/Totales', 'IndexController@ajax_ventas_totales')->name('ajax.obtener.lista.ventas.totales');
 
 
+
+
+        Route::get('Ajax/Obtener/Lista/Productos', 'IndexController@lista_productos')->name('ajax.lista.productos');
+        Route::get('Ajax/Producto/Cambio/Favorito', 'IndexController@cambiar_favorito_producto')->name('ajax.producto.cambio.favorito');
+        Route::get('Ajax/Producto/Cambio/Estado', 'IndexController@cambiar_estado_producto')->name('ajax.producto.cambio.estado');
+
+
+        Route::get('Ajax/Obtener/Lista/SubFamilia', 'IndexController@lista_subfamilia')->name('ajax.lista.subfamilia');
+        Route::get('Ajax/SubFamilia/Cambio/Estado', 'IndexController@cambiar_estado_subfamilia')->name('ajax.subfamilia.cambio.estado');
+
+
         
         
     });
@@ -54,6 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 Route::get('Ajax/Lista/Productos/Normal', 'IndexController@lista_producto_normal')->name('ajax.lista.productos.normal');
+Route::get('Ajax/Lista/Productos/Favorito', 'IndexController@lista_producto_favorito')->name('ajax.lista.productos.favorito');
 Route::get('Ajax/Lista/Bodega', 'IndexController@lista_bodega')->name('ajax.lista.bodega');
 Route::get('Ajax/Lista/Inventario', 'IndexController@lista_inventario')->name('ajax.lista.inventario');
 Route::get('Ajax/Obtener/Lista/Ventas/Cliente', 'IndexController@ajax_ventas_cliente')->name('ajax.obtener.lista.ventas.cliente');

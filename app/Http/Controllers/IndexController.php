@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Venta;
+use App\Producto;
+use App\SubFamilia;
 use DB;
 use Yajra\Datatables\Datatables;
 
@@ -108,7 +110,12 @@ class IndexController extends Controller
     }
 
     public function lista_producto_normal(){
-        $lista = DB::table('productos')->select('nombre','codigo','precio_venta','id_familia','imagen','exento')->where('favorito',0)->get();
+        $lista = DB::table('productos')->select('nombre','codigo','precio_venta','id_familia','imagen','exento')->where('favorito',0)->where('estado',1)->get();
+        return $lista;
+    }
+
+    public function lista_producto_favorito(){
+        $lista = DB::table('productos')->select('nombre','codigo','precio_venta','id_familia','imagen','exento')->where('favorito',1)->where('estado',1)->get();
         return $lista;
     }
 
@@ -199,6 +206,95 @@ class IndexController extends Controller
         $categoria = DB::table('sub_familias')->select('id','nombre')->where('estado',1)->get();
         return $categoria;
     }
+
+    public function lista_productos(){
+
+        $producto = DB::table('productos')
+        ->join('sub_familias','sub_familias.id','=','productos.id_familia')
+        ->select('productos.id','productos.nombre','productos.codigo','productos.precio_venta','sub_familias.nombre as subfamilia','productos.favorito','productos.estado');
+
+        return Datatables::of($producto)
+        ->editColumn('precio_venta', function ($producto) { return "$" . number_format($producto->precio_venta, 0, ",", "."); })
+        ->editColumn('favorito', function ($producto) { 
+            $favorito = ($producto->favorito == 1) ? 'SI':'NO';
+            return '<a onclick="cambiar_favorito_producto('.$producto->id.')" class="btn btn-primary btn-warning">'.$favorito.'</a>'; 
+        })
+        ->editColumn('estado', function ($producto) { 
+            $estado = ($producto->estado == 1) ? 'SI':'NO';
+            return '<a onclick="cambiar_estado_producto('.$producto->id.')" class="btn btn-primary btn-warning">'.$estado.'</a>'; 
+        })
+        ->rawColumns(['precio_venta', 'favorito', 'estado'])
+        ->make(true);
+        
+
+    }
+
+
+    public function lista_subfamilia(){
+
+        $producto = DB::table('sub_familias')->select('id','nombre','estado');
+
+        return Datatables::of($producto)
+        ->editColumn('estado', function ($producto) { 
+            $estado = ($producto->estado == 1) ? 'SI':'NO';
+            return '<a onclick="cambiar_estado_subfamilia('.$producto->id.')" class="btn btn-primary btn-warning">'.$estado.'</a>'; 
+        })
+        ->rawColumns([ 'estado'])
+        ->make(true);
+        
+
+    }
+
+
+    public function cambiar_favorito_producto(Request $request){
+        $id_producto = (int)$request->id;
+        $respuesta['respuesta'] = false;
+        $producto = Producto::find($id_producto);
+        if($producto != null){
+
+            $estado_actual = ($producto->favorito == 1) ? true : false;
+            $nuevo_estado  = ($estado_actual) ? false : true;
+
+            $producto->favorito = $nuevo_estado;
+            $producto->save();
+            $respuesta['respuesta'] = true;
+        }
+        return $respuesta;
+    }
+
+    public function cambiar_estado_producto(Request $request){
+        $id_producto = (int)$request->id;
+        $respuesta['respuesta'] = false;
+        $producto = Producto::find($id_producto);
+        if($producto != null){
+
+            $estado_actual = ($producto->estado == 1) ? true : false;
+            $nuevo_estado  = ($estado_actual) ? false : true;
+
+            $producto->estado = $nuevo_estado;
+            $producto->save();
+            $respuesta['respuesta'] = true;
+        }
+        return $respuesta;
+    }
+
+    public function cambiar_estado_subfamilia(Request $request){
+        $id = (int)$request->id;
+        $respuesta['respuesta'] = false;
+        $sub_familia = SubFamilia::find($id);
+        if($sub_familia != null){
+
+            $estado_actual = ($sub_familia->estado == 1) ? true : false;
+            $nuevo_estado  = ($estado_actual) ? false : true;
+
+            $sub_familia->estado = $nuevo_estado;
+            $sub_familia->save();
+            $respuesta['respuesta'] = true;
+        }
+        return $respuesta;
+    }
+
+
 
     private function existe_empresa(){
         return existe_credenciales();

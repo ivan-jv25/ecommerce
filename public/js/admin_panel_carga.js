@@ -176,3 +176,116 @@ function carga_inventario(){
         }
     });
 }
+
+function lista_productos(){
+    let table2  = $('#table_panel_producto').DataTable();
+    table2.destroy();
+    let table = $('#table_panel_producto').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+            url : URL_LISTA_PRODUCTOS,
+        },
+        "initComplete": function() {
+            var $searchInput = $('div.dataTables_filter input');
+            $searchInput.unbind();
+            $searchInput.bind('keyup', function(e) {
+                if(this.value.length >= 3 || this.value.length == 0) {
+                    table.search( this.value ).draw();
+                }
+            });
+        },
+        "language": lenguaje_datatable,
+        "columns":[
+            { "data": "id" , name: 'productos.id'},
+            { "data": "nombre" , name: 'productos.nombre'},
+            { "data": "codigo", name: 'productos.codigo'},
+            { "data": "precio_venta", name: 'productos.precio_venta'},
+            { "data": "subfamilia", name: 'sub_familias.nombre'},
+            {"data": 'favorito', name: 'favorito', orderable: false, searchable: false},
+            {"data": 'estado', name: 'estado', orderable: false, searchable: false}
+        ]
+    });
+}
+
+
+function lista_subfamilia(){
+    let table2  = $('#table_panel_subfamilia').DataTable();
+    table2.destroy();
+    let table = $('#table_panel_subfamilia').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+            url : URL_LISTA_SUBFAMILIA,
+        },
+        "initComplete": function() {
+            var $searchInput = $('div.dataTables_filter input');
+            $searchInput.unbind();
+            $searchInput.bind('keyup', function(e) {
+                if(this.value.length >= 3 || this.value.length == 0) {
+                    table.search( this.value ).draw();
+                }
+            });
+        },
+        "language": lenguaje_datatable,
+        "columns":[
+            { "data": "id" , name: 'sub_familias.id'},
+            { "data": "nombre" , name: 'sub_familias.nombre'},
+            {"data": 'estado', name: 'estado', orderable: false, searchable: false}
+        ]
+    });
+}
+
+
+
+function cambiar_favorito_producto(id){
+
+    $.ajax({
+        url: URL_CAMBIO_PRODUCTOS_FAVORITO,
+        data:{
+            id:id
+        },
+        success: function(respuesta) {
+            lista_productos()
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+
+}
+
+function cambiar_estado_producto(id){
+
+    $.ajax({
+        url: URL_CAMBIO_PRODUCTOS_ESTADO,
+        data:{
+            id:id
+        },
+        success: function(respuesta) {
+            lista_productos()
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+
+}
+
+
+function cambiar_estado_subfamilia(id){
+
+    $.ajax({
+        url: URL_CAMBIO_SUBFAMILIA_ESTADO,
+        data:{
+            id:id
+        },
+        success: function(respuesta) {
+            lista_subfamilia()
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+
+}

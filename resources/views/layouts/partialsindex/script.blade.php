@@ -61,6 +61,7 @@ function cerrar_menu(){
 }
 
 var URL_PRODUCTOS_SIMPLE = '{{ route('ajax.lista.productos.normal') }}';
+var URL_PRODUCTOS_FAVORITO = '{{ route('ajax.lista.productos.favorito') }}';
 var URL_CATEGORIA        = '{{ route('ajax.lista.categoria') }}';
 var URL_BODEGA           = '{{ route('ajax.lista.bodega') }}';
 var URL_INVENTARIO       = '{{ route('ajax.lista.inventario') }}';
@@ -72,6 +73,7 @@ $(document).ready(function(){
   get_storage();
   get_inventario();
   get_categorias();
+  carga_productos_favorito();
 });
 </script>
 
