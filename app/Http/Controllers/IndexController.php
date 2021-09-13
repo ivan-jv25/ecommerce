@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Venta;
+use App\Empresa;
 use App\Producto;
 use App\SubFamilia;
 use DB;
@@ -15,7 +16,50 @@ use Yajra\Datatables\Datatables;
 class IndexController extends Controller
 {
     public function registro_usuario(Request $request){
-        dd($request);
+        
+
+        $nombre = (string) $request->nombre;
+        $correo = (string) $request->correo;
+        $telefono = (string) $request->telefono;
+        $password = (string) $request->password;
+
+        $rut_empresa = (string) $request->rut_empresa;
+        $razon_social = (string) $request->razon_social;
+        $giro = (string) $request->giro;
+        $direccion = (string) $request->direccion;
+        $comuna = (string) $request->comuna;
+        $ciudad = (string) $request->ciudad;
+
+        $empresa = new Empresa();
+        
+        $empresa->rut          = $rut_empresa;
+        $empresa->razon_social = $razon_social;
+        $empresa->giro         = $giro;
+        $empresa->direccion    = $direccion;
+        $empresa->comuna       = $comuna;
+        $empresa->ciudad       = $ciudad;
+        $empresa->save();
+
+        //dd($empresa,$request);
+
+        $user = new user();
+        $user->name       = $nombre;
+        $user->email      = $correo;
+        $user->password   = Hash::make($password);
+        $user->is_admin   = 0;
+        $user->id_empresa = $empresa->id;
+        $user->save();
+
+        $credenciales['email']    = $correo;
+        $credenciales['password'] = $password;
+        if (Auth::attempt($credenciales)) {
+           //configurar algo
+        }
+        
+        
+        return redirect()->route('welcome');
+
+
     }
 
     public function obtener_token(Request $request){

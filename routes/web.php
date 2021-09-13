@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function () { return view('welcome'); })->name('welcome');
+
+Route::post('Registro/Usuario/', 'IndexController@registro_usuario')->name('registro.usuario');
 
 Auth::routes();
 

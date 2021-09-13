@@ -37,7 +37,8 @@
           </div>
           <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
             <div class="panel-body">
-              <form class="formulario" action="" method="post">
+              <form class="formulario" action="{{ route('registro.usuario') }}" method="post">
+              @csrf
                 <strong>1. Datos de usuario</strong>
                 <br>
                 <label for="usuario">Nombre</label>
@@ -47,7 +48,7 @@
                 <label for="usuario">Teléfono</label>
                 <input type="text" class="form-control" name="telefono" value="" placeholder="+56 9 5555 55 55" required>
                 <label for="usuario">Contraseña</label>
-                <input type="text" class="form-control" name="password" value="" placeholder="Contraseña" required>
+                <input type="password" class="form-control" name="password" value="" placeholder="Contraseña" required>
                 <strong>2. Datos de Empresa</strong>
                 <br>
                 <label for="usuario">Rut Empresa</label>
@@ -70,6 +71,7 @@
         </div>
         @else
 
+
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
@@ -78,7 +80,9 @@
               </a>
             </h4>
           </div>
-        </div>
+        </div>  
+
+        
 
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingOne">
