@@ -38,7 +38,7 @@
           </form>
         </div>
         <div class="filtro">
-          <select class="" name="">
+          <select class="" name="" id="lista_categoria" onchange="filtro_categoria(this.value);">
             <option value="0">Categoría</option>
             <option value="">Categoría 1</option>
             <option value="">Categoría 2</option>
@@ -211,7 +211,7 @@
                 </div>
               </div>
               <div class="col-sm-12">
-                <button type="submit" class="comprar btn-block" name="button">Comprar</button>
+                <button type="submit" class="comprar btn-block" name="button" id="singlebutton" disabled>Comprar</button>
               </div>
             </div>
 

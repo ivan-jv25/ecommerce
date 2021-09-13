@@ -82,7 +82,7 @@ function mostrar_lista_producto(lista){
 
 function add_producto_simple(index){
     let producto    = lista_productos[index];
-    let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta };
+    let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia };
     add_carrito(obj_detalle);
 }
 
@@ -115,6 +115,14 @@ function existe_producto(producto){
 function mostrar_lista_carro(){
     let lista = '';
     let lista_data = '';
+
+    if(lista_carro.length >= 1){
+        document.getElementById("singlebutton").disabled = false;
+    }else{
+        document.getElementById("singlebutton").disabled = true;
+    }
+    
+
     for (let i = 0; i < lista_carro.length; i++) {
         const element = lista_carro[i];
         lista +='<tr>'+
@@ -261,6 +269,28 @@ function get_stock_by_codigo(codigo,id_bodega){
     
 }
 
+function get_categorias(){
+    $.ajax({
+        url: URL_CATEGORIA,
+        success: function(respuesta) {
+            let categoria = respuesta
+            let lista = "<option value=''>Seleccionar Categorias</option>";
+            for (let i = 0; i < categoria.length; i++) {
+                const element = categoria[i];
+                lista += "<option value=" + element.id + ">"+element.id+" " + element.nombre + "</option>";
+            }
+            document.getElementById('lista_categoria').innerHTML = lista;
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+}
+
+function filtro_categoria(id) {
+    let array_aux = lista_productos.filter(producto => producto.id_familia == id);
+    mostrar_lista_producto(array_aux);
+}
 
 
 function work_flow_retiro(){

@@ -194,6 +194,12 @@ class IndexController extends Controller
 
     }
 
+    public function lista_categoria(){
+        
+        $categoria = DB::table('sub_familias')->select('id','nombre')->where('estado',1)->get();
+        return $categoria;
+    }
+
     private function existe_empresa(){
         return existe_credenciales();
     }

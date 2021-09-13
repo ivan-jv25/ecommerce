@@ -57,5 +57,6 @@ Route::get('Ajax/Lista/Productos/Normal', 'IndexController@lista_producto_normal
 Route::get('Ajax/Lista/Bodega', 'IndexController@lista_bodega')->name('ajax.lista.bodega');
 Route::get('Ajax/Lista/Inventario', 'IndexController@lista_inventario')->name('ajax.lista.inventario');
 Route::get('Ajax/Obtener/Lista/Ventas/Cliente', 'IndexController@ajax_ventas_cliente')->name('ajax.obtener.lista.ventas.cliente');
+Route::get('Ajax/Lista/Categoria', 'IndexController@lista_categoria')->name('ajax.lista.categoria');
 
 
