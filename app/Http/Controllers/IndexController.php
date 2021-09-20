@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Venta;
+use App\DetalleVenta;
 use App\Empresa;
 use App\Producto;
 use App\SubFamilia;
@@ -15,6 +16,12 @@ use Yajra\Datatables\Datatables;
 
 class IndexController extends Controller
 {
+    public function index(Request $request){
+        $token_venta = ($request->TokenVenta == null) ? 0 : $request->TokenVenta;
+        $pagado = ($request->pago == null) ? 0 : $request->pago;
+
+        return view('welcome')->with('TokenVenta',$token_venta)->with('pagado',$pagado);
+    }
     public function registro_usuario(Request $request){
         
 
@@ -181,10 +188,14 @@ class IndexController extends Controller
     }
 
     public function genera_venta(Request $request){
+
+       
         
         $id_empresa = Auth::user()->id_empresa;
-        $empresa = get_empresa($id_empresa);
-        $dato = 0;
+        $email      = Auth::user()->email;
+        $empresa    = get_empresa($id_empresa);
+        $dato       = 0;
+        $dataForm   = $request->all();
         
         $array_venta=[
             'rut'            => $empresa->rut,
@@ -203,11 +214,58 @@ class IndexController extends Controller
             'id_formapago'   => $dato,
             'codigo_pago'    => $dato,
         ];
-        
+
         $venta = new Venta($array_venta);
         $venta->save();
-        dd($venta);
+        $id_venta = $venta->id;
 
+        for ($i=0; $i < count($dataForm['item']); $i++) { 
+            $item            = (int)$dataForm['item'][$i];
+            $codigo          = (string)$dataForm['codigo'][$i];
+            $cantidad        = (int)$dataForm['cantidad'][$i];
+            $precio_unitario = (int)$dataForm['precio_unitario'][$i];
+            $precio_total    = (int)$dataForm['precio_total'][$i];
+            
+            $detalle =[
+                'id_venta'        => $id_venta,
+                'item'            => $item,
+                'codigo_producto' => $codigo,
+                'nombre'          => $codigo,
+                'cantidad'        => $cantidad,
+                'valor_producto'  => $precio_unitario,
+                'total'           => $precio_total, 'valor_descuento' => 0, 
+            ];
+            $dv = new DetalleVenta($detalle);
+            $dv->save();
+        }
+
+        $Base64 = base64_encode($id_venta);
+
+        switch ($request->options_pago) {
+            case 'flow':
+
+                $datos = [
+                    'amount'        => $request->id_total,
+                    'email'         => $email,
+                    'commerceOrder' => $empresa->rut.'-'.$id_venta,
+                    'subject'       => 'Compra a Atravez de Ecommerce',
+                    'token'         => $request->_token,
+                    'TokenVenta'    => $Base64,
+                ];
+
+                $respuesta = $this->pago_flow($datos);
+                DB::table('venta_flows')->insert( ['id_venta' => $id_venta, 'token' => $respuesta['token'],'url' => $respuesta['url'],'flowOrder' => $respuesta['flowOrder'],'estado' => 1 ] ); 
+                
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        
+
+        return redirect()->route('welcome', ['TokenVenta' => $Base64]);
 
     }
 
@@ -338,9 +396,162 @@ class IndexController extends Controller
         return $respuesta;
     }
 
+    public function datos_venta(Request $request){
+        $token    = $request->TokenVenta;
+        $id_venta = base64_decode($token);
+
+        $pago = [ 'Flow' => null, 'Match' => null, ];
+        
+
+        $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at')->where('id',$id_venta)->first();
+        $detalle   = DB::table('detalle_ventas')->select('id', 'id_venta', 'item', 'codigo_producto', 'nombre', 'cantidad', 'valor_producto', 'total', 'valor_descuento',)->where('id_venta',$id_venta)->get();
+        
+
+        switch ($venta->forma_pago) {
+            case 'flow':
+                $pago_flow = DB::table('venta_flows')->select('url','token','flowOrder')->where('id_venta',$id_venta)->first();
+                $pago['Flow'] = $pago_flow;
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+        
+
+        
+        $respuesta = [
+            'Venta'=>$venta,
+            'Detalle'=>$detalle,
+            'Pago'=>$pago,
+        ];
+
+        return $respuesta;
+    }
+
+    public function estado_pago(Request $request){
+
+        $token     = $request->TokenVenta;
+        $id_venta  = base64_decode($token);
+        $formapago = $request->formapago;
+
+        $respuesta = [
+            'estado' => false,
+            'pago' => [
+                'Flow' => null,
+                'Match' => null,
+            ],
+        ];
+
+
+        switch ($formapago) {
+            case 'flow':
+                $venta_flow = DB::table('venta_flows')->select('id','token')->where('id_venta',$id_venta)->first();
+
+                $token = $venta_flow->token;
+
+                $estado_flow = $this->pago_flow_status($token);
+
+                $respuesta['estado'] = true;
+                $respuesta['pago']['Flow'] = $estado_flow;
+
+
+                DB::table('venta_flows')->where('id', $venta_flow->id)->update(['estado' => $estado_flow->status]);
+                
+
+
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        if($respuesta['estado'] == true){
+            //enviar venta
+        }
+
+        return $respuesta;
+
+    }
+
+    /*TEST FLOW*/
+
+    public function pago_flow_test(Request $request){
+
+        $correo = $request->correo;
+        $monto  = (int)$request->monto;
+        $comentario = $request->comentario;
+        $token_sesion=$request->_token;
+        $return_url= route("ajax.generar.pago.flow.confirmacion",['_token'=>$token_sesion]);
+        $return_url_confirmacion =  'http://appnettech.cl/api/guargarjson';
+
+
+        $datos = [
+            'currency'        => 'CLP',
+            'amount'          => $monto,
+            'email'           => $correo,
+            'commerceOrder'   => 'CLP7',
+            'urlConfirmation' => $return_url_confirmacion,
+            'urlReturn'       => $return_url,
+            'subject'         => $comentario,
+
+        ];
+        
+        return (array)FLOW_PAY_CREATE($datos);
+    }
+
+    public function pago_flow_status_test(){
+        $datos = [
+            'apiKey'        => API_KEY_FLOW(),
+            'token'          => 'EC31F74F9D6175FE01EFDC34E9686D69558CEF4D',
+        ];
+        
+        $respuesta =FLOW_PAY_STATUS($datos);
+        dd($respuesta->status,$respuesta);
+    }
+
+    public function pago_flow_test_configuracion(Request $request){
+        $TokenVenta     = $request->query('TokenVenta');
+        $pago_procesado = 1;
+        return redirect()->route('welcome', ['TokenVenta' => $TokenVenta, 'pago' => $pago_procesado]);
+    }
+
+    /*Fin TEST FLOW*/
+
 
 
     private function existe_empresa(){
         return existe_credenciales();
+    }
+
+    private function pago_flow($data){
+        $token_sesion=$data['token'];
+        $return_url= route("ajax.generar.pago.flow.confirmacion",['_token'=>$token_sesion, 'TokenVenta'=>$data['TokenVenta']]);
+        $return_url_confirmacion =  'http://appnettech.cl/api/guargarjson';
+        
+        $datos = [
+            'currency'        => 'CLP',
+            'amount'          => $data['amount'],
+            'email'           => $data['email'],
+            'commerceOrder'   => $data['commerceOrder'],
+            'urlConfirmation' => $return_url_confirmacion,
+            'urlReturn'       => $return_url,
+            'subject'         => $data['subject'],
+
+        ];
+        
+        return (array)FLOW_PAY_CREATE($datos);
+
+    }
+
+    private function pago_flow_status($token){
+        $datos = [
+            'apiKey' => API_KEY_FLOW(),
+            'token'  => $token,
+        ];
+        
+        $respuesta = FLOW_PAY_STATUS($datos);
+        return $respuesta;
     }
 }

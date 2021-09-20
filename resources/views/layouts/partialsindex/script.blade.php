@@ -66,7 +66,12 @@ var URL_CATEGORIA        = '{{ route('ajax.lista.categoria') }}';
 var URL_BODEGA           = '{{ route('ajax.lista.bodega') }}';
 var URL_INVENTARIO       = '{{ route('ajax.lista.inventario') }}';
 var URL_COMPRAS          = '{{ route('ajax.obtener.lista.ventas.cliente') }}';
+var URL_DATA_VENTA       = '{{ route('ajax.data.venta') }}';
+var URL_ESTADO_PAGO      = '{{ route('ajax.generar.pago.estado') }}';
 var id_bodega_defecto    = parseInt('{{ obtener_id_bodega_defecto() }}');
+
+var TokenVenta ='{{ $TokenVenta }}';
+var pagado     = '{{ $pagado }}';
 
 $(document).ready(function(){
   carga_productos();
@@ -74,6 +79,10 @@ $(document).ready(function(){
   get_inventario();
   get_categorias();
   carga_productos_favorito();
+  if(TokenVenta != '0'){
+    cargar_datos_venta();
+    
+  }
 });
 </script>
 

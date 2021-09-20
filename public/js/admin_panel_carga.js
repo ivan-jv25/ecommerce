@@ -289,3 +289,29 @@ function cambiar_estado_subfamilia(id){
     });
 
 }
+
+function GenerarPago(){
+    let correo     = document.getElementById('correo').value;
+    let monto      = document.getElementById('monto').value;
+    let comentario = document.getElementById('comentario').value;
+
+
+    $.ajax({
+        url: URL_TEST_FLOW,
+        data:{
+            correo:correo,
+            monto:monto,
+            comentario:comentario,
+            _token:token,
+        },
+        success: function(respuesta) {
+            console.log(respuesta);
+            document.getElementById('form_test_flow').action = respuesta.url;
+            document.getElementById('token_flow').value = respuesta.token;
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+    
+}

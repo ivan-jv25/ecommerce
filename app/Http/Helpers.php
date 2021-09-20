@@ -221,6 +221,24 @@ function WEB_SERVICE_INVENTARIO(){
     return $respuesta;
 }
 
+function WEB_SERVICE_VENTA($json){
+    
+    $URL = get_url_servidor('local').'/api/venta';
+
+    $client = new \GuzzleHttp\Client();
+    $response = $client->request('post', $URL, [
+        'headers' => [
+        'Content-Type' => 'application/json',
+        'token' => obtener_token()
+        ],
+        'body' => $json                
+        
+    ]);
+    $resultado = $response->getBody()->getContents();
+    $resultado =json_decode($resultado);
+    return $resultado;
+}
+
 
 function obtener_token(){
     $existe = DB::table('tokens')->select('token')->where('tipo','session')->first();
@@ -359,4 +377,152 @@ function get_empresa(int $id){
     return $empresa;
 }
 
+function generar_formato_venta(int $id_venta){
+
+    $venta         = DB::table('ventas')->select()->where('id',$id_venta)->first();
+    $detalle_venta = DB::table('detalle_ventas')->select()->where('id_venta',$id_venta)->get();
+
+
+    $Detalle = [];
+
+    $dia              = substr($venta->created_at, 8,2);
+    $mes              = substr($venta->created_at, 5, 2);
+    $anio             = substr($venta->created_at, 0, 4);
+
+    $fecha_vencimiento = substr($venta->created_at, 0, 10);
+
+   
+
+    $Encabezado = [
+        'Total' => $venta->total_venta,
+        'IVA' => $venta->iva,
+        'NetoExento' => $venta->neto_exento,
+        'NetoAfecto' => $venta->neto,
+        'Descuento' => $venta->descuento,
+        'formapago' => $venta->id_formapago,
+        'Documento' => $venta->tipo_documento,
+        'Bodega' => $venta->id_bodega,
+
+        'Dia' => $dia,
+        'Mes' => $mes,
+        'Anio' => $anio,
+        'FechaVencimiento' => $fecha_vencimiento,
+
+        'Cliente' => $venta->rut,
+        'Estado' => 1,
+        'Propina' => 0,
+        'Observacion' => '',
+    ];
+
+    foreach ($detalle_venta as $key => $value) {
+        $array_detalle = [
+            'Item' => $value->item,
+            'Codigo' => $value->codigo_producto,
+            'Precio' => $value->valor_producto,
+            'Cantidad' => $value->cantidad,
+            'Descuento' => $value->valor_descuento,
+            'Detallelargo' => $value->nombre,
+        ];
+        array_push($Detalle, $array_detalle);
+    }
+
+    $venta_json = [
+        'Encabezado' =>$Encabezado,
+        'Detalle' =>$Detalle,
+        'Pago' =>[
+            [
+                'Formapago' => $venta->id_formapago,
+                'Total'    => $venta->total_venta,
+            ]
+        ],
+        
+    ];
+
+
+    $json =json_encode($venta_json);
+    return $json;
+}
+
+function FLOW_PAY_CREATE($datos = null){
+    
+    
+    $dato      = FLOW_PAY_SIGNATURE($datos);
+    
+    $params    = $dato['params'];
+    $signature = $dato['signature'];
+    
+    $url = 'https://sandbox.flow.cl/api';
+    $url = $url . '/payment/create';
+    
+    $params["s"] = $signature;
+
+    try {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        $response = curl_exec($ch);
+        if($response === false) {
+            $error = curl_error($ch);
+            throw new Exception($error, 1);
+        } 
+        $info = curl_getinfo($ch);
+        
+        
+        return json_decode($response);
+    } catch (Exception $e) {
+        echo 'Error: ' . $e->getCode() . ' - ' . $e->getMessage();
+    }
+
+}
+
+function FLOW_PAY_STATUS($datos = null){
+    $url = 'https://sandbox.flow.cl/api';
+    $url = $url . '/payment/getStatus';
+
+    $dato      = FLOW_PAY_SIGNATURE($datos);
+    
+    $params    = $dato['params'];
+    $signature = $dato['signature'];
+
+    $params["s"] = $signature;
+
+    $url = $url . "?" . http_build_query($params);
+    try {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        $response = curl_exec($ch);
+        return json_decode($response);
+    } catch (Exception $e) {
+      echo 'Error: ' . $e->getCode() . ' - ' . $e->getMessage();
+    }
+}
+
+function FLOW_PAY_SIGNATURE($datos = null){
+    
+    $params = array(  "apiKey" => API_KEY_FLOW(), ); 
+
+    if($datos != null){ $params= array_merge($params,$datos); }
+    
+    $keys = array_keys($params);
+    sort($keys);
+    $toSign = "";
+    
+    foreach($keys as $key) { $toSign .= $key . $params[$key]; };
+    
+    $signature = hash_hmac('sha256', $toSign , SECRET_KEY_FLOW());
+
+    $respuesta = [ 'params' => $params, 'signature' => $signature, ];
+    return $respuesta;
+}
+
+function API_KEY_FLOW(){
+    return '28F56082-BF69-41FF-AAC4-2FL575C8D8E6';
+}
+
+function SECRET_KEY_FLOW(){
+    return 'f01f946ddc531e41da18507046f9419325c78269';
+}
 

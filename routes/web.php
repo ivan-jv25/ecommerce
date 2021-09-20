@@ -11,8 +11,8 @@
 |
 */
 
-Route::get('/', function () { return view('welcome'); })->name('welcome');
-
+//Route::get('/', function () { return view('welcome'); })->name('welcome');
+Route::get('/', 'IndexController@index')->name('welcome');
 Route::post('Registro/Usuario/', 'IndexController@registro_usuario')->name('registro.usuario');
 
 Auth::routes();
@@ -57,6 +57,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('Ajax/SubFamilia/Cambio/Estado', 'IndexController@cambiar_estado_subfamilia')->name('ajax.subfamilia.cambio.estado');
 
 
+
+        /*TEST FLOW*/
+        Route::get('Ajax/Generar/Pago/FLOW', 'IndexController@pago_flow_test')->name('ajax.generar.pago.flow');
+        Route::post('Ajax/Generar/Pago/FLOW/Confirmacion', 'IndexController@pago_flow_test_configuracion')->name('ajax.generar.pago.flow.confirmacion');
+        Route::get('Ajax/Generar/Pago/FLOW/estado', 'IndexController@pago_flow_status_test')->name('ajax.generar.pago.flow.estado');
+
+
         
         
     });
@@ -70,5 +77,8 @@ Route::get('Ajax/Lista/Bodega', 'IndexController@lista_bodega')->name('ajax.list
 Route::get('Ajax/Lista/Inventario', 'IndexController@lista_inventario')->name('ajax.lista.inventario');
 Route::get('Ajax/Obtener/Lista/Ventas/Cliente', 'IndexController@ajax_ventas_cliente')->name('ajax.obtener.lista.ventas.cliente');
 Route::get('Ajax/Lista/Categoria', 'IndexController@lista_categoria')->name('ajax.lista.categoria');
+Route::get('Ajax/Data/Venta', 'IndexController@datos_venta')->name('ajax.data.venta');
+
+Route::get('Ajax/Generar/Pago/Estado', 'IndexController@estado_pago')->name('ajax.generar.pago.estado');
 
 

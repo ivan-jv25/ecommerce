@@ -90,7 +90,7 @@ function mostrar_lista_producto(lista){
         '<div class="nuevo" onclick="add_producto_simple('+i+');">en Stock</div>'+
         '</div>'+
         '<div class="mas" onclick="add_producto_simple('+i+');" ><i class="fa fa-plus fa-lg"></i></div>'+
-        '<div class="precio">$'+element.precio_venta+'</div>'+
+        '<div class="precio">$'+formatonumero(element.precio_venta)+'</div>'+
         '</div>';   
     }
     
@@ -108,7 +108,7 @@ function mostrar_lista_producto_favorito(lista){
         '<div class="nuevo" onclick="add_producto_favorito('+i+');">en Stock</div>'+
         '</div>'+
         '<div class="mas" onclick="add_producto_favorito('+i+');" ><i class="fa fa-plus fa-lg"></i></div>'+
-        '<div class="precio">$'+element.precio_venta+'</div>'+
+        '<div class="precio">$'+formatonumero(element.precio_venta)+'</div>'+
         '</div>';   
     }
     
@@ -176,7 +176,7 @@ function mostrar_lista_carro(){
                 element.cantidad+
                 '<div class="mas"><i class="fa fa-plus fa-lg" onclick="aumenta_cantidad('+i+')"></i></div>'+
             '</td>'+
-            '<td>$'+element.total+'</td>'+
+            '<td>$'+formatonumero(element.total)+'</td>'+
             '<td><i class="fa fa-trash fa-lg" onclick="elimina_item('+i+')"></i></td>'+
             '</tr>';
             lista_data +='<tr>'+
@@ -382,4 +382,110 @@ function lista_compra(){
             { "data": "created_at", name: 'ventas.created_at'}
         ]
     });
+}
+
+
+function cargar_datos_venta(){
+    $.ajax({
+        url: URL_DATA_VENTA,
+        data:{
+            TokenVenta:TokenVenta
+        },
+        success: function(respuesta) {
+            
+            if(pagado != 0){
+                cargar_estado_venta(respuesta);
+            }else{
+                $("#myModalPago").modal()
+                document.getElementById('form_test_flow').action = respuesta.Pago.Flow.url;
+                document.getElementById('token_flow').value = respuesta.Pago.Flow.token;
+
+                document.getElementById('btn_pago').firstChild.textContent = 'ir a Pagar : $'+respuesta.Venta.total_venta+'.-';
+            }
+
+            
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+}
+
+
+function cargar_estado_venta(datos){
+    console.log(datos)
+    let Detalle = datos.Detalle
+    let lista_compra = '';
+    $.ajax({
+        url: URL_ESTADO_PAGO,
+        data:{
+            TokenVenta:TokenVenta,
+            formapago:'flow',
+        },
+        success: function(respuesta) {
+            console.log(respuesta);
+            $("#myModalEstadoPago").modal()
+            if(respuesta.pago.Flow.status == 2){
+                clear_storage();
+                lista_carro      = []
+                mostrar_lista_carro();
+
+                for (let i = 0; i < Detalle.length; i++) {
+                    const element = Detalle[i];
+
+                    lista_compra += '<tr>'+
+                    '<td>'+element.item+'</td>'+
+                    '<td>'+element.nombre+'</td>'+
+                    '<td>'+formatonumero(element.cantidad)+'</td>'+
+                    '<td>'+formatonumero(element.total)+'</td>'+
+                  '</tr>';
+                    
+                }
+
+                let fecha = datos.Venta.created_at.substr(0,10);
+
+                document.getElementById('lista_compra').innerHTML = lista_compra;
+                document.getElementById('dv_fecha').innerHTML = fecha;
+
+                document.getElementById('id_invoice').innerHTML = "#"+datos.Venta.id;
+                document.getElementById('id_flowOrder').innerHTML = respuesta.pago.Flow.flowOrder;
+
+                document.getElementById('td_neto').innerHTML = "$"+formatonumero(datos.Venta.neto);
+                document.getElementById('td_iva').innerHTML = "$"+formatonumero(datos.Venta.iva);
+                document.getElementById('td_total').innerHTML = "$"+formatonumero(datos.Venta.total_venta);
+
+                
+
+                
+
+
+                
+
+
+
+
+
+
+            }
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+}
+
+
+function formatonumero(numero){
+    let newnumber = new Intl.NumberFormat("CLP").format(numero);
+    let valida    = 0;
+    let respuesta = true;
+    do {
+        if (valida >= -1) {
+            respuesta = false;
+            newnumber = newnumber.replace(",",".");
+        }
+        newnumber = newnumber.replace(",",".");
+        valida    = newnumber.search(",");
+    }while(respuesta);
+    return newnumber;
 }
