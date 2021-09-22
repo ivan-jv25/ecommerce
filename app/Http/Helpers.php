@@ -96,7 +96,9 @@ function WEB_SERVICE_BODEGA(){
             $array_aux = [
                 'id' =>$value->id,
                 'nombre' =>$value->descripcion,
+                'estado' =>1,
             ];
+         
             $bodega = new Bodega($array_aux);
             $bodega->save();
         }

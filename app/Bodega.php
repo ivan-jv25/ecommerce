@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Bodega extends Model
 {
     protected $fillable = [
-        'id','nombre',
+        'id','nombre','estado'
     ];
 }
