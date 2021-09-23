@@ -528,3 +528,18 @@ function SECRET_KEY_FLOW(){
     return 'f01f946ddc531e41da18507046f9419325c78269';
 }
 
+function getPrimerUltimoFecha(){
+    $mes  = date('m');
+    $anio = date('Y');
+    $dia  = date("d", mktime(0, 0, 0, $mes + 1, 0, $anio));
+
+    $ultimo  = date('Y-m-d', mktime(0, 0, 0, $mes, $dia, $anio));
+    $primero = date('Y-m-d', mktime(0, 0, 0, $mes, 1, $anio));
+
+    $respuesta = [
+        'primero' => $primero,
+        'ultimo'  => $ultimo,
+    ];
+    return $respuesta;
+}
+

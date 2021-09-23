@@ -12,6 +12,7 @@ use App\Empresa;
 use App\Producto;
 use App\SubFamilia;
 use DB;
+use PDF;
 use Yajra\Datatables\Datatables;
 
 class IndexController extends Controller
@@ -269,9 +270,20 @@ class IndexController extends Controller
 
     }
 
-    public function ajax_ventas_totales(){
+    public function ajax_ventas_totales(Request $request){
+        $tipo_venta = $request->tipo_venta;
+        $tipo_recepcion = $request->tipo_recepcion;
         
-        $libro = DB::table('ventas')->select('id','rut','folio','id_direccion','tipo_entrega','descuento','neto','neto_exento','iva','total_venta','tipo_documento','forma_pago','id_bodega','estado_pago','id_formapago','codigo_pago','created_at','updated_at');
+        $desde = $request->desde;
+        $hasta = $request->hasta;
+
+        $libro = DB::table('ventas')
+        ->join('documento','documento.tipo','=','ventas.tipo_documento')
+        ->select('ventas.id','ventas.rut','ventas.folio','ventas.id_direccion','ventas.tipo_entrega','ventas.descuento','ventas.neto','ventas.neto_exento','ventas.iva','ventas.total_venta','documento.nombre as tipo_documento','ventas.forma_pago','ventas.id_bodega','ventas.estado_pago','ventas.id_formapago','ventas.codigo_pago','ventas.created_at','ventas.updated_at')
+        ->whereBetween(DB::raw('SUBSTRING(created_at, 1,10)'), [$desde, $hasta]);
+
+        if($tipo_venta == 1){ $libro->where('ventas.folio','!=',0); }else if($tipo_venta == 2){ $libro->where('ventas.folio','=',0); }
+        if($tipo_recepcion == 1){ $libro->where('ventas.tipo_entrega','=','retiro'); }else if($tipo_recepcion == 2){ $libro->where('ventas.tipo_entrega','=','despacho'); }
 
         return Datatables::of($libro)
         ->editColumn('created_at', function ($libro) { return substr($libro->created_at,0,10); })
@@ -280,17 +292,31 @@ class IndexController extends Controller
         ->editColumn('descuento', function ($libro) { return "$" . number_format($libro->descuento, 0, ",", "."); })
         ->editColumn('iva', function ($libro) { return "$" . number_format($libro->iva, 0, ",", "."); })
         ->editColumn('total_venta', function ($libro) { return "$" . number_format($libro->total_venta, 0, ",", "."); })
+        ->editColumn('accion', function ($libro) { return '<a href="'. route('generar.pdf',['TokenVenta'=> base64_encode($libro->id)]) .'" target="_blank" class="btn btn-block btn-warning">Ver Ticket</a>'; })
+        ->rawColumns(['created_at', 'neto', 'neto_exento', 'descuento', 'iva', 'total_venta', 'accion'])
         ->make(true);
 
     }
 
 
-    public function ajax_ventas_cliente(){
+    public function ajax_ventas_cliente(Request $request){
+
+        
 
         $id_empresa = Auth::user()->id_empresa;
         $empresa = get_empresa($id_empresa);
+
+        $desde = $request->desde;
+        $hasta = $request->hasta;
+
         
-        $libro = DB::table('ventas')->select('id','rut','folio','id_direccion','tipo_entrega','descuento','neto','neto_exento','iva','total_venta','tipo_documento','forma_pago','id_bodega','estado_pago','id_formapago','codigo_pago','created_at','updated_at')->where('rut',$empresa->rut);
+        
+        $libro = DB::table('ventas')
+        ->join('documento','documento.tipo','=','ventas.tipo_documento')
+        ->select('ventas.id','ventas.rut','ventas.folio','ventas.id_direccion','ventas.tipo_entrega','ventas.descuento','ventas.neto','ventas.neto_exento','ventas.iva','ventas.total_venta','documento.nombre as tipo_documento','ventas.forma_pago','ventas.id_bodega','ventas.estado_pago','ventas.id_formapago','ventas.codigo_pago','ventas.created_at','ventas.updated_at')
+        ->where('ventas.rut',$empresa->rut)
+        ->where('ventas.folio','!=',0)
+        ->whereBetween(DB::raw('SUBSTRING(ventas.created_at, 1,10)'), [$desde, $hasta]);
 
         return Datatables::of($libro)
         ->editColumn('created_at', function ($libro) { return substr($libro->created_at,0,10); })
@@ -299,6 +325,8 @@ class IndexController extends Controller
         ->editColumn('descuento', function ($libro) { return "$" . number_format($libro->descuento, 0, ",", "."); })
         ->editColumn('iva', function ($libro) { return "$" . number_format($libro->iva, 0, ",", "."); })
         ->editColumn('total_venta', function ($libro) { return "$" . number_format($libro->total_venta, 0, ",", "."); })
+        ->editColumn('accion', function ($libro) { return '<a href="'. route('generar.pdf',['TokenVenta'=> base64_encode($libro->id)]) .'" target="_blank" class="btn btn-block btn-warning">Ver Ticket</a>'; })
+        ->rawColumns(['created_at', 'neto', 'neto_exento', 'descuento', 'iva', 'total_venta', 'accion'])
         ->make(true);
 
     }
@@ -472,6 +500,36 @@ class IndexController extends Controller
         }
 
         return $respuesta;
+
+    }
+
+    public function generar_pdf(Request $request){
+        
+        $token    = $request->TokenVenta;
+        $id_venta = (int)base64_decode($token);
+
+
+        
+        
+
+        if($id_venta == 0){
+            dd("PDF no Existe");
+        }
+        
+        
+
+        $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at')->where('id',$id_venta)->first();
+        
+        $detalle   = DB::table('detalle_ventas')->select('id', 'id_venta', 'item', 'codigo_producto', 'nombre', 'cantidad', 'valor_producto', 'total', 'valor_descuento',)->where('id_venta',$id_venta)->get();
+
+
+
+        
+
+        $pdf = PDF::loadView('pdf.ticket', compact('venta', 'detalle'), ['name' => 'data']);
+        $pdf->setPaper('A6', 'legal');
+        return $pdf->stream("factura_".$id_venta.".pdf");
+
 
     }
 

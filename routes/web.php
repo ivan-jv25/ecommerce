@@ -65,6 +65,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 
         
+
+
+        
         
     });
 
@@ -80,5 +83,7 @@ Route::get('Ajax/Lista/Categoria', 'IndexController@lista_categoria')->name('aja
 Route::get('Ajax/Data/Venta', 'IndexController@datos_venta')->name('ajax.data.venta');
 
 Route::get('Ajax/Generar/Pago/Estado', 'IndexController@estado_pago')->name('ajax.generar.pago.estado');
+
+Route::get('Generar/PDF', 'IndexController@generar_pdf')->name('generar.pdf');
 
 

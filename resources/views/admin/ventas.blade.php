@@ -4,10 +4,48 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Listado de Ventas</div>
+                <div class="card-header">
+                    Listado de Ventas
+                </div>
 
                 <div class="card-body">
+                    
+                        
+                        
+                    <div class="col-md-4 ml-auto">
+                        <div class="form-group">
+                            <label for="sel1">Desde :</label>
+                            <input id="desde" name="desde" type="date" class="form-control input-md" value="{{getPrimerUltimoFecha()['primero']}}" onchange="ventas_totales();">
+                        </div> 
+                    </div>
+                    <div class="col-md-4 ml-auto">
+                        <div class="form-group">
+                            <label for="sel1">Hasta :</label>
+                            <input id="hasta" name="hasta" type="date" class="form-control input-md" value="{{getPrimerUltimoFecha()['ultimo']}}" onchange="ventas_totales();">
+                        </div> 
+                    </div>
+                    <div class="col-md-4 ml-auto">
+                        <div class="form-group">
+                            <label for="sel1">Tipo de Ventas :</label>
+                            <select class="form-control" id="tipo_venta" name="tipo_venta" onchange="ventas_totales();">
+                                <option value = "1">Constituida</option>
+                                <option value = "2">No Constituida</option>
+                                <option value = "3">Todas</option>
+                            </select>
+                        </div> 
+                    </div>
+                    <div class="col-md-4 ml-auto">
+                        <div class="form-group">
+                            <label for="sel1">Tipo de Resepcion :</label>
+                            <select class="form-control" id="tipo_recepcion" name="tipo_recepcion" onchange="ventas_totales();">
+                                <option value = "3">Todas</option>
+                                <option value = "1">Retiro</option>
+                                <option value = "2">Despacho</option>
+                            </select>
+                        </div> 
+                    </div>
 
+                        
 
                     <div class="table-responsive">
                         <table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -24,7 +62,7 @@
                                     <th>Documento</th>
                                     <th>Forma Pago</th>
                                     <th>Fecha</th>
-                                
+                                    <th>Accion</th>
                                 </tr>
                             </thead>
                         </table>
@@ -54,6 +92,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.js"></script>
 
 <script src="{{ asset('js/lenguaje_datatable.js') }}"></script>
+<script src="{{ asset('js/admin_venta.blade.js') }}"></script>
 
 
 <script>
@@ -63,42 +102,8 @@
         ventas_totales();
     } );
 
-    function ventas_totales(){
-        
-        let table2  = $('#example').DataTable();
-        table2.destroy();
-        let table = $('#example').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ajax":{
-                url : URL_VENTAS_TOTALES,
-            },
-            "initComplete": function() {
-                var $searchInput = $('div.dataTables_filter input');
-                $searchInput.unbind();
-				$searchInput.bind('keyup', function(e) {
-					if(this.value.length >= 3 || this.value.length == 0) {
-						table.search( this.value ).draw();
-					}
-				});
-			},
-            "language": lenguaje_datatable,
-            "columns":[
-                { "data": "rut" , name: 'ventas.rut'},
-                { "data": "folio", name: 'ventas.folio'},
-                { "data": "tipo_entrega", name: 'ventas.tipo_entrega'},
-                { "data": "descuento", name: 'ventas.descuento'},
-                { "data": "neto", name: 'ventas.neto'},
-                { "data": "neto_exento", name: 'ventas.neto_exento'},
-                { "data": "iva", name: 'ventas.iva'},
-                { "data": "total_venta", name: 'ventas.total_venta'},
-                { "data": "tipo_documento", name: 'ventas.tipo_documento'},
-                { "data": "forma_pago", name: 'ventas.forma_pago'},
-                { "data": "created_at", name: 'ventas.created_at'}
-            ]
-        });
-
-    }
+    
+    
 </script>
 
 @endsection
