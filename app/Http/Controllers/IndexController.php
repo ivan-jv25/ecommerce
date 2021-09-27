@@ -163,7 +163,7 @@ class IndexController extends Controller
     }
 
     public function lista_producto_normal(){
-        $lista = DB::table('productos')->select('nombre','codigo','precio_venta','id_familia','imagen','exento')->where('favorito',0)->where('estado',1)->get();
+        $lista = DB::table('productos')->select('nombre','codigo','precio_venta','id_familia','imagen','exento')->where('estado',1)->get();
         return $lista;
     }
 
@@ -578,7 +578,81 @@ class IndexController extends Controller
 
     /*Fin TEST FLOW*/
 
+    public function carga_datos_flow(Request $request){
+        $respuesta = ['respuesta'=>false];
+        $API_KEY_FLOW    = ($request->API_KEY_FLOW == null) ? '' : $request->API_KEY_FLOW;
+        $SECRET_KEY_FLOW = ($request->API_KEY_FLOW == null) ? '' : $request->SECRET_KEY_FLOW;
 
+        try {
+            $existe_api_key    = $this->existe_api_key_flow();
+            $existe_secret_key = $this->existe_secret_key_flow();
+
+            if($existe_api_key){
+                DB::table('tokens')->where('tipo', 'API_KEY_FLOW')->update(['token' => $API_KEY_FLOW]);
+            }else{
+                DB::table('tokens')->insert( ['tipo' => 'API_KEY_FLOW', 'token' => $API_KEY_FLOW] );
+            }
+
+            if($existe_secret_key){
+                DB::table('tokens')->where('tipo', 'SECRET_KEY_FLOW')->update(['token' => $SECRET_KEY_FLOW]);
+            }else{
+                DB::table('tokens')->insert( ['tipo' => 'SECRET_KEY_FLOW', 'token' => $SECRET_KEY_FLOW] );
+            }
+
+            $respuesta['respuesta'] = true;
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        return $respuesta;
+    }
+
+    public function get_datos_flow(){
+        
+        $API_KEY_FLOW    = DB::table('tokens')->select('token')->where('tipo','API_KEY_FLOW')->first();
+        $SECRET_KEY_FLOW = DB::table('tokens')->select('token')->where('tipo','SECRET_KEY_FLOW')->first();
+
+        $API_KEY_FLOW    = ($API_KEY_FLOW == null) ? '' : $API_KEY_FLOW->token;
+        $SECRET_KEY_FLOW = ($SECRET_KEY_FLOW == null) ? '' : $SECRET_KEY_FLOW->token;
+
+        $API_KEY_FLOW    = ($API_KEY_FLOW == '') ? '' :  ocultar_string($API_KEY_FLOW);
+        $SECRET_KEY_FLOW = ($SECRET_KEY_FLOW == '') ? '' :  ocultar_string($SECRET_KEY_FLOW);
+
+
+        return [
+            'API_KEY_FLOW'    => $API_KEY_FLOW,
+            'SECRET_KEY_FLOW' => $SECRET_KEY_FLOW ,
+        ];
+    }
+
+    public function carga_correo_aviso(Request $request){
+        $respuesta        = ['respuesta'=>false];
+        try {
+            $correo_principal = $request->correo_principal;
+            $correo_copia     = $request->correo_copia;
+            $correo_asunto    = $request->correo_asunto;
+
+            $obj_correo = (object)[ 'principal' => $correo_principal, 'copia' => $correo_copia, 'asunto' => $correo_asunto, ];
+            $obj_correo = json_encode($obj_correo);
+            $existe     = $this->existe_correo();
+
+            if($existe){
+                DB::table('tokens')->where('tipo', 'correo')->update(['token' => $obj_correo]);
+            }else{
+                DB::table('tokens')->insert( ['tipo' => 'correo', 'token' => $obj_correo] );
+            }
+            $respuesta['respuesta'] = true;
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        return $respuesta;
+    }
+
+    public function get_correo_aviso(){
+        $datos = DB::table('tokens')->select('token')->where('tipo','correo')->first()->token;
+        $datos = (array)json_decode($datos);
+        return $datos;
+    }
 
     private function existe_empresa(){
         return existe_credenciales();
@@ -612,5 +686,19 @@ class IndexController extends Controller
         
         $respuesta = FLOW_PAY_STATUS($datos);
         return $respuesta;
+    }
+
+    private function existe_api_key_flow(){
+        $existe = DB::table('tokens')->select('id')->where('tipo','API_KEY_FLOW')->first();
+        return ($existe == null) ? false : true;
+    }
+    private function existe_secret_key_flow(){
+        $existe = DB::table('tokens')->select('id')->where('tipo','SECRET_KEY_FLOW')->first();
+        return ($existe == null) ? false : true;
+    }
+
+    private function existe_correo(){
+        $existe = DB::table('tokens')->select('id')->where('tipo','correo')->first();
+        return ($existe == null) ? false : true;
     }
 }

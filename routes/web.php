@@ -57,8 +57,16 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('Ajax/SubFamilia/Cambio/Estado', 'IndexController@cambiar_estado_subfamilia')->name('ajax.subfamilia.cambio.estado');
 
 
+        Route::post('Ajax/Carga/Correo', 'IndexController@carga_correo_aviso')->name('ajax.carga.correo');
+        Route::get('Ajax/Get/Correo', 'IndexController@get_correo_aviso')->name('ajax.get.correo');
+
+
 
         /*TEST FLOW*/
+
+        Route::post('Ajax/Carga/Datos/FLOW', 'IndexController@carga_datos_flow')->name('ajax.carga.datos.flow');
+        Route::get('Ajax/Get/Datos/FLOW', 'IndexController@get_datos_flow')->name('ajax.get.datos.flow');
+
         Route::get('Ajax/Generar/Pago/FLOW', 'IndexController@pago_flow_test')->name('ajax.generar.pago.flow');
         Route::post('Ajax/Generar/Pago/FLOW/Confirmacion', 'IndexController@pago_flow_test_configuracion')->name('ajax.generar.pago.flow.confirmacion');
         Route::get('Ajax/Generar/Pago/FLOW/estado', 'IndexController@pago_flow_status_test')->name('ajax.generar.pago.flow.estado');

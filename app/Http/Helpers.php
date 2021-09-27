@@ -555,3 +555,11 @@ function getPrimerUltimoFecha(){
     return $respuesta;
 }
 
+function ocultar_string($texto){
+    $largo_instancia = (int)(strlen($texto) / 2);
+    $texto           = substr($texto,0,$largo_instancia );
+    for ($i=0; $i <=$largo_instancia ; $i++) { $texto.="*"; }
+    
+    return $texto;
+}
+

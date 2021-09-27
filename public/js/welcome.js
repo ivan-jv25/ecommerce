@@ -83,8 +83,10 @@ function mostrar_lista_producto(lista){
     for (let i = 0; i < lista.length; i++) {
         const element = lista[i];
 
+        let imagen = (element.imagen == 'Sin Imagen') ? 'img/productos/t2lite.png' : element.imagen;
+
         lista_productos +='<div class="prod">'+
-        '<img class="thumb" src="img/productos/t2lite.png" alt="">'+
+        '<img class="thumb" async  src="'+imagen+'" alt="">'+
         '<div class="detal">'+
         '<h5>'+element.nombre.substring(0,30)+'</h5>'+
         '<div class="nuevo" onclick="add_producto_simple('+i+');">en Stock</div>'+
@@ -100,9 +102,10 @@ function mostrar_lista_producto_favorito(lista){
     let lista_productos = '';
     for (let i = 0; i < lista.length; i++) {
         const element = lista[i];
+        let imagen = (element.imagen == 'Sin Imagen') ? 'img/productos/t2lite.png' : element.imagen;
 
         lista_productos +='<div class="prod">'+
-        '<img class="thumb" src="img/productos/t2lite.png" alt="">'+
+        '<img class="thumb" async  src="'+imagen+'" alt="">'+
         '<div class="detal">'+
         '<h5>'+element.nombre.substring(0,30)+'</h5>'+
         '<div class="nuevo" onclick="add_producto_favorito('+i+');">en Stock</div>'+
@@ -117,13 +120,13 @@ function mostrar_lista_producto_favorito(lista){
 
 function add_producto_simple(index){
     let producto    = lista_productos[index];
-    let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia };
+    let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia,imagen: producto.imagen };
     add_carrito(obj_detalle);
 }
 
 function add_producto_favorito(index){
     let producto    = lista_productos_favorito[index];
-    let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia };
+    let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia,imagen: producto.imagen };
     add_carrito(obj_detalle);
 }
 
@@ -166,9 +169,10 @@ function mostrar_lista_carro(){
 
     for (let i = 0; i < lista_carro.length; i++) {
         const element = lista_carro[i];
+        let imagen = (element.imagen == 'Sin Imagen') ? 'img/productos/t2lite.png' : element.imagen;
         lista +='<tr>'+
             '<td>'+
-                '<img class="thumb" src="img/productos/d2scombo.png" alt="">'+
+                '<img class="thumb" async  src="'+imagen+'"  alt="">'+
                 '<span>'+element.nombre.substring(0,30)+'</span>'+
             '</td>'+
             '<td>'+

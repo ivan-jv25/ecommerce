@@ -315,3 +315,120 @@ function GenerarPago(){
     });
     
 }
+
+
+function carga_datos_flow(){
+    let API_KEY_FLOW    = document.getElementById('API_KEY_FLOW').value;
+    let SECRET_KEY_FLOW = document.getElementById('SECRET_KEY_FLOW').value;
+    
+    $.ajax({
+        url: URL_CARGA_DATOS_FLOW,
+        data:{
+            API_KEY_FLOW:API_KEY_FLOW,
+            SECRET_KEY_FLOW:SECRET_KEY_FLOW,
+            _token:token,
+        },
+        type:  'post',
+        success: function(respuesta) {
+            get_datos_flow();
+            
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+    
+}
+
+
+function get_datos_flow(){
+    let return_grabar_flow     = false;
+    let return_SECRET_KEY_FLOW = '';
+    let return_API_KEY_FLOW    = '';
+    $.ajax({
+        url: URL_GET_DATOS_FLOW,
+        success: function(respuesta) {
+            if(respuesta.API_KEY_FLOW == '' || respuesta.SECRET_KEY_FLOW == '' ){
+                return_grabar_flow     = false;
+                return_SECRET_KEY_FLOW = '';
+                return_API_KEY_FLOW    = '';
+            }else{
+                return_grabar_flow     = true;
+                return_SECRET_KEY_FLOW = respuesta.SECRET_KEY_FLOW;
+                return_API_KEY_FLOW    = respuesta.API_KEY_FLOW;
+            }
+            document.getElementById('API_KEY_FLOW').value   = return_API_KEY_FLOW;
+            document.getElementById('SECRET_KEY_FLOW').value =return_SECRET_KEY_FLOW;
+            document.getElementById("grabar_flow").disabled = return_grabar_flow;
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+}
+
+function cambiar_datos_flow(){
+    document.getElementById('API_KEY_FLOW').value   = '';
+    document.getElementById('SECRET_KEY_FLOW').value = '';
+    document.getElementById("grabar_flow").disabled = false;
+}
+
+function cargar_correos(){
+
+    let array_boolean     = [ true, true, true ];
+
+    let correo_principal = document.getElementById('correo_principal').value;
+    let correo_copia = document.getElementById('correo_copia').value;
+    let correo_asunto = document.getElementById('correo_asunto').value;
+
+
+    if(correo_principal == ''){ array_boolean[0] = false; $("#correo_principal").addClass("is-invalid");}
+	if(correo_copia == ''){     array_boolean[1] = false; $("#correo_copia").addClass("is-invalid"); }
+	if(correo_asunto == ''){    array_boolean[2] = false; $("#correo_asunto").addClass("is-invalid"); }
+
+    let is_enviar = array_boolean.every(CheckBoolean);
+
+    if(is_enviar){
+
+        let obj = { correo_principal: correo_principal,correo_copia: correo_copia,correo_asunto: correo_asunto,_token: token, };
+    
+        $.ajax({
+            url: URL_CARGA_CORREO,
+            data:obj,
+            type:  'post',
+            success: function(respuesta) {
+                console.log(respuesta)
+                
+            },
+            error: function() {
+                console.log("No se ha podido obtener la información");
+            }
+        });
+
+    }
+}
+
+function get_correos(){
+    
+    $.ajax({
+        url: URL_GET_CORREO,
+        success: function(respuesta) {
+            
+
+            document.getElementById('correo_principal').value = respuesta.principal;
+            document.getElementById('correo_copia').value = respuesta.copia;
+            document.getElementById('correo_asunto').value = respuesta.asunto;
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+
+   
+}
+
+
+
+
+function CheckBoolean(bool) { return bool == true; }
+function clar_error(e){ $('#'+e.id).removeClass("is-invalid"); }
