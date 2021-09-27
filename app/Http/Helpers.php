@@ -374,6 +374,18 @@ function existen_subfamilia(){
     return $cantidad;
 }
 
+function existen_inventario(){
+    try {
+        $existe = DB::table('inventarios')->select(DB::raw('count(id) as cantidad'))->first();
+        
+        $cantidad = $existe->cantidad;
+    } catch (\Throwable $th) {
+        //throw $th;
+        $cantidad = 0;
+    }
+    return $cantidad;
+}
+
 function get_empresa(int $id){
     $empresa = DB::table('empresas')->select('id', 'rut', 'razon_social', 'direccion', 'comuna', 'ciudad')->where([ ['id',$id] ])->first();
     return $empresa;

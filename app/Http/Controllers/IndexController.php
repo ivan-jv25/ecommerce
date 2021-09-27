@@ -101,11 +101,12 @@ class IndexController extends Controller
         try { $token = obtener_token(); } catch (\Throwable $th) {}
         try { $credenciales = json_decode(obtener_credenciales()); } catch (\Throwable $th) { }
 
-        $productos_cargado = (existen_productos() > 0) ? true : false;
-        $bodegas_cargado = (existen_bodegas() > 0) ? true : false;
-        $bodegas_sucursal = (existen_sucursal() > 0) ? true : false;
-        $bodegas_familia = (existen_familia() > 0) ? true : false;
+        $productos_cargado  = (existen_productos() > 0) ? true : false;
+        $bodegas_cargado    = (existen_bodegas() > 0) ? true : false;
+        $bodegas_sucursal   = (existen_sucursal() > 0) ? true : false;
+        $bodegas_familia    = (existen_familia() > 0) ? true : false;
         $bodegas_subfamilia = (existen_subfamilia() > 0) ? true : false;
+        $bodegas_inventario = (existen_inventario() > 0) ? true : false;
 
         $respuesta = [
             'Token' => $token,
@@ -118,7 +119,7 @@ class IndexController extends Controller
                 ['Tipo' => 'Producto', 'Estado' => $productos_cargado, 'id'=>'td_carga_producto'],
                 ['Tipo' => 'Sucursal', 'Estado' => $bodegas_sucursal, 'id'=>'td_carga_sucursal'],
                 ['Tipo' => 'Bodega', 'Estado' => $bodegas_cargado, 'id'=>'td_carga_bodega'],
-                ['Tipo' => 'Inventario', 'Estado' => null, 'id'=>'td_carga_inventario'],
+                ['Tipo' => 'Inventario', 'Estado' => $bodegas_inventario, 'id'=>'td_carga_inventario'],
                 ['Tipo' => 'Familia', 'Estado' => $bodegas_familia, 'id'=>'td_carga_familia'],
                 ['Tipo' => 'SubFamilia', 'Estado' => $bodegas_subfamilia, 'id'=>'td_carga_subfamilia'],
                 ['Tipo' => 'ListaPrecio', 'Estado' => null, 'id'=>'td_carga_lista_precio'],
