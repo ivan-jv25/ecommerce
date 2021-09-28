@@ -74,6 +74,9 @@ var TokenVenta ='{{ $TokenVenta }}';
 var pagado     = '{{ $pagado }}';
 
 $(document).ready(function(){
+  carga_bodega2();
+  carga_bodega();
+  seleccion_bodega();
   carga_productos();
   get_storage();
   get_inventario();

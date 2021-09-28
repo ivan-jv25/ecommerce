@@ -1,7 +1,8 @@
-var lista_productos  = null;
+var lista_productos          = null;
 var lista_productos_favorito = null
-var lista_carro      = [];
-var lista_inventario = null;
+var lista_carro              = [];
+var lista_inventario         = null;
+var lista_bodega             = [];
 
 var neto  = 0;
 var IVA   = 0;
@@ -9,7 +10,7 @@ var Total = 0;
 
 var aux_index = null;
 var KEY = 'ecommerce.lista';
-
+document.getElementById('id_bodega').value = id_bodega_defecto;
 const formulario = document.querySelector('#formulario');
 
 const filtrar = () =>{
@@ -28,6 +29,9 @@ formulario.addEventListener("keyup", filtrar);
 function carga_productos(){
     $.ajax({
         url: URL_PRODUCTOS_SIMPLE,
+        data:{
+            id:id_bodega_defecto,
+        },
         success: function(respuesta) {
             lista_productos = respuesta;
             mostrar_lista_producto(respuesta);
@@ -51,14 +55,25 @@ function carga_productos_favorito(){
     });
 }
 
-
-
-
 function carga_bodega(){
     $.ajax({
         url: URL_BODEGA,
         success: function(respuesta) {
+            lista_bodega = respuesta;
             mostrar_bodegas(respuesta);
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+}
+
+function carga_bodega2(){
+    $.ajax({
+        url: URL_BODEGA,
+        success: function(respuesta) {
+            lista_bodega = respuesta;
+            mostrar_bodegas2(respuesta);
         },
         error: function() {
             console.log("No se ha podido obtener la información");
@@ -75,6 +90,18 @@ function mostrar_bodegas(bodegas){
         
     }
     document.getElementById('id_tienda_retiro').innerHTML= lista;
+    
+}
+
+function mostrar_bodegas2(){
+    let lista = '<option value="">Seleccione una Tienda</option>';
+    for (let i = 0; i < lista_bodega.length; i++) {
+        const element = lista_bodega[i];
+        let selected = (element.id == id_bodega_defecto) ? 'selected' : '';
+        lista +='<option value="'+element.id+'" '+selected+'>'+element.nombre+'</option>';
+        
+    }
+    document.getElementById('id_tienda_retiro2').innerHTML= lista;
     
 }
 
@@ -215,7 +242,31 @@ function lista_carrito_bodega(){
     document.getElementById('lista_carro_bodega').innerHTML = lista_carro_bodega;
     let dato = lista_todo_bien.filter(estado => estado==false);
     if(dato.length >0){
+        document.getElementById("singlebutton").disabled = true;
         alert("Tienes Productos Sin el Stock Suficiente.");
+    }else{
+        document.getElementById("singlebutton").disabled = false;
+    }
+}
+
+function lista_carrito_bodega2(){
+    let id_bodega          = document.getElementById('id_bodega').value;
+    let lista_todo_bien = [];
+    for (let i = 0; i < lista_carro.length; i++) {
+        const element = lista_carro[i];
+        
+        if(element.cantidad > get_stock_by_codigo(element.codigo,id_bodega)){
+            lista_todo_bien.push(false);
+        }else{
+            lista_todo_bien.push(true);
+        }
+    }
+    let dato = lista_todo_bien.filter(estado => estado==false);
+    if(dato.length >0){
+        document.getElementById("singlebutton").disabled = true;
+        alert("Tienes Productos Sin el Stock Suficiente.");
+    }else{
+        document.getElementById("singlebutton").disabled = false;
     }
 }
 
@@ -343,7 +394,7 @@ function filtro_categoria(id) {
 
 
 function work_flow_retiro(){
-    carga_bodega();
+    //carga_bodega();
     lista_carrito_bodega();
 }
 
@@ -495,4 +546,24 @@ function formatonumero(numero){
         valida    = newnumber.search(",");
     }while(respuesta);
     return newnumber;
+}
+
+function seleccion_bodega(){
+    mostrar_bodegas2()
+    $("#myModalBodegaDefecto").modal()
+}
+
+function bodega_defecto(){
+    
+    id_bodega_defecto = document.getElementById('id_tienda_retiro2').value;
+    document.getElementById('id_bodega').value = id_bodega_defecto;
+    carga_productos();
+    lista_carrito_bodega2();
+}
+
+function bodega_defecto2(){
+    
+    id_bodega_defecto = document.getElementById('id_tienda_retiro').value;
+    document.getElementById('id_bodega').value = id_bodega_defecto;
+    carga_productos()
 }

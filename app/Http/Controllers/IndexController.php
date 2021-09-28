@@ -162,8 +162,9 @@ class IndexController extends Controller
         return [ 'Estado'=>$respuesta];
     }
 
-    public function lista_producto_normal(){
-        $lista = DB::table('productos')->select('nombre','codigo','precio_venta','id_familia','imagen','exento')->where('estado',1)->get();
+    public function lista_producto_normal(Request $request){
+        $id_bodega = $request->id;
+        $lista = DB::table('inventarios')->join('productos','productos.codigo','=','inventarios.id_producto')->select('productos.nombre','productos.codigo','productos.precio_venta','productos.id_familia','productos.imagen','productos.exento')->where('productos.estado',1)->where('inventarios.id_bodega',$id_bodega)->get();
         return $lista;
     }
 
