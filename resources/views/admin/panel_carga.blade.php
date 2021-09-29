@@ -66,7 +66,7 @@
                                 <td>Productos</td>
                                 <td><a onclick="carga_productos()" class="btn btn-primary">Cargar Datos</a></td>
                                 <td id="td_carga_producto"></td>
-                                <td> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalProductos" onclick="lista_productos();">Gestion</button> </td>
+                                <td> <a class="btn btn-primary" data-toggle="modal" data-target="#myModalProductos" onclick="lista_productos();">Gestion</a> </td>
                             </tr>
                             <tr>
                                 <td>Sucursal</td>
@@ -76,9 +76,9 @@
                             </tr>
                             <tr>
                                 <td>Bodegas</td>
-                                <td><a onclick="carga_bodega()" class="btn btn-primary">Cargar Datos</a></td>
+                                <td><a onclick="carga_bodega()" class="btn btn-primary" >Cargar Datos</a></td>
                                 <td id="td_carga_bodega"></td>
-                                <td><a class="btn btn-primary">Gestion</a></td>
+                                <td><a class="btn btn-primary" data-toggle="modal" data-target="#myModalBodegas" onclick="lista_bodega();" >Gestion</a></td>
                             </tr>
                             <tr>
                                 <td>Inventario</td>
@@ -96,8 +96,9 @@
                                 <td>Sub Familias</td>
                                 <td><a onclick="carga_subfamilia()" class="btn btn-primary">Cargar Datos</a></td>
                                 <td id="td_carga_subfamilia"></td>
-                                <td> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalSubFamilia" onclick="lista_subfamilia();">Gestion</button> </td>
+                                <td> <a class="btn btn-primary" data-toggle="modal" data-target="#myModalSubFamilia" onclick="lista_subfamilia();">Gestion</a> </td>
                             </tr>
+                            <!--
                             <tr>
                                 <td>Lista de Precio</td>
                                 <td><a href="#" class="btn btn-primary">Cargar Datos</a></td>
@@ -110,6 +111,7 @@
                                 <td id="td_carga_formapago"></td>
                                 <td><a class="btn btn-primary">Gestion</a></td>
                             </tr>
+                            -->
 
                         </tbody>
                     </table>
@@ -131,6 +133,7 @@
 
 @include('admin.modal.producto')
 @include('admin.modal.subfamilia')
+@include('admin.modal.bodega')
 
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.0/css/dataTables.bootstrap4.css"/>
@@ -169,12 +172,15 @@ var URL_CARGA_FAMILIA     = "{{ route('ajax.obtener.carga.familia') }}";
 var URL_CARGA_SUBFAMILIA  = "{{ route('ajax.obtener.carga.subfamilia') }}";
 var URL_CARGA_INVENTARIO  = "{{ route('ajax.obtener.carga.inventario') }}";
 
+
 var URL_LISTA_PRODUCTOS   = "{{ route('ajax.lista.productos') }}";
 var URL_LISTA_SUBFAMILIA  = "{{ route('ajax.lista.subfamilia') }}";
+var URL_LISTA_BODEGA      = "{{ route('ajax.lista.panel.bodega') }}";
 
 var URL_CAMBIO_PRODUCTOS_FAVORITO = "{{ route('ajax.producto.cambio.favorito') }}";
-var URL_CAMBIO_PRODUCTOS_ESTADO = "{{ route('ajax.producto.cambio.estado') }}";
-var URL_CAMBIO_SUBFAMILIA_ESTADO = "{{ route('ajax.subfamilia.cambio.estado') }}";
+var URL_CAMBIO_PRODUCTOS_ESTADO   = "{{ route('ajax.producto.cambio.estado') }}";
+var URL_CAMBIO_SUBFAMILIA_ESTADO  = "{{ route('ajax.subfamilia.cambio.estado') }}";
+var URL_CAMBIO_BODEGA_ESTADO      = "{{ route('ajax.bodega.cambio.estado') }}";
 
 
 var token                 = '{{csrf_token()}}';

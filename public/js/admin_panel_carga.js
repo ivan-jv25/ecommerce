@@ -8,8 +8,8 @@ function carga_inicial(){
             document.getElementById('td_carga_bodega').innerHTML= '<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>';
             document.getElementById('td_carga_inventario').innerHTML= '<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>';
             document.getElementById('td_carga_familia').innerHTML= '<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>';
-            document.getElementById('td_carga_lista_precio').innerHTML= '<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>';
-            document.getElementById('td_carga_formapago').innerHTML= '<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>';
+            //document.getElementById('td_carga_lista_precio').innerHTML= '<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>';
+            //document.getElementById('td_carga_formapago').innerHTML= '<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>';
         },
         success: function(respuesta) {
             console.log(respuesta);
@@ -29,7 +29,12 @@ function carga_inicial(){
                 }else{
                     icono = '<span class="material-icons"style="color: orange;font-size: 2rem;">error</span>'
                 }
-                document.getElementById(element.id).innerHTML= icono;
+                try {
+                    document.getElementById(element.id).innerHTML= icono;    
+                } catch (error) {
+                    
+                }
+                
                 
             }
 
@@ -236,6 +241,32 @@ function lista_subfamilia(){
     });
 }
 
+function lista_bodega(){
+    let table2  = $('#table_panel_bodega').DataTable();
+    table2.destroy();
+    let table = $('#table_panel_bodega').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+            url : URL_LISTA_BODEGA,
+        },
+        "initComplete": function() {
+            var $searchInput = $('div.dataTables_filter input');
+            $searchInput.unbind();
+            $searchInput.bind('keyup', function(e) {
+                if(this.value.length >= 3 || this.value.length == 0) {
+                    table.search( this.value ).draw();
+                }
+            });
+        },
+        "language": lenguaje_datatable,
+        "columns":[
+            { "data": "id" , name: 'bodegas.id'},
+            { "data": "nombre" , name: 'bodegas.nombre'},
+            {"data": 'estado', name: 'estado', orderable: false, searchable: false}
+        ]
+    });
+}
 
 
 function cambiar_favorito_producto(id){
@@ -282,6 +313,23 @@ function cambiar_estado_subfamilia(id){
         },
         success: function(respuesta) {
             lista_subfamilia()
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+
+}
+
+function cambiar_estado_bodega(id){
+
+    $.ajax({
+        url: URL_CAMBIO_BODEGA_ESTADO,
+        data:{
+            id:id
+        },
+        success: function(respuesta) {
+            lista_bodega()
         },
         error: function() {
             console.log("No se ha podido obtener la información");

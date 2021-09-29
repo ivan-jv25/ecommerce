@@ -11,6 +11,7 @@ use App\DetalleVenta;
 use App\Empresa;
 use App\Producto;
 use App\SubFamilia;
+use App\Bodega;
 use DB;
 use PDF;
 use Yajra\Datatables\Datatables;
@@ -335,7 +336,7 @@ class IndexController extends Controller
 
     public function lista_categoria(){
         
-        $categoria = DB::table('sub_familias')->select('id','nombre')->where('estado',1)->get();
+        $categoria = DB::table('sub_familias')->select('id','nombre','estado')->where('estado',1)->get();
         return $categoria;
     }
 
@@ -375,6 +376,19 @@ class IndexController extends Controller
         ->make(true);
         
 
+    }
+
+    public function lista_bodega_panel(){
+
+        $bodega = DB::table('bodegas')->select('id','nombre','estado');
+
+        return Datatables::of($bodega)
+        ->editColumn('estado', function ($bodega) { 
+            $estado = ($bodega->estado == 1) ? 'SI':'NO';
+            return '<a onclick="cambiar_estado_bodega('.$bodega->id.')" class="btn btn-primary btn-warning">'.$estado.'</a>'; 
+        })
+        ->rawColumns([ 'estado'])
+        ->make(true);
     }
 
 
@@ -421,6 +435,22 @@ class IndexController extends Controller
 
             $sub_familia->estado = $nuevo_estado;
             $sub_familia->save();
+            $respuesta['respuesta'] = true;
+        }
+        return $respuesta;
+    }
+
+    public function cambiar_estado_bodega(Request $request){
+        $id = (int)$request->id;
+        $respuesta['respuesta'] = false;
+        $bodega = Bodega::find($id);
+        if($bodega != null){
+
+            $estado_actual = ($bodega->estado == 1) ? true : false;
+            $nuevo_estado  = ($estado_actual) ? false : true;
+
+            $bodega->estado = $nuevo_estado;
+            $bodega->save();
             $respuesta['respuesta'] = true;
         }
         return $respuesta;

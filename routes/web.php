@@ -57,6 +57,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('Ajax/SubFamilia/Cambio/Estado', 'IndexController@cambiar_estado_subfamilia')->name('ajax.subfamilia.cambio.estado');
 
 
+        Route::get('Ajax/Obtener/Lista/Bodega', 'IndexController@lista_bodega_panel')->name('ajax.lista.panel.bodega');
+        Route::get('Ajax/Bodega/Cambio/Estado', 'IndexController@cambiar_estado_bodega')->name('ajax.bodega.cambio.estado');
+
+
         Route::post('Ajax/Carga/Correo', 'IndexController@carga_correo_aviso')->name('ajax.carga.correo');
         Route::get('Ajax/Get/Correo', 'IndexController@get_correo_aviso')->name('ajax.get.correo');
 
