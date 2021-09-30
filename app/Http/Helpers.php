@@ -565,8 +565,60 @@ function ocultar_string($texto){
     return $texto;
 }
 
-function envio_correo(){
+function envio_correo(int $id_venta){
+
+    try {
+        $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at')->where('id',$id_venta)->first();
+
+        //$detalle   = DB::table('detalle_ventas')->select('id', 'id_venta', 'item', 'codigo_producto', 'nombre', 'cantidad', 'valor_producto', 'total', 'valor_descuento',)->where('id_venta',$id_venta)->get();
+
+        //dd($venta);
+
+        $datos_cliente = datos_cliente($venta->rut);
+
+        dd($datos_cliente);
+    
+        $informacion_correo = informacion_correo();
+        $email = $datos_cliente['principal'];
+        $email = $informacion_correo['copia'];
+        $asunto = $informacion_correo['asunto'];
+
+        $mensaje = '
+        <p>Estimada/o : <h3>'.$empresa->razon_social.'</h3></p>
+        
+       
+        
+        
+        ';
+
+        dd($mensaje);
+        
+
+        $estado = send_mail($email,$asunto,$mensaje,$cc);
+        dd($estado);
+
+    } catch (\Throwable $th) {
+        //throw $th;
+        dd($th);
+    }
+    
+
    
+
+   
+}
+
+function datos_cliente($rut){
+    $empresa = DB::table('empresas')->select()->where('rut',$rut)->first();
+    $user = DB::table('users')->select()->where('id_empresa',$empresa->id)->first();
+
+    dd($empresa,$user);
+}
+
+function informacion_correo(){
+    $datos = DB::table('tokens')->select('token')->where('tipo','correo')->first()->token;
+    $datos = (array)json_decode($datos);
+    return $datos;
 }
 
 
@@ -601,4 +653,41 @@ function send_mail($email,$asunto,$mensaje,$cc = null){
     }
     ///die('success');
     return $respuesta;
+}
+
+function push_notification_android($device_id,$title,$message,$data){
+    //API URL of FCM
+    $url = 'https://fcm.googleapis.com/fcm/send';
+    /*api_key available in:
+    Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key*/
+    $api_key = 'AAAAYmLcwEM:APA91bE-tllvCsWhxePeVSfgSrR_Ev-ffucFsA0m3y0YYxjil1QYhavHUaZ8npzTRBXoByfsmUKXNh4819CN5XK3PBay9886IWCBsdUgfftivzlQOGogEMyxE_KrEfzcrN1Xh7LqltlA';
+
+    $fields = array (
+        'to' => $device_id,
+        'data' => array ("Json" => $data),
+        'title' => $title,
+        'body'  => $message
+    );
+
+
+    //header includes Content type and api key
+    $headers = array(
+        'Content-Type:application/json',
+        'Authorization:key='.$api_key
+    );
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+    $result = curl_exec($ch);
+    if ($result === FALSE) {
+        die('FCM Send Error: ' . curl_error($ch));
+    }
+    curl_close($ch);
+    return $result;
 }
