@@ -4,7 +4,7 @@
 
 
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">CONEXION FLOW</div>
@@ -66,17 +66,121 @@
                         <label class="col-md-4 control-label" for="button1id"></label>
                         <div class="col-md-8">
                             <button id="button1id" onclick="cargar_correos();" class="btn btn-primary">Grabar</button>
-                            <button id="button2id" name="button2id" class="btn btn-success">Cambiar Datos</button>
                         </div>
                     </div>
 
                 </div>
             </div>
         </div>
+
+        
     </div>
 </div>
 
+
+
 <hr>
+
+
+<div class="container">
+    <div class="row justify-content">
+     
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Configuracion Correo</div>
+
+                <div class="card-body">
+                    
+                    <div class="form-group" id="div_email_host">
+                        <label class="col-md-4 control-label" for="email_host">Host</label>  
+                        <div class="col-md-8">
+                            <input id="email_host" type="email" placeholder="Host" class="form-control input-md" onchange="clar_error(this);">
+                        </div>
+                    </div>
+                    <div class="form-group" id="div_email_port">
+                        <label class="col-md-4 control-label" for="email_port">Port</label>  
+                        <div class="col-md-8">
+                            <input id="email_port" type="email" placeholder="Port" class="form-control input-md" onchange="clar_error(this);">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="div_email_correo">
+                        <label class="col-md-4 control-label" for="email_correo">Correo</label>  
+                        <div class="col-md-8">
+                            <input id="email_correo" type="text" placeholder="Asunto Correo" class="form-control input-md" onchange="clar_error(this);">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="div_email_password">
+                        <label class="col-md-4 control-label" for="email_password">Password</label>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <input id="email_password" class="form-control" placeholder="Contraseña" type="password" onchange="clar_error(this);">
+                                <div class="input-group-text"  onmousedown="mouseDown()" onmouseup="mouseUp()"><img src="img/visibility_off_black_24dp.svg" id="svg_eye" class="ico-ingresa" ></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <label class="col-md-4 control-label" for="button1id"></label>
+                        <div class="col-md-8">
+                            <button id="button1id" onclick="guardar_configuracion_correo();" class="btn btn-primary">Grabar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Datos Empresa</div>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="nombre_empresa">Nombre Empresa</label>  
+                        <div class="col-md-8">
+                            <input id="nombre_empresa" type="text" placeholder="Nombre Empresa" class="form-control input-md">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="direccion">Direccion</label>  
+                        <div class="col-md-8">
+                            <input id="direccion" type="text" placeholder="Direccion" class="form-control input-md">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="telefono">Telefono</label>  
+                        <div class="col-md-8">
+                            <input id="telefono" type="text" placeholder="Telefono" class="form-control input-md">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="correo">Correo</label>  
+                        <div class="col-md-8">
+                            <input id="correo"  type="email" placeholder="Correo" class="form-control input-md">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <label class="col-md-4 control-label" for="singlebutton"></label>
+                        <div class="col-md-4">
+                            <button  class="btn btn-primary">Grabar</button>
+                        </div>
+                    </div>
+                    
+                    
+
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
 
 <div class="container" hidden>
     <div class="row justify-content-center">
@@ -107,9 +211,13 @@
     var URL_CARGA_CORREO   = "{{ route('ajax.carga.correo') }}";
     var URL_GET_CORREO   = "{{ route('ajax.get.correo') }}";
 
+    var URL_CARGA_CONFIGURACION_CORREO = "{{ route('ajax.configuracion.carga.correo') }}";
+    var URL_GET_CONFIGURACION_CORREO = "{{ route('ajax.get.correo.configuracion') }}";
+
     $(document).ready(function(){
         get_datos_flow();
         get_correos();
+        get_correos()
     });
     
 </script>

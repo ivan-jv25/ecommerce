@@ -63,6 +63,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('Ajax/Carga/Correo', 'IndexController@carga_correo_aviso')->name('ajax.carga.correo');
         Route::get('Ajax/Get/Correo', 'IndexController@get_correo_aviso')->name('ajax.get.correo');
+        Route::post('Ajax/Carga/Configuracion/Correo', 'IndexController@carga_configuracion_correo')->name('ajax.configuracion.carga.correo');
+        Route::get('Ajax/Get/Correo/Configuracion', 'IndexController@get_configuracion_correo')->name('ajax.get.correo.configuracion');
 
 
 

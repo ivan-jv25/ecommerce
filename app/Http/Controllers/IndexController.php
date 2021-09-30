@@ -511,12 +511,13 @@ class IndexController extends Controller
                 $token = $venta_flow->token;
 
                 $estado_flow = $this->pago_flow_status($token);
+                
 
                 $respuesta['estado'] = true;
                 $respuesta['pago']['Flow'] = $estado_flow;
 
 
-                DB::table('venta_flows')->where('id', $venta_flow->id)->update(['estado' => $estado_flow->status]);
+                //DB::table('venta_flows')->where('id', $venta_flow->id)->update(['estado' => $estado_flow->status]);
                 
 
 
@@ -527,9 +528,7 @@ class IndexController extends Controller
                 break;
         }
 
-        if($respuesta['estado'] == true){
-            //enviar venta
-        }
+       
 
         return $respuesta;
 
@@ -685,6 +684,36 @@ class IndexController extends Controller
         return $datos;
     }
 
+    public function get_configuracion_correo(){
+        $datos = DB::table('tokens')->select('token')->where('tipo','correo_configuracion')->first()->token;
+        $datos = (array)json_decode($datos);
+        return $datos;
+    }
+
+    public function carga_configuracion_correo(Request $request){
+        $respuesta        = ['respuesta'=>false];
+        try {
+            $host     = $request->host;
+            $port     = $request->port;
+            $correo   = $request->correo;
+            $password = $request->password;
+
+            $obj_correo = (object)[ 'host' =>$host,'port' =>$port,'correo' =>$correo,'password' =>$password, ];
+            $obj_correo = json_encode($obj_correo);
+            $existe     = $this->existe_configuracion_correo();
+
+            if($existe){
+                DB::table('tokens')->where('tipo', 'correo_configuracion')->update(['token' => $obj_correo]);
+            }else{
+                DB::table('tokens')->insert( ['tipo' => 'correo_configuracion', 'token' => $obj_correo] );
+            }
+            $respuesta['respuesta'] = true;
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        return $respuesta;
+    }
+
     private function existe_empresa(){
         return existe_credenciales();
     }
@@ -730,6 +759,11 @@ class IndexController extends Controller
 
     private function existe_correo(){
         $existe = DB::table('tokens')->select('id')->where('tipo','correo')->first();
+        return ($existe == null) ? false : true;
+    }
+
+    private function existe_configuracion_correo(){
+        $existe = DB::table('tokens')->select('id')->where('tipo','correo_configuracion')->first();
         return ($existe == null) ? false : true;
     }
 }

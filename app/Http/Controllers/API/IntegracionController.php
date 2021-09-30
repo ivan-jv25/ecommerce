@@ -31,6 +31,8 @@ class IntegracionController extends Controller
                 $respuesta =  WEB_SERVICE_VENTA($json);
                 DB::table('ventas')->where('id', $venta_flow->id_venta)->update(['folio' => $respuesta->numVenta]);
 
+                envio_correo();
+
             }
         }
         return "termina el proceso";

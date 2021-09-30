@@ -6,6 +6,8 @@ use App\Familia;
 use App\SubFamilia;
 use App\Inventario;
 
+use PHPMailer\PHPMailer;
+
 
 function get_url_servidor(string $servidor ='local'){
     $servidores = [
@@ -563,3 +565,40 @@ function ocultar_string($texto){
     return $texto;
 }
 
+function envio_correo(){
+   
+}
+
+
+function send_mail($email,$asunto,$mensaje,$cc = null){
+    
+    $respuesta = false;
+    try {
+        $mail = new PHPMailer\PHPMailer();
+        $mail->isSMTP(); // tell to use smtp
+        $mail->CharSet = "utf-8"; // set charset to utf8
+        $mail->SMTPAuth = true;  // use smpt auth
+        $mail->SMTPSecure = "ssl"; // or ssl
+        $mail->Host = "mail.appnet.cl";
+        $mail->Port = 465; // most likely something different for you. This is the mailtrap.io port i use for testing. 
+        $mail->Username = "test@appnet.cl";
+        $mail->Password = "J&uuU^EXW;K6";
+        $mail->setFrom("info@appnet.cl", "Appnet Technology");
+        $mail->Subject = $asunto;
+        $mail->isHTML(true);
+        $mail->Body = $mensaje;
+        $mail->addAddress($email, "Recipient Name");
+        if($cc != null){ $mail->AddCC($cc, 'Person One'); }
+        
+        $mail->send();
+        $respuesta = true;
+    } catch (phpmailerException $e) {
+        //dd("Error mail",$e);
+        $respuesta = false;
+    } catch (Exception $e) {
+        //dd("Error php",$e);
+        $respuesta = false;
+    }
+    ///die('success');
+    return $respuesta;
+}

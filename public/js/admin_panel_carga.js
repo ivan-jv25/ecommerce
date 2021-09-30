@@ -446,7 +446,6 @@ function cargar_correos(){
             type:  'post',
             success: function(respuesta) {
                 console.log(respuesta)
-                
             },
             error: function() {
                 console.log("No se ha podido obtener la información");
@@ -457,12 +456,9 @@ function cargar_correos(){
 }
 
 function get_correos(){
-    
     $.ajax({
         url: URL_GET_CORREO,
         success: function(respuesta) {
-            
-
             document.getElementById('correo_principal').value = respuesta.principal;
             document.getElementById('correo_copia').value = respuesta.copia;
             document.getElementById('correo_asunto').value = respuesta.asunto;
@@ -470,13 +466,77 @@ function get_correos(){
         error: function() {
             console.log("No se ha podido obtener la información");
         }
-    });
-
-   
+    });   
 }
-
-
-
 
 function CheckBoolean(bool) { return bool == true; }
 function clar_error(e){ $('#'+e.id).removeClass("is-invalid"); }
+
+function mouseDown(){
+    document.getElementById('email_password').type='text'
+    document.getElementById('svg_eye').src = 'img/visibility_black_24dp.svg';
+}
+
+function mouseUp(){
+    document.getElementById('email_password').type='password'
+    document.getElementById('svg_eye').src = 'img/visibility_off_black_24dp.svg';
+}
+
+function guardar_configuracion_correo(){
+
+    let array_boolean     = [ true, true, true, true ];
+
+    let host = document.getElementById('email_host').value;
+    let port = document.getElementById('email_port').value;
+    let correo = document.getElementById('email_correo').value;
+    let password = document.getElementById('email_password').value;
+
+    if(host == ''){     array_boolean[0] = false; $("#email_host").addClass("is-invalid");}
+	if(port == ''){     array_boolean[1] = false; $("#email_port").addClass("is-invalid"); }
+	if(correo == ''){   array_boolean[2] = false; $("#email_correo").addClass("is-invalid"); }
+    if(password == ''){ array_boolean[3] = false; $("#email_password").addClass("is-invalid"); }
+
+    let is_enviar = array_boolean.every(CheckBoolean)
+
+    if(is_enviar){
+
+        let obj = { host: host, port: port, correo: correo, password: password, _token: token, };
+        $.ajax({
+            url: URL_CARGA_CONFIGURACION_CORREO,
+            data:obj,
+            type:  'post',
+            success: function(respuesta) {
+                console.log(respuesta)
+            },
+            error: function() {
+                console.log("No se ha podido obtener la información");
+            }
+        });
+    }
+}
+
+function get_correos(){
+    $.ajax({
+        url: URL_GET_CONFIGURACION_CORREO,
+        success: function(respuesta) {
+            document.getElementById('email_host').value = respuesta.host;
+            document.getElementById('email_port').value = respuesta.port;
+            document.getElementById('email_correo').value = respuesta.correo;
+            document.getElementById('email_password').value = respuesta.password;
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });   
+}
+
+function guardar_datos_empresa(){
+
+    let array_boolean     = [ true, true, true, true ];
+
+    let host = document.getElementById('email_host').value;
+    let port = document.getElementById('email_port').value;
+    let correo = document.getElementById('email_correo').value;
+    let password = document.getElementById('email_password').value;
+
+}
