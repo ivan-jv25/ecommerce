@@ -217,7 +217,7 @@
     $(document).ready(function(){
         get_datos_flow();
         get_correos();
-        get_correos()
+        get_correos_configuracion();
     });
     
 </script>

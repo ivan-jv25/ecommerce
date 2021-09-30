@@ -515,7 +515,7 @@ function guardar_configuracion_correo(){
     }
 }
 
-function get_correos(){
+function get_correos_configuracion(){
     $.ajax({
         url: URL_GET_CONFIGURACION_CORREO,
         success: function(respuesta) {
