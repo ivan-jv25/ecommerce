@@ -721,7 +721,7 @@ class IndexController extends Controller
     private function pago_flow($data){
         $token_sesion=$data['token'];
         $return_url= route("ajax.generar.pago.flow.confirmacion",['_token'=>$token_sesion, 'TokenVenta'=>$data['TokenVenta']]);
-        $return_url_confirmacion =  'http://appnettech.cl/api/guargarjson';
+        $return_url_confirmacion =  route("api.recibe.informacion.flow");
         
         $datos = [
             'currency'        => 'CLP',
