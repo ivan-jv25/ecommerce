@@ -44,7 +44,7 @@ class IntegracionController extends Controller
         
                     $json      = (object)[
                         'url' => 'www.google.cl',
-                        'dl'   => '',
+                        'dl'   => $venta_flow->id_venta,
                     ];
         
                     $json = json_encode($json);
