@@ -758,12 +758,19 @@ function send_mail($email,$asunto,$mensaje,$cc = null){
     return $respuesta;
 }
 
+function get_api_key_firebase(){
+    $firebase = DB::table('tokens')->select('token')->where('tipo','firebase')->first()->token;
+    return $firebase;
+}
+
 function push_notification_android($device_id,$title,$message,$data){
     //API URL of FCM
     $url = 'https://fcm.googleapis.com/fcm/send';
     /*api_key available in:
     Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key*/
-    $api_key = 'AAAAJACnUx8:APA91bGfjtFr2bOpy5CpsXKqVoui84CxNbhwU_wrUrOBzNQtabGzPBknOPMsyzz4Z7Q-qlls9p1uJ3tluYrfVqiC0kP0AI8EKI4-X6zRb_-AgS2iaaZKyyju9J78FGbS4W4EBGci0z1a';
+    
+    $api_key = get_api_key_firebase();
+
 
     $fields = array (
         'to' => $device_id,
@@ -773,11 +780,6 @@ function push_notification_android($device_id,$title,$message,$data){
         'mutable_content'  => true,
         'sound'  => "Tri-tone"
     );
-
-
-
-   
-
 
     //header includes Content type and api key
     $headers = array(
