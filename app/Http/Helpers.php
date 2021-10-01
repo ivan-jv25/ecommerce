@@ -36,7 +36,7 @@ function is_admin(){
 function WEB_SERVICE_LOGIN($login){
     $respuesta = false;
     try {
-        $URL = get_url_servidor('local').'/api/login';
+        $URL = get_url_servidor('productivo').'/api/login';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('post', $URL, [
             'headers' => ['Content-Type' => 'application/json'],
@@ -65,7 +65,7 @@ function WEB_SERVICE_PRODUCTOS(){
     $respuesta = false;
     try {
         Producto::truncate();
-        $URL = get_url_servidor('local').'/api/productos';
+        $URL = get_url_servidor('productivo').'/api/productos';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('get', $URL, ['headers' => ['Content-Type' => 'application/json','token' => obtener_token() ],]);
         $resultado = $response->getBody()->getContents();
@@ -88,7 +88,7 @@ function WEB_SERVICE_BODEGA(){
     $respuesta = false;
     try {
         Bodega::truncate();
-        $URL = get_url_servidor('local').'/api/bodega';
+        $URL = get_url_servidor('productivo').'/api/bodega';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('get', $URL, ['headers' => ['Content-Type' => 'application/json','token' => obtener_token() ],]);
         $resultado = $response->getBody()->getContents();
@@ -117,7 +117,7 @@ function WEB_SERVICE_SUCURSAL(){
     $respuesta = false;
     try {
         Sucursal::truncate();
-        $URL = get_url_servidor('local').'/api/sucursal';
+        $URL = get_url_servidor('productivo').'/api/sucursal';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('get', $URL, ['headers' => ['Content-Type' => 'application/json','token' => obtener_token() ],]);
         $resultado = $response->getBody()->getContents();
@@ -148,7 +148,7 @@ function WEB_SERVICE_FAMILIA(){
     $respuesta = false;
     try {
         Familia::truncate();
-        $URL = get_url_servidor('local').'/api/familia';
+        $URL = get_url_servidor('productivo').'/api/familia';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('get', $URL, ['headers' => ['Content-Type' => 'application/json','token' => obtener_token() ],]);
         $resultado = $response->getBody()->getContents();
@@ -175,7 +175,7 @@ function WEB_SERVICE_SUBFAMILIA(){
     $respuesta = false;
     try {
         SubFamilia::truncate();
-        $URL = get_url_servidor('local').'/api/subfamilia';
+        $URL = get_url_servidor('productivo').'/api/subfamilia';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('get', $URL, ['headers' => ['Content-Type' => 'application/json','token' => obtener_token() ],]);
         $resultado = $response->getBody()->getContents();
@@ -202,7 +202,7 @@ function WEB_SERVICE_INVENTARIO(){
     $respuesta = false;
     try {
         Inventario::truncate();
-        $URL = get_url_servidor('local').'/api/inventario';
+        $URL = get_url_servidor('productivo').'/api/inventario';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('get', $URL, ['headers' => ['Content-Type' => 'application/json','token' => obtener_token() ],]);
         $resultado = $response->getBody()->getContents();
@@ -569,37 +569,134 @@ function envio_correo(int $id_venta){
 
     try {
         $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at')->where('id',$id_venta)->first();
+        
 
-        //$detalle   = DB::table('detalle_ventas')->select('id', 'id_venta', 'item', 'codigo_producto', 'nombre', 'cantidad', 'valor_producto', 'total', 'valor_descuento',)->where('id_venta',$id_venta)->get();
+        $detalle   = DB::table('detalle_ventas')->select('id', 'id_venta', 'item', 'codigo_producto', 'nombre', 'cantidad', 'valor_producto', 'total', 'valor_descuento',)->where('id_venta',$id_venta)->get();
 
-        //dd($venta);
+        
 
         $datos_cliente = datos_cliente($venta->rut);
 
-        dd($datos_cliente);
+        
     
         $informacion_correo = informacion_correo();
-        $email = $datos_cliente['principal'];
-        $email = $informacion_correo['copia'];
+        $email = $datos_cliente['email'];
+        //$email = 'ivansaavedra@appnet.cl';
+        $cc = $informacion_correo['copia'];
+        $cc = null;
         $asunto = $informacion_correo['asunto'];
 
+        $detalle_html = '';
+        foreach ($detalle as $value) {
+           
+            $detalle_html.='
+            <tr>
+                    <td>'.$value->item.'</td>
+                    <td>'.$value->nombre.'</td>
+                    <td>'.$value->cantidad.'</td>
+                    <td>$'.$value->total.'.-</td>
+                  </tr>
+            ';
+        }
+
         $mensaje = '
-        <p>Estimada/o : <h3>'.$empresa->razon_social.'</h3></p>
-        
        
+        <html lang="es" dir="ltr">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=500, initial-scale=1">
+            <title>Registro nuevo usuario Productor/Restaurante</title>
+            <style media="screen">
+              @font-face { font-family: "Titillium Web SemiBold"; src: url(fonts/TitilliumWeb-SemiBold.ttf); }
+              @font-face { font-family: "Titillium Web Regular"; src: url(fonts/TitilliumWeb-Regular.ttf); }
+              body{ background: #F7F7F7; font-size: 12px; padding: 0; margin: 0; }
+              .contenido{ background: #FFF; width: 40%; margin: auto; padding: 5em; padding-left: 0px; padding-right: 0px; box-sizing: border-box; text-align: center; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); border-radius: 20px; padding-bottom: 8em; margin-bottom: 2em; min-width: 440px; }
+              .cabecera{ width: 40%; margin: auto; padding-left: 0px; padding-right: 0px; box-sizing: border-box; text-align: center; border-radius: 20px; min-width: 440px; }
+              .cabecera .columna{ width: 49%; display: inline-block; }
+              .logo img{ max-width: 250px; }
+              .contenido h2{ font-family: "Titillium Web SemiBold"; font-size: 3em; margin-top: .1em; margin-bottom: .1em; }
+              .contenido p{ font-family: "Titillium Web Regular"; font-size: 1.5em; color: #424242; width: 90%; margin: auto; min-width: 370px; }
+              .cabecera p{ font-family: "Titillium Web Regular"; font-size: 1.8em; color: #424242; width: 90%; text-align: right; margin: auto; min-width: 170px; }
+              .contenido table{ font-family: "Titillium Web Regular"; font-size: 1.8em; color: #424242; width: 90%; margin: auto; min-width: 370px; }
+              .contenido p a{ color: #BE1120; transition: 0.5s ease; -o-transition: 0.5s ease; -webkit-transition: 0.5s ease; }
+              .contenido p a:hover{ opacity: .5; transition: 0.5s ease; -o-transition: 0.5s ease; -webkit-transition: 0.5s ease; } 
+              .contenido p strong{ color: #2A244A; font-family: "Titillium Web SemiBold"; }
+              .redes{ text-align: center; }
+              .redes a{ margin: 0px 5px; transition: 0.5s ease; -o-transition: 0.5s ease; -webkit-transition: 0.5s ease; }
+              .redes a:hover{ opacity: .5; transition: 0.5s ease; -o-transition: 0.5s ease; -webkit-transition: 0.5s ease; }
+              .redes a img{ max-width: 40px; }
+              .redes p{ font-family: "Titillium Web SemiBold"; color: #333333; font-size: 1.4em; margin-top: 0; letter-spacing: 1px; }
+            </style>
+          </head>
+          <body>
+            
+            <div class="cabecera">
+              <div class="columna">
+                <div class="logo">
+                  <a href="http://appnettech.cl" target="_blank">
+                    <img src="http://appnettech.cl/appnettech/img/logo-black.png" alt="">
+                  </a>
+                </div>
+              </div>
+              <div class="columna">
+                <div class="datos">
+                  <p style="text-align:left; margin-bottom: 5px; padding-bottom: 5px; border-bottom:solid 1px #ccc;">RUT: 66666666-6</p>
+                  <p style="text-align:left; margin-bottom: 5px; padding-bottom: 5px; border-bottom:solid 1px #ccc;">Razon social: DEMO</p>
+                  <p style="text-align:left; margin-bottom: 5px; padding-bottom: 5px; border-bottom:solid 1px #ccc;">Direccion: VARAS Mena 980</p>
+                  <p style="text-align:left; margin-bottom: 5px; padding-bottom: 5px; border-bottom:solid 1px #ccc;">Telefono: +569 123456789</p>
+                </div>
+              </div>
         
-        
+            </div>
+            <div class="contenido">
+              <h2>Hola! : '.$datos_cliente['name'].' </h2>
+              <h2>'.$datos_cliente['rut'].' - '.$datos_cliente['razon_social'].'</h2>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries</p>
+              <br>
+             
+              <br>
+              <br>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  '. $detalle_html.'
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>$'.$venta->total_venta.'.-</th>
+                  </tr>
+                </tfoot>
+              </table>
+              <br>
+             
+            </div>
+            <div class="redes">
+             
+              <p>Desarrollado por <a href="http://appnettech.cl" target="_blank">Appnet Technology Ltd.</a></p>
+            </div>
+          </body>
+        </html>
         ';
 
-        dd($mensaje);
+        
         
 
         $estado = send_mail($email,$asunto,$mensaje,$cc);
-        dd($estado);
+        
 
     } catch (\Throwable $th) {
         //throw $th;
-        dd($th);
+
     }
     
 
@@ -612,7 +709,13 @@ function datos_cliente($rut){
     $empresa = DB::table('empresas')->select()->where('rut',$rut)->first();
     $user = DB::table('users')->select()->where('id_empresa',$empresa->id)->first();
 
-    dd($empresa,$user);
+    $respuesta = [
+        'rut' => $empresa->rut,
+        'razon_social' => $empresa->razon_social,
+        'name' => $user->name,
+        'email' => $user->email,
+    ];
+    return $respuesta;
 }
 
 function informacion_correo(){
@@ -642,8 +745,8 @@ function send_mail($email,$asunto,$mensaje,$cc = null){
         $mail->addAddress($email, "Recipient Name");
         if($cc != null){ $mail->AddCC($cc, 'Person One'); }
         
-        $mail->send();
-        $respuesta = true;
+        $respuesta = $mail->send();
+        //$respuesta = true;
     } catch (phpmailerException $e) {
         //dd("Error mail",$e);
         $respuesta = false;
@@ -660,14 +763,20 @@ function push_notification_android($device_id,$title,$message,$data){
     $url = 'https://fcm.googleapis.com/fcm/send';
     /*api_key available in:
     Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key*/
-    $api_key = 'AAAAYmLcwEM:APA91bE-tllvCsWhxePeVSfgSrR_Ev-ffucFsA0m3y0YYxjil1QYhavHUaZ8npzTRBXoByfsmUKXNh4819CN5XK3PBay9886IWCBsdUgfftivzlQOGogEMyxE_KrEfzcrN1Xh7LqltlA';
+    $api_key = 'AAAAJACnUx8:APA91bGfjtFr2bOpy5CpsXKqVoui84CxNbhwU_wrUrOBzNQtabGzPBknOPMsyzz4Z7Q-qlls9p1uJ3tluYrfVqiC0kP0AI8EKI4-X6zRb_-AgS2iaaZKyyju9J78FGbS4W4EBGci0z1a';
 
     $fields = array (
         'to' => $device_id,
         'data' => array ("Json" => $data),
         'title' => $title,
-        'body'  => $message
+        'body'  => $message,
+        'mutable_content'  => true,
+        'sound'  => "Tri-tone"
     );
+
+
+
+   
 
 
     //header includes Content type and api key
@@ -689,5 +798,49 @@ function push_notification_android($device_id,$title,$message,$data){
         die('FCM Send Error: ' . curl_error($ch));
     }
     curl_close($ch);
-    return $result;
+    return json_decode($result);
+}
+
+
+function push_notification_android2($device_id,$title,$message,$data){
+    //API URL of FCM
+    
+    $URL = "https://fcm.googleapis.com/fcm/send";
+    /*api_key available in:
+    Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key*/
+    $api_key = 'AAAAJACnUx8:APA91bGfjtFr2bOpy5CpsXKqVoui84CxNbhwU_wrUrOBzNQtabGzPBknOPMsyzz4Z7Q-qlls9p1uJ3tluYrfVqiC0kP0AI8EKI4-X6zRb_-AgS2iaaZKyyju9J78FGbS4W4EBGci0z1a';
+
+    $fields = array (
+        'to' => $device_id,
+        'data' => array ("Json" => $data),
+        'title' => $title,
+        'body'  => $message,
+        'mutable_content'  => true,
+        'sound'  => "Tri-tone"
+    );
+
+    $JSON = json_encode($fields);
+
+
+    //header includes Content type and api key
+    $headers = array(
+        'Content-Type:application/json',
+        'Authorization:key='.$api_key
+    );
+
+
+   
+
+    $client = new \GuzzleHttp\Client();
+    $response = $client->request('post', $URL, [
+        'headers' => [
+        'Content-Type' => 'application/json',
+        'Authorization' => 'key='.$api_key
+        ],
+        'body' => $JSON                
+        
+    ]);
+    $resultado = $response->getBody()->getContents();
+    
+    $resultado =json_decode($resultado);
 }

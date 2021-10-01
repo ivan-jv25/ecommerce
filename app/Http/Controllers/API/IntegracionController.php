@@ -20,6 +20,7 @@ class IntegracionController extends Controller
         $estado_flow = $this->pago_flow_status($token);
         $log_pago = json_encode($estado_flow);
         
+        
         $respuesta = DB::table('venta_flows')->where('id', $venta_flow->id)->update(['estado' => $estado_flow->status,'log_pago' => $log_pago]);
 
         if($estado_flow->status == 2){
@@ -30,9 +31,31 @@ class IntegracionController extends Controller
             }elseif($tiene_folio == 1){
                 $json = generar_formato_venta($venta_flow->id_venta);
                 $respuesta =  WEB_SERVICE_VENTA($json);
+                
                 DB::table('ventas')->where('id', $venta_flow->id_venta)->update(['folio' => $respuesta->numVenta]);
 
                 envio_correo($venta_flow->id_venta);
+
+
+                try {
+                    $device_id = "f7cUz7sJXYM:APA91bEUacKEJAJ4heV3kKx_XF1lREAk31MpjKpzhoF8P8G8cdVkCzi_AR78pwedcEd1602jJrU5G1HsBhVStq_M-NEF5nrsUXuVMpt20s_NEEWjifIGFe8Z3vy0yhjTjdZUtqDhtuzH";
+                    $title = 'Prueba';
+                    $message = 'Algun mensaje';
+        
+                    $json      = (object)[
+                        'url' => 'www.google.cl',
+                        'dl'   => '',
+                    ];
+        
+                    $json = json_encode($json);
+                    $data = $json;
+
+                    push_notification_android2($device_id,$title,$message,$data);
+
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    dd($th);
+                }
 
             }
         }
