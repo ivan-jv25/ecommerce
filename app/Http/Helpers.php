@@ -227,7 +227,7 @@ function WEB_SERVICE_INVENTARIO(){
 
 function WEB_SERVICE_VENTA($json){
     
-    $URL = get_url_servidor('local').'/api/venta';
+    $URL = get_url_servidor('productivo').'/api/venta';
 
     $client = new \GuzzleHttp\Client();
     $response = $client->request('post', $URL, [
