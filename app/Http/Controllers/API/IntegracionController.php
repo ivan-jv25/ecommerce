@@ -54,7 +54,7 @@ class IntegracionController extends Controller
 
                 } catch (\Throwable $th) {
                     //throw $th;
-                    dd($th);
+                    
                 }
 
             }
@@ -97,12 +97,19 @@ class IntegracionController extends Controller
         $firebase = $this->valida_token($token);
         if (is_null($firebase)) { return $this->Respuesta('Token Invalido'); }
 
-        $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at')->where('id',$id_venta)->first();
+        $direccion = null;
+
+        $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at','observacion')->where('id',$id_venta)->first();
         $detalle   = DB::table('detalle_ventas')->select('id', 'id_venta', 'item', 'codigo_producto', 'nombre', 'cantidad', 'valor_producto', 'total', 'valor_descuento',)->where('id_venta',$id_venta)->get();
+
+        if($venta->id_direccion != 0){
+            $direccion = DB::table('direccions')->select()->where('id',$venta->id_direccion)->first();
+        }
 
         $respuesta = [
             'Venta'=>$venta,
             'Detalle'=>$detalle,
+            'Direccion'=>$direccion,
         ];
 
         return $respuesta;

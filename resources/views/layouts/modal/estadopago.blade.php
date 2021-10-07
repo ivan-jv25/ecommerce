@@ -36,7 +36,7 @@
                 <b>Venta <b id="id_invoice"></b></b><br>
                 <br>
                 <b>flowOrder:</b> <b id="id_flowOrder"></b><br>
-                <b>Fecha de pagoe:</b> <b id="dv_fecha"></b><br>
+                <b>Fecha de pago:</b> <b id="dv_fecha"></b><br>
               </div>
             </div>
             <div class="row">
@@ -55,14 +55,11 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-6">
+              
+            <div class="col-xs-6">
                 <p class="lead">Metodos de Pago:</p>
                 <img src="https://www.flow.cl/images/header/logo-flow.svg" style="width: 50%;" alt="flow">
-                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                  Direccion Despacho : 
-                  varas mena 980, san miguel, santiago
-
-                </p>
+               
                 
               </div>
               <div class="col-xs-6">
@@ -85,20 +82,27 @@
                   </table>
                 </div>
               </div>
+              <div class="col-xs-12">
+               
+                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                  Direccion Despacho : 
+                  <b id="id_direccion_pago"></b>
+
+                </p>
+                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                  Observacion : 
+                  <b id="id_observacion"></b>
+                </p>
+                
+              </div>
             </div>
           </div>
           
-          <div class="row no-print">
-            <div class="col-xs-12">
-              <a id="pdfview" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-              <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment</button>
-              <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>
-            </div>
-          </div>
+          
         </section>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>

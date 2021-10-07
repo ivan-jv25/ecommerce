@@ -452,7 +452,12 @@ function cargar_datos_venta(){
         success: function(respuesta) {
             
             if(pagado != 0){
-                cargar_estado_venta(respuesta);
+                
+                if(respuesta.Pago.Flow.estado == 2){
+                    cargar_estado_venta(respuesta);
+                }else{
+                    alert("Pago Rechazadoooooo!!!!!");
+                }
             }else{
                 $("#myModalPago").modal()
                 document.getElementById('form_test_flow').action = respuesta.Pago.Flow.url;
@@ -472,64 +477,47 @@ function cargar_datos_venta(){
 
 function cargar_estado_venta(datos){
     console.log(datos)
+   
     let Detalle = datos.Detalle
+    let Direccion = datos.Direccion
+    
     let lista_compra = '';
-    $.ajax({
-        url: URL_ESTADO_PAGO,
-        data:{
-            TokenVenta:TokenVenta,
-            formapago:'flow',
-        },
-        success: function(respuesta) {
-            console.log(respuesta);
-            $("#myModalEstadoPago").modal()
-            if(respuesta.pago.Flow.status == 2){
-                clear_storage();
-                lista_carro      = []
-                mostrar_lista_carro();
 
-                for (let i = 0; i < Detalle.length; i++) {
-                    const element = Detalle[i];
+    $("#myModalEstadoPago").modal()
 
-                    lista_compra += '<tr>'+
-                    '<td>'+element.item+'</td>'+
-                    '<td>'+element.nombre+'</td>'+
-                    '<td>'+formatonumero(element.cantidad)+'</td>'+
-                    '<td>'+formatonumero(element.total)+'</td>'+
-                  '</tr>';
-                    
-                }
-
-                let fecha = datos.Venta.created_at.substr(0,10);
-
-                document.getElementById('lista_compra').innerHTML = lista_compra;
-                document.getElementById('dv_fecha').innerHTML = fecha;
-
-                document.getElementById('id_invoice').innerHTML = "#"+datos.Venta.id;
-                document.getElementById('id_flowOrder').innerHTML = respuesta.pago.Flow.flowOrder;
-
-                document.getElementById('td_neto').innerHTML = "$"+formatonumero(datos.Venta.neto);
-                document.getElementById('td_iva').innerHTML = "$"+formatonumero(datos.Venta.iva);
-                document.getElementById('td_total').innerHTML = "$"+formatonumero(datos.Venta.total_venta);
-
-                
-
-                
+    clear_storage();
+    lista_carro      = []
+    mostrar_lista_carro();
+    
+    for (let i = 0; i < Detalle.length; i++) {
+        const element = Detalle[i];
+        lista_compra += '<tr>'+
+            '<td>'+element.item+'</td>'+
+            '<td>'+element.nombre+'</td>'+
+            '<td>'+formatonumero(element.cantidad)+'</td>'+
+            '<td>'+formatonumero(element.total)+'</td>'+
+        '</tr>';
+    }
+    
+    let fecha = datos.Venta.created_at.substr(0,10);
+    
+    document.getElementById('lista_compra').innerHTML = lista_compra;
+    document.getElementById('dv_fecha').innerHTML = fecha;
+    
+    document.getElementById('id_invoice').innerHTML = "#"+datos.Venta.id;
+    document.getElementById('id_flowOrder').innerHTML = datos.Pago.Flow.flowOrder;
+    
+    document.getElementById('td_neto').innerHTML = "$"+formatonumero(datos.Venta.neto);
+    document.getElementById('td_iva').innerHTML = "$"+formatonumero(datos.Venta.iva);
+    document.getElementById('td_total').innerHTML = "$"+formatonumero(datos.Venta.total_venta);
 
 
-                
+    document.getElementById('id_direccion_pago').innerHTML = Direccion.direccion+' ,'+Direccion.ciudad+' ,'+Direccion.comuna;
 
+    document.getElementById('id_observacion').innerHTML = datos.Venta.observacion;
 
-
-
-
-
-            }
-        },
-        error: function() {
-            console.log("No se ha podido obtener la información");
-        }
-    });
+    
+    
 }
 
 
@@ -567,3 +555,98 @@ function bodega_defecto2(){
     document.getElementById('id_bodega').value = id_bodega_defecto;
     carga_productos()
 }
+
+
+function guardar_direccion(){
+    let direccion   = document.getElementById('direccion').value;
+    let ciudad      = document.getElementById('ciudad').value;
+    let comuna      = document.getElementById('comuna').value;
+    let observacion = document.getElementById('observacion').value;
+
+    let array_boolean     = [ true, true, true ];
+
+    if(direccion == ''){ array_boolean[0] = false; }
+    if(ciudad == ''){    array_boolean[1] = false; }
+    if(comuna == ''){    array_boolean[2] = false; }
+
+    let is_enviar = array_boolean.every(CheckBoolean);
+
+    if(is_enviar){
+
+        let obj ={ direccion : direccion, ciudad : ciudad, comuna : comuna, observacion : observacion, _token : token };
+
+        console.log(obj);
+
+        $.ajax({
+            url: URL_GUARDAR_DIRECCION,
+            data:obj,
+            type:  'post',
+            success: function(respuesta) {
+                console.log(respuesta)
+
+
+                
+                document.getElementById('direccion').value = '';
+                document.getElementById('ciudad').value = '';
+                document.getElementById('comuna').value = '';
+                document.getElementById('observacion').value = '';
+
+                seleccion_direccion(respuesta.id);
+
+                lista_direccion();
+
+            },
+            error: function() {
+                console.log("No se ha podido obtener la información");
+            }
+        });
+
+
+
+    }else{
+        console.log("faltan datos");
+    }
+    
+}
+
+function seleccion_direccion(id){
+    document.getElementById('id_direccion').value = id;
+    toastr.info("Direccion de Despacho Seleccionada", '', {timeOut: 1000})
+}
+
+function quitar_direccion_despacho(){
+    document.getElementById('id_direccion').value = 0;
+    toastr.info("Modo Retiro en Tienda", '', {timeOut: 1000})
+}
+
+function lista_direccion(){
+
+    let table2  = $('#lista_direccion').DataTable();
+    table2.destroy();
+    let table = $('#lista_direccion').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+            url : URL_LISTA_DIRECCION,
+        },
+        "initComplete": function() {
+            var $searchInput = $('div.dataTables_filter input');
+            $searchInput.unbind();
+            $searchInput.bind('keyup', function(e) {
+                if(this.value.length >= 3 || this.value.length == 0) {
+                    table.search( this.value ).draw();
+                }
+            });
+        },
+        "language": lenguaje_datatable,
+        "columns":[
+            { "data": "id" , name: 'direccions.id'},
+            { "data": "direccion", name: 'direccions.direccion'},
+            { "data": "ciudad", name: 'direccions.ciudad'},
+            { "data": "comuna", name: 'direccions.comuna'},
+            {"data": 'accion', name: 'accion', orderable: false, searchable: false}
+        ]
+    });
+}
+
+function CheckBoolean(bool) { return bool == true; }

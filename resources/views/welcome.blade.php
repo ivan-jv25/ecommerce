@@ -124,11 +124,13 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-6" hidden>
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon">id_bodega</div>
                     <input type="text" class="form-control" id="id_bodega" name="id_bodega" placeholder="">
+                    <div class="input-group-addon">id_direccion</div>
+                    <input type="text" class="form-control" id="id_direccion" name="id_direccion" placeholder="">
                   </div>
                 </div>
               </div>
@@ -205,16 +207,19 @@
                 <div class="form-group">
                   <div class="btn-group dcto" data-toggle="buttons">
                   
-                    <label class="btn btn-primary active focus" for="radios-0">
-                      <input type="radio" name="tipo_entrega" required value="despacho" checked="checked"> Despacho
+                    <label class="btn btn-primary " for="radios-0" data-toggle="modal" data-target="#myModalDespacho" onclick="lista_direccion();">
+                      <input type="radio" name="tipo_entrega" required value="despacho" > Despacho
                     </label>
-                    <label class="btn btn-primary " for="radios-1" data-toggle="modal" data-target="#myModal" onclick="work_flow_retiro();">
+                    <label class="btn btn-primary active focus " for="radios-1" checked="checked" data-toggle="modal" data-target="#myModal" onclick="work_flow_retiro();quitar_direccion_despacho();">
                       <input type="radio" name="tipo_entrega" value="retiro" > Retiro
                     </label>
                   
                     
                   </div>
                 </div>
+              </div>
+              <div class="col-sm-12">
+              <textarea class="form-control" id="observacion" name="observacion" placeholder="Observacion"></textarea>
               </div>
               <div class="col-sm-12">
                 <button type="submit" class="comprar btn-block" name="button" id="singlebutton" disabled>Comprar</button>
@@ -228,6 +233,8 @@
     
     
     @include('layouts.modal.retiro')
+
+    @include('layouts.modal.despacho')
 
 
     @include('layouts.modal.bodega')

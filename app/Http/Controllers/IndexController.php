@@ -204,7 +204,7 @@ class IndexController extends Controller
         $array_venta=[
             'rut'            => $empresa->rut,
             'folio'          => $dato,
-            'id_direccion'   => $dato,
+            'id_direccion'   => ($request->id_direccion==null)? 0 : $request->id_direccion,
             'tipo_entrega'   => $request->tipo_entrega,
             'descuento'      => 0,
             'neto'           => $request->id_neto,
@@ -217,6 +217,7 @@ class IndexController extends Controller
             'estado_pago'    => $dato,
             'id_formapago'   => $dato,
             'codigo_pago'    => $dato,
+            'observacion'    => $request->observacion,
         ];
 
         $venta = new Venta($array_venta);
@@ -258,6 +259,7 @@ class IndexController extends Controller
                 ];
 
                 $respuesta = $this->pago_flow($datos);
+                
                 DB::table('venta_flows')->insert( ['id_venta' => $id_venta, 'token' => $respuesta['token'],'url' => $respuesta['url'],'flowOrder' => $respuesta['flowOrder'],'estado' => 1 ] ); 
                 
                 break;
@@ -461,15 +463,23 @@ class IndexController extends Controller
         $id_venta = base64_decode($token);
 
         $pago = [ 'Flow' => null, 'Match' => null, ];
+        $direccion = null;
         
 
-        $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at')->where('id',$id_venta)->first();
+        $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at','observacion')->where('id',$id_venta)->first();
+        
         $detalle   = DB::table('detalle_ventas')->select('id', 'id_venta', 'item', 'codigo_producto', 'nombre', 'cantidad', 'valor_producto', 'total', 'valor_descuento',)->where('id_venta',$id_venta)->get();
+
+        
+
+        if($venta->id_direccion != 0){
+            $direccion = DB::table('direccions')->select()->where('id',$venta->id_direccion)->first();
+        }
         
 
         switch ($venta->forma_pago) {
             case 'flow':
-                $pago_flow = DB::table('venta_flows')->select('url','token','flowOrder')->where('id_venta',$id_venta)->first();
+                $pago_flow = DB::table('venta_flows')->select('url','token','flowOrder','log_pago','estado')->where('id_venta',$id_venta)->first();
                 $pago['Flow'] = $pago_flow;
                 break;
             
@@ -484,6 +494,7 @@ class IndexController extends Controller
             'Venta'=>$venta,
             'Detalle'=>$detalle,
             'Pago'=>$pago,
+            'Direccion'=>$direccion,
         ];
 
         return $respuesta;
@@ -714,6 +725,49 @@ class IndexController extends Controller
         return $respuesta;
     }
 
+    public function guardar_direccion(Request $request){
+        
+        $respuesta['respuesta'] = false;
+        $respuesta['id'] = 0;
+        
+        $id_empresa = Auth::user()->id_empresa;
+        $empresa    = get_empresa($id_empresa);
+
+        $direccion   = strtoupper((string)$request->direccion);
+        $ciudad      = strtoupper((string)$request->ciudad);
+        $comuna      = strtoupper((string)$request->comuna);
+        $observacion = strtoupper((string)$request->observacion);
+
+        $existe = $this->existe_direccion($empresa->rut,$direccion);
+
+        if(!$existe){
+            try {
+               $id =  DB::table('direccions')->insertGetId( [ 'direccion' => $direccion, 'rut' => $empresa->rut, 'ciudad' => $ciudad, 'comuna' => $comuna, 'observacion' => $observacion, ] );
+                $respuesta['respuesta'] = true;
+                $respuesta['id'] = $id;
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+        }
+        return $respuesta;
+    }
+
+    public function lista_direccion(){
+        $lista = DB::table('direccions')->select('id','direccion','ciudad','comuna');
+
+        return Datatables::of($lista)
+        ->editColumn('accion', function ($lista) { 
+            
+            return '<a class="btn btn-primary btn-warning" onclick="seleccion_direccion('.$lista->id.')">Seleccionar</a>'; 
+        })
+        ->rawColumns([ 'accion'])
+        ->make(true);
+    }
+
+
+
+
+
     private function existe_empresa(){
         return existe_credenciales();
     }
@@ -766,4 +820,10 @@ class IndexController extends Controller
         $existe = DB::table('tokens')->select('id')->where('tipo','correo_configuracion')->first();
         return ($existe == null) ? false : true;
     }
+
+    private function existe_direccion($rut,$direccion){
+        $existe = DB::table('direccions')->select('id')->where('rut',$rut)->where('direccion',$direccion)->first();
+        return ($existe == null) ? false : true;
+    }
 }
+
