@@ -477,6 +477,11 @@ class IndexController extends Controller
         $token    = $request->TokenVenta;
         $id_venta = base64_decode($token);
 
+        $id_empresa = Auth::user()->id_empresa;
+        $empresa    = get_empresa($id_empresa);
+        $empresa->correo = Auth::user()->email;
+       
+
         $pago = [ 'Flow' => null, 'Match' => null, ];
         $direccion = null;
         
@@ -494,7 +499,7 @@ class IndexController extends Controller
 
         switch ($venta->forma_pago) {
             case 'flow':
-                $pago_flow = DB::table('venta_flows')->select('url','token','flowOrder','log_pago','estado')->where('id_venta',$id_venta)->first();
+                $pago_flow = DB::table('venta_flows')->select('url','token','flowOrder','estado')->where('id_venta',$id_venta)->first();
                 $pago['Flow'] = $pago_flow;
                 break;
             
@@ -503,13 +508,12 @@ class IndexController extends Controller
                 break;
         }
         
-
-        
         $respuesta = [
-            'Venta'=>$venta,
-            'Detalle'=>$detalle,
-            'Pago'=>$pago,
-            'Direccion'=>$direccion,
+            'Venta'     => $venta,
+            'Detalle'   => $detalle,
+            'Pago'      => $pago,
+            'Direccion' => $direccion,
+            'Cliente'   => $empresa,
         ];
 
         return $respuesta;
@@ -780,6 +784,40 @@ class IndexController extends Controller
     }
 
 
+    public function carga_datos_empresa(Request $request){
+        $respuesta['respuesta'] = false;
+        try {
+            $nombre    = $request->nombre_empresa;
+            $direccion = $request->direccion;
+            $ciudad    = $request->ciudad;
+            $comuna    = $request->comuna;
+            $telefono  = $request->telefono;
+            $correo    = $request->correo;
+
+            $datos  = [ 'nombre' => $nombre, 'direccion' => $direccion, 'ciudad' => $ciudad, 'comuna' => $comuna, 'telefono' => $telefono, 'correo' => $correo ];
+            $datos  = json_encode($datos);
+            $existe = $this->existe_empresa2();
+
+            if($existe){
+                DB::table('tokens')->where('tipo', 'empresa')->update(['token' => $datos]);
+            }else{
+                DB::table('tokens')->insert( ['tipo' => 'empresa', 'token' => $datos] );
+            }
+            $respuesta['respuesta'] = true;
+
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        return $respuesta;
+    }
+
+    public function get_data_empresa(){
+        $datos = DB::table('tokens')->select('token')->where('tipo','empresa')->first()->token;
+        $datos = (array)json_decode($datos);
+        return $datos;
+    }
+
+
 
 
 
@@ -838,6 +876,11 @@ class IndexController extends Controller
 
     private function existe_direccion($rut,$direccion){
         $existe = DB::table('direccions')->select('id')->where('rut',$rut)->where('direccion',$direccion)->first();
+        return ($existe == null) ? false : true;
+    }
+
+    private function existe_empresa2(){
+        $existe = DB::table('tokens')->select('id')->where('tipo','empresa')->first();
         return ($existe == null) ? false : true;
     }
 }

@@ -4,6 +4,8 @@ var lista_carro              = [];
 var lista_inventario         = null;
 var lista_bodega             = [];
 
+var datos_empresa = null;
+
 var neto  = 0;
 var IVA   = 0;
 var Total = 0;
@@ -414,7 +416,6 @@ function lista_compra(){
         "ajax":{
             url : URL_COMPRAS,
             data:{
-               
                 desde   : desde,
                 hasta   : hasta,
             }
@@ -450,11 +451,7 @@ function cargar_datos_venta(){
             TokenVenta:TokenVenta
         },
         success: function(respuesta) {
-            
             if(pagado != 0){
-                
-                
-
                 switch (respuesta.Pago.Flow.estado) {
                     case 1:
                         alert("pendiente de pago");
@@ -480,11 +477,8 @@ function cargar_datos_venta(){
                 $("#myModalPago").modal()
                 document.getElementById('form_test_flow').action = respuesta.Pago.Flow.url;
                 document.getElementById('token_flow').value = respuesta.Pago.Flow.token;
-
                 document.getElementById('btn_pago').firstChild.textContent = 'ir a Pagar : $'+respuesta.Venta.total_venta+'.-';
             }
-
-            
         },
         error: function() {
             console.log("No se ha podido obtener la información");
@@ -494,46 +488,46 @@ function cargar_datos_venta(){
 
 
 function cargar_estado_venta(datos){
-    console.log(datos)
-   
-    let Detalle = datos.Detalle
+    let Detalle   = datos.Detalle
     let Direccion = datos.Direccion
+    let Cliente  = datos.Cliente
     
     let lista_compra = '';
-
     $("#myModalEstadoPago").modal()
 
-    
-    
     for (let i = 0; i < Detalle.length; i++) {
         const element = Detalle[i];
         lista_compra += '<tr>'+
             '<td>'+element.item+'</td>'+
             '<td>'+element.nombre+'</td>'+
             '<td>'+formatonumero(element.cantidad)+'</td>'+
-            '<td>'+formatonumero(element.total)+'</td>'+
+            '<td>$'+formatonumero(element.total)+'</td>'+
         '</tr>';
     }
     
     let fecha = datos.Venta.created_at.substr(0,10);
-    
-    document.getElementById('lista_compra').innerHTML = lista_compra;
-    document.getElementById('dv_fecha').innerHTML = fecha;
-    
-    document.getElementById('id_invoice').innerHTML = "#"+datos.Venta.id;
-    document.getElementById('id_flowOrder').innerHTML = datos.Pago.Flow.flowOrder;
-    
-    document.getElementById('td_neto').innerHTML = "$"+formatonumero(datos.Venta.neto);
-    document.getElementById('td_iva').innerHTML = "$"+formatonumero(datos.Venta.iva);
-    document.getElementById('td_total').innerHTML = "$"+formatonumero(datos.Venta.total_venta);
 
+    let informacion_cliente = '<strong>'+Cliente.razon_social+'</strong><br>'+Cliente.direccion+'<br>'+Cliente.ciudad+','+Cliente.comuna+'<br>'+'Email: '+Cliente.correo;
+    informacion_cliente = informacion_cliente.toUpperCase();
 
-    document.getElementById('id_direccion_pago').innerHTML = Direccion.direccion+' ,'+Direccion.ciudad+' ,'+Direccion.comuna;
-
-    document.getElementById('id_observacion').innerHTML = datos.Venta.observacion;
+    let informacion_empresa = '<strong>'+datos_empresa.nombre+'</strong><br>'+datos_empresa.direccion+'<br>'+datos_empresa.ciudad+','+datos_empresa.comuna+'<br>'+'Telefono:'+datos_empresa.telefono+'<br>'+'Email: '+datos_empresa.correo;
+    informacion_empresa = informacion_empresa.toUpperCase();
 
     
-    
+    document.getElementById('lista_compra').innerHTML      = lista_compra;
+    document.getElementById('dv_fecha').innerHTML          = fecha;
+    document.getElementById('id_invoice').innerHTML        = "#"+datos.Venta.id;
+    document.getElementById('id_flowOrder').innerHTML      = datos.Pago.Flow.flowOrder;
+    document.getElementById('td_neto').innerHTML           = "$"+formatonumero(datos.Venta.neto);
+    document.getElementById('td_iva').innerHTML            = "$"+formatonumero(datos.Venta.iva);
+    document.getElementById('td_total').innerHTML          = "$"+formatonumero(datos.Venta.total_venta);
+    document.getElementById('add_datos_cliente').innerHTML = informacion_cliente;
+    document.getElementById('add_datos_empresa').innerHTML = informacion_empresa;
+    document.getElementById('id_nombre_empresa').innerHTML = datos_empresa.nombre;
+    document.getElementById('id_observacion').innerHTML    = datos.Venta.observacion;
+
+    try { document.getElementById('id_direccion_pago').innerHTML = Direccion.direccion+' ,'+Direccion.ciudad+' ,'+Direccion.comuna; } catch (error) { }
+
 }
 
 
@@ -591,20 +585,15 @@ function guardar_direccion(){
 
         let obj ={ direccion : direccion, ciudad : ciudad, comuna : comuna, observacion : observacion, _token : token };
 
-        console.log(obj);
-
         $.ajax({
             url: URL_GUARDAR_DIRECCION,
             data:obj,
             type:  'post',
             success: function(respuesta) {
-                console.log(respuesta)
 
-
-                
-                document.getElementById('direccion').value = '';
-                document.getElementById('ciudad').value = '';
-                document.getElementById('comuna').value = '';
+                document.getElementById('direccion').value   = '';
+                document.getElementById('ciudad').value      = '';
+                document.getElementById('comuna').value      = '';
                 document.getElementById('observacion').value = '';
 
                 seleccion_direccion(respuesta.id);
@@ -617,10 +606,6 @@ function guardar_direccion(){
             }
         });
 
-
-
-    }else{
-        console.log("faltan datos");
     }
     
 }
@@ -666,3 +651,15 @@ function lista_direccion(){
 }
 
 function CheckBoolean(bool) { return bool == true; }
+
+function get_datos_empresa(){
+    $.ajax({
+        url: URL_GET_DATOS_EMPRESA,
+        success: function(respuesta) {
+            datos_empresa = respuesta;
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });
+}

@@ -557,11 +557,16 @@ function FLOW_PAY_SIGNATURE($datos = null){
 }
 
 function API_KEY_FLOW(){
-    return '28F56082-BF69-41FF-AAC4-2FL575C8D8E6';
+    //return '28F56082-BF69-41FF-AAC4-2FL575C8D8E6';
+    $token = DB::table('tokens')->select('token')->where('tipo','API_KEY_FLOW')->first()->token;
+    return $token;
+    
 }
 
 function SECRET_KEY_FLOW(){
-    return 'f01f946ddc531e41da18507046f9419325c78269';
+    //return 'f01f946ddc531e41da18507046f9419325c78269';
+    $token = DB::table('tokens')->select('token')->where('tipo','SECRET_KEY_FLOW')->first()->token;
+    return $token;
 }
 
 function getPrimerUltimoFecha(){

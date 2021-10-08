@@ -12,7 +12,7 @@ function carga_inicial(){
             //document.getElementById('td_carga_formapago').innerHTML= '<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>';
         },
         success: function(respuesta) {
-            console.log(respuesta);
+            
             let Carga = respuesta.Carga;
             document.getElementById('token').value       = respuesta.Token;
             document.getElementById('rut_empresa').value = respuesta.Credenciales.empresa;
@@ -55,7 +55,6 @@ function carga_productos(){
             document.getElementById('td_carga_producto').innerHTML= '<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>';
         },
         success: function(respuesta) {
-            console.log(respuesta);
             let icono = '';
             if(respuesta.Estado == true){
                 icono = '<span class="material-icons" style="color: green;font-size: 2rem;">check_circle_outline</span>';
@@ -353,7 +352,6 @@ function GenerarPago(){
             _token:token,
         },
         success: function(respuesta) {
-            console.log(respuesta);
             document.getElementById('form_test_flow').action = respuesta.url;
             document.getElementById('token_flow').value = respuesta.token;
         },
@@ -445,7 +443,7 @@ function cargar_correos(){
             data:obj,
             type:  'post',
             success: function(respuesta) {
-                console.log(respuesta)
+                get_correos()
             },
             error: function() {
                 console.log("No se ha podido obtener la información");
@@ -506,7 +504,7 @@ function guardar_configuracion_correo(){
             data:obj,
             type:  'post',
             success: function(respuesta) {
-                console.log(respuesta)
+                get_correos_configuracion()
             },
             error: function() {
                 console.log("No se ha podido obtener la información");
@@ -532,11 +530,62 @@ function get_correos_configuracion(){
 
 function guardar_datos_empresa(){
 
-    let array_boolean     = [ true, true, true, true ];
+    let array_boolean     = [ true, true, true, true,true,true, ];
 
-    let host = document.getElementById('email_host').value;
-    let port = document.getElementById('email_port').value;
-    let correo = document.getElementById('email_correo').value;
-    let password = document.getElementById('email_password').value;
+    let nombre_empresa = document.getElementById('nombre_empresa').value;
+    let direccion      = document.getElementById('direccion').value;
+    let ciudad         = document.getElementById('ciudad').value;
+    let comuna         = document.getElementById('comuna').value;
+    let telefono       = document.getElementById('telefono').value;
+    let correo         = document.getElementById('correo').value;
 
+    if(nombre_empresa == ''){ array_boolean[0] = false; $("#nombre_empresa").addClass("is-invalid");}
+    if(direccion == ''){      array_boolean[0] = false; $("#direccion").addClass("is-invalid");}
+    if(ciudad == ''){         array_boolean[0] = false; $("#ciudad").addClass("is-invalid");}
+    if(comuna == ''){         array_boolean[0] = false; $("#comuna").addClass("is-invalid");}
+    if(telefono == ''){       array_boolean[0] = false; $("#telefono").addClass("is-invalid");}
+    if(correo == ''){         array_boolean[0] = false; $("#correo").addClass("is-invalid");}
+
+    let is_enviar = array_boolean.every(CheckBoolean)
+    if(is_enviar){
+        let obj = { nombre_empresa: nombre_empresa, direccion: direccion, ciudad: ciudad, comuna: comuna, telefono: telefono, correo: correo, _token: token, };
+
+
+        $.ajax({
+            url: URL_CARGA_DATOS_EMPRESA,
+            data:obj,
+            type:  'post',
+            success: function(respuesta) {
+                document.getElementById('nombre_empresa').value = '';
+                document.getElementById('direccion').value      = '';
+                document.getElementById('ciudad').value         = '';
+                document.getElementById('comuna').value         = '';
+                document.getElementById('telefono').value       = '';
+                document.getElementById('correo').value         = '';
+                get_datos_empresa();
+            },
+            error: function() {
+                console.log("No se ha podido obtener la información");
+            }
+        });
+    }
+    
+
+}
+
+function get_datos_empresa(){
+    $.ajax({
+        url: URL_GET_DATOS_EMPRESA,
+        success: function(respuesta) {
+            document.getElementById('nombre_empresa').value = respuesta.nombre;
+            document.getElementById('direccion').value      = respuesta.direccion;
+            document.getElementById('ciudad').value         = respuesta.ciudad;
+            document.getElementById('comuna').value         = respuesta.comuna;
+            document.getElementById('telefono').value       = respuesta.telefono;
+            document.getElementById('correo').value         = respuesta.correo;
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    });   
 }

@@ -140,35 +140,49 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="nombre_empresa">Nombre Empresa</label>  
                         <div class="col-md-8">
-                            <input id="nombre_empresa" type="text" placeholder="Nombre Empresa" class="form-control input-md">
+                            <input id="nombre_empresa" type="text" placeholder="Nombre Empresa" class="form-control input-md" onchange="clar_error(this);">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="direccion">Direccion</label>  
                         <div class="col-md-8">
-                            <input id="direccion" type="text" placeholder="Direccion" class="form-control input-md">
+                            <input id="direccion" type="text" placeholder="Direccion" class="form-control input-md" onchange="clar_error(this);">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="ciudad">Ciudad</label>  
+                        <div class="col-md-8">
+                            <input id="ciudad" type="text" placeholder="Ciudad" class="form-control input-md" onchange="clar_error(this);">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="comuna">Comuna</label>  
+                        <div class="col-md-8">
+                            <input id="comuna" type="text" placeholder="Comuna" class="form-control input-md" onchange="clar_error(this);">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="telefono">Telefono</label>  
                         <div class="col-md-8">
-                            <input id="telefono" type="text" placeholder="Telefono" class="form-control input-md">
+                            <input id="telefono" type="text" placeholder="Telefono" class="form-control input-md" onchange="clar_error(this);">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="correo">Correo</label>  
                         <div class="col-md-8">
-                            <input id="correo"  type="email" placeholder="Correo" class="form-control input-md">
+                            <input id="correo"  type="email" placeholder="Correo" class="form-control input-md" onchange="clar_error(this);">
                         </div>
                     </div>
 
                     <div class="row form-group">
                         <label class="col-md-4 control-label" for="singlebutton"></label>
                         <div class="col-md-4">
-                            <button  class="btn btn-primary">Grabar</button>
+                            <button  class="btn btn-primary" onclick="guardar_datos_empresa();">Grabar</button>
                         </div>
                     </div>
                     
@@ -214,10 +228,18 @@
     var URL_CARGA_CONFIGURACION_CORREO = "{{ route('ajax.configuracion.carga.correo') }}";
     var URL_GET_CONFIGURACION_CORREO = "{{ route('ajax.get.correo.configuracion') }}";
 
+
+    var URL_CARGA_DATOS_EMPRESA = "{{ route('ajax.carga.datos.empresa') }}";
+    var URL_GET_DATOS_EMPRESA = "{{ route('ajax.obtener.empresa') }}";
+
+
+    
+
     $(document).ready(function(){
         get_datos_flow();
         get_correos();
         get_correos_configuracion();
+        get_datos_empresa();
     });
     
 </script>

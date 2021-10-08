@@ -4,7 +4,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">
-          <i class="fa fa-globe"></i> Appnet ltda.
+          <i class="fa fa-globe"></i> <b id="id_nombre_empresa">Appnet ltda.</b>
         </h4>
       </div>
       <div class="modal-body">
@@ -14,7 +14,7 @@
             <div class="row invoice-info">
               <div class="col-sm-4 invoice-col">
                 From
-                <address>
+                <address id="add_datos_empresa">
                   <strong>Appnet</strong><br>
                   795 Folsom Ave, Suite 600<br>
                   San Francisco, CA 94107<br>
@@ -24,7 +24,7 @@
               </div>
               <div class="col-sm-4 invoice-col">
                 To
-                <address>
+                <address id="add_datos_cliente">
                   <strong>John Doe</strong><br>
                   795 Folsom Ave, Suite 600<br>
                   San Francisco, CA 94107<br>
