@@ -453,11 +453,29 @@ function cargar_datos_venta(){
             
             if(pagado != 0){
                 
-                if(respuesta.Pago.Flow.estado == 2){
-                    cargar_estado_venta(respuesta);
-                }else{
-                    alert("Pago Rechazadoooooo!!!!!");
+                
+
+                switch (respuesta.Pago.Flow.estado) {
+                    case 1:
+                        alert("pendiente de pago");
+                        break;
+                    case 2:
+                        cargar_estado_venta(respuesta);
+                        break;
+                    case 3:
+                        alert("rechazada");
+                        break;
+                    case 4:
+                        alert("anulada");
+                        break;
+                
+                    default:
+                        break;
                 }
+
+                clear_storage();
+                lista_carro      = []
+                mostrar_lista_carro();
             }else{
                 $("#myModalPago").modal()
                 document.getElementById('form_test_flow').action = respuesta.Pago.Flow.url;
@@ -485,9 +503,7 @@ function cargar_estado_venta(datos){
 
     $("#myModalEstadoPago").modal()
 
-    clear_storage();
-    lista_carro      = []
-    mostrar_lista_carro();
+    
     
     for (let i = 0; i < Detalle.length; i++) {
         const element = Detalle[i];
