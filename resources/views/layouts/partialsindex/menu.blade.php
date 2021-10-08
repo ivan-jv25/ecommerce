@@ -71,7 +71,7 @@
         </div>
         @else
 
-
+        @if (Auth::user()->is_admin === 1)
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
@@ -81,7 +81,7 @@
             </h4>
           </div>
         </div>  
-
+        @endif
         
 
         <div class="panel panel-default">

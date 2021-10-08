@@ -20,12 +20,14 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/home', 'HomeController@index')->name('home');
+    
 
     Route::post('Generar/Venta/', 'IndexController@genera_venta')->name('generar.venta');
 
 
     Route::group(['middleware' => 'admin'], function () {
+
+        Route::get('/home', 'HomeController@index')->name('home');
 
         Route::get('Admin/Panel/Carga', function () { return view('admin.panel_carga');})->name('admin.panel.carga');
         Route::get('Admin/Panel/Ventas', function () { return view('admin.ventas');})->name('admin.ventas');
