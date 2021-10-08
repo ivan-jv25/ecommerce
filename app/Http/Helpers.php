@@ -243,6 +243,28 @@ function WEB_SERVICE_VENTA($json){
     return $resultado;
 }
 
+function WEB_SERVICE_CLIENTE($json){
+    $respuesta = false;
+    try {
+        $URL = get_url_servidor('productivo').'/api/createcliente';
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('post', $URL, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'token' => obtener_token()
+            ],
+            'body' => $json
+        ]);
+        $resultado = $response->getBody()->getContents();
+        $resultado =json_decode($resultado);
+
+        $respuesta = true;
+    } catch (\Throwable $th) {
+        //throw $th;
+    }
+    return $respuesta;
+}
+
 
 function obtener_token(){
     $existe = DB::table('tokens')->select('token')->where('tipo','session')->first();

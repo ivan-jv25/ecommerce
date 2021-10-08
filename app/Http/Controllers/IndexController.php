@@ -62,7 +62,22 @@ class IndexController extends Controller
         $credenciales['email']    = $correo;
         $credenciales['password'] = $password;
         if (Auth::attempt($credenciales)) {
-           //configurar algo
+            $envio_cliente = [
+                'Cliente' => [
+                    'Rut'         => $rut_empresa,
+                    'Razonsocial' => $razon_social,
+                    'Giro'        => $giro,
+                    'Direccion'   => $direccion,
+                    'Comuna'      => $comuna,
+                    'Correo'      => $correo,
+                    'Ciudad'      => $ciudad,
+                    'Telefono'    => $telefono,
+                ]
+            ];
+        
+            $envio_cliente = json_encode($envio_cliente);
+            WEB_SERVICE_CLIENTE($envio_cliente);
+
         }
         
         
