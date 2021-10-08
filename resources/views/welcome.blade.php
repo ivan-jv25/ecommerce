@@ -189,16 +189,16 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <div class="btn-group dcto" data-toggle="buttons">
-                    <label class="btn btn-primary">
+                    <!--<label class="btn btn-primary" hidden>
                       <input type="radio" name="options_pago" id="option3" required value="mach"> Match
-                    </label>
+                    </label>-->
                     
                     <label class="btn btn-primary active focus">
                       <input type="radio" name="options_pago" id="option45" value="flow" checked="checked"> Flow
                     </label>
-                    <label class="btn btn-primary">
+                    <!--<label class="btn btn-primary" hidden>
                       <input type="radio" name="options_pago" id="option6" value="trasferencia">Trasferencia
-                    </label>
+                    </label>-->
                     
                   </div>
                 </div>
