@@ -231,6 +231,7 @@ function lista_carrito_bodega(){
     let id_bodega          = document.getElementById('id_bodega').value;
     let lista_carro_bodega = '';
     let lista_todo_bien = [];
+    if(lista_carro.length == 0){ lista_todo_bien.push(false); }
     for (let i = 0; i < lista_carro.length; i++) {
         const element = lista_carro[i];
         let stock = get_stock_by_codigo(element.codigo,id_bodega);
@@ -256,6 +257,7 @@ function lista_carrito_bodega(){
 function lista_carrito_bodega2(conmensaje = true){
     let id_bodega          = document.getElementById('id_bodega').value;
     let lista_todo_bien = [];
+    if(lista_carro.length == 0){ lista_todo_bien.push(false); }
     for (let i = 0; i < lista_carro.length; i++) {
         const element = lista_carro[i];
         
