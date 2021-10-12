@@ -31,6 +31,7 @@
                     <th>Forma Pago</th>
                     <th>Fecha</th>
                     <th>Ticket</th>
+                    <th>Compra</th>
                   </tr>
                 </thead>
               </table>

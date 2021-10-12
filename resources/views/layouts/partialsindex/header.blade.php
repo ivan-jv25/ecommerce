@@ -1,7 +1,7 @@
 <header>
       <img src="img/logo.png" class="logo" alt="Logo Appnet">
       @guest
-      <div class="sesion"><i class="fa fa-user"></i> Bienvenido Dino Castro</div>
+      <div class="sesion"><a onclick="abrir_registrarte()"><i class="fa fa-user"></i> ¡Registrate!</a></div>
       @else
       <div class="sesion"><i class="fa fa-user"></i> Bienvenido {{ Auth::user()->name }}</div>
       @endguest
