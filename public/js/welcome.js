@@ -189,7 +189,7 @@ function mostrar_lista_carro(){
     let lista = '';
     let lista_data = '';
 
-    if(lista_carro.length >= 1){
+    if(lista_carro.length > 0){
         document.getElementById("singlebutton").disabled = false;
     }else{
         document.getElementById("singlebutton").disabled = true;
@@ -674,6 +674,7 @@ function get_datos_empresa(){
 }
 
 function abrir_login(){
+    cerrar_todo()
     let respuesta = false;
     if(!is_auth){
         $("#menu").show("slide", { direction: "right" }, 200);
@@ -717,7 +718,18 @@ function buscar_producto(codigo) {
 }
 
 function abrir_registrarte(){
+    cerrar_todo()
     $("#menu").show("slide", { direction: "right" }, 200);
     $("#collapseTwo").addClass("in");
     document.getElementById('collapseTwo').setAttribute("aria-expanded", true)
+}
+
+function cerrar_todo(){
+    
+
+    $("#collapseOne").removeClass("in");
+    document.getElementById('collapseOne').setAttribute("aria-expanded", false)
+
+    $("#collapseTwo").removeClass("in");
+    document.getElementById('collapseTwo').setAttribute("aria-expanded", false)
 }

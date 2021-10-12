@@ -50,6 +50,7 @@ var is_auth                = @if (Auth::check()) true @else false @endif ;
     
 
 $(document).ready(function(){
+  get_storage();
   carga_bodega2();
   carga_bodega();
 
@@ -57,7 +58,7 @@ $(document).ready(function(){
     seleccion_bodega();
   }
   carga_productos();
-  get_storage();
+ 
   get_inventario();
   get_categorias();
   carga_productos_favorito();
