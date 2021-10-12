@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -72,7 +73,7 @@
         </div>
       </div>
     </div>
-    <form class="formulario" method="POST" action="{{ route('generar.venta') }}" autocomplete="off">@csrf
+    <form class="formulario" method="POST" action="{{ route('generar.venta') }}" autocomplete="off" onsubmit="return abrir_login();">@csrf
       <div class="seccion-02">
         <div class="carro">
           <div class="cerrar-carro">
@@ -211,7 +212,7 @@
                       <input type="radio" name="tipo_entrega" required value="despacho" > Despacho
                     </label>
                     <label class="btn btn-primary active focus " for="radios-1" checked="checked" data-toggle="modal" data-target="#myModal" onclick="work_flow_retiro();quitar_direccion_despacho();">
-                      <input type="radio" name="tipo_entrega" value="retiro" > Retiro
+                      <input type="radio" name="tipo_entrega" value="retiro" checked="checked"> Retiro
                     </label>
                   
                     

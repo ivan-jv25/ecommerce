@@ -663,3 +663,15 @@ function get_datos_empresa(){
         }
     });
 }
+
+function abrir_login(){
+    let respuesta = false;
+    if(!is_auth){
+        $("#menu").show("slide", { direction: "right" }, 200);
+        $("#collapseOne").addClass("in");
+        document.getElementById('collapseOne').setAttribute("aria-expanded", true)
+    }else{
+        respuesta = true;
+    }
+    return respuesta;
+}
