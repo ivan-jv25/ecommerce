@@ -9,7 +9,7 @@ Siempre trabajando en el directorio del proyecto y nunca afuera.
  - Ejecutar el comando `composer install` o `composer update`
  - Ejecutar el comando `php artisan key:generate`
 
-Al terminar Estos Procesos solo debe ejecutar el siguiente comando para inicializar el proyecto.
+Al terminar Estos Procesos solo debe ejecutar el siguiente comando para inicializar el proyecto..
 
     php artisan serve
 
