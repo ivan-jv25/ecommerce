@@ -127,7 +127,7 @@
         <div class="resultados">
           <form class="">
             <div class="row">
-              <div class="col-sm-6" hidden>
+              <div class="col-sm-6">
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon">Código dscto.</div>
@@ -165,8 +165,6 @@
                 </div>
               </div>
 
-              <div class="col-sm-6"></div>
-
               <div class="col-sm-6">
                 <div class="form-group">
                   <div class="input-group">
@@ -179,7 +177,7 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <div class="btn-group dcto" data-toggle="buttons">
-                    <label class="btn btn-primary  active focus">
+                    <label class="btn btn-primary active focus">
                       <input type="radio" name="options" id="option1" required value="39" checked="checked"> Boleta
                     </label>
                     <label class="btn btn-primary">
@@ -202,7 +200,7 @@
                 <label for="">Metodo de Pago</label>
               </div>
 
-              <div class="col-sm-6">
+              <div class="col-sm-6 mp">
                 <div class="form-group">
                   <div class="btn-group dcto" data-toggle="buttons">
                     <!--<label class="btn btn-primary" hidden>
