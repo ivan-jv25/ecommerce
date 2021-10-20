@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -24,15 +23,11 @@
 
     @include('layouts.partialsindex.header')
 
-    
-
-    
-
     <div class="seccion-01">
       <div class="fran-supa">
         <div class="buscador">
           <form action="">
-            <input type="text" name="" id="formulario" value="" placeholder="Buscar" required>
+            <input type="text" name="" id="formulario" value="" placeholder="Buscas un producto en especifico?" required autofocus>
             <button type="submit" name="button">
               <img class="buscar" src="img/buscar.svg" alt="">
             </button>
@@ -48,29 +43,42 @@
         </div>
       </div>
       <div class="listado-productos">
-        <div class="col-1" id="lista_col1">
-          <div class="prod">
-            <img class="thumb" src="img/productos/k2mini.png" alt="">
-            <div class="detal">
-              <h3>K2 MINI</h3>
-              <div class="nuevo">A Pedido</div>
+
+        <div class="col-1">
+
+          <div class="titulo-col">Destacados</div>
+
+          <div id="lista_col1">
+            <div class="prod">
+              <img class="thumb" src="img/productos/k2mini.png" alt="">
+              <div class="detal">
+                <h3>K2 MINI</h3>
+                <div class="nuevo">A Pedido</div>
+              </div>
+              <div class="mas"><i class="fa fa-plus fa-lg"></i></div>
+              <div class="precio">$999.999</div>
             </div>
-            <div class="mas"><i class="fa fa-plus fa-lg"></i></div>
-            <div class="precio">$999.999</div>
           </div>
         </div>
-        <div class="col-2" id="lista_col2">
-          <div class="prod">
-            <img class="thumb" src="img/productos/t2lite.png" alt="">
-            <div class="detal">
-              <h3>T2 LITE</h3>
-              <div class="nuevo">en Stock</div>
+
+        <div class="col-2">
+
+          <div class="titulo-col">Todos los productos</div>
+
+          <div id="lista_col2">
+            <div class="prod">
+              <img class="thumb" src="img/productos/t2lite.png" alt="">
+              <div class="detal">
+                <h3>T2 LITE</h3>
+                <div class="nuevo">en Stock</div>
+              </div>
+              <div class="mas"><i class="fa fa-plus fa-lg"></i></div>
+              <div class="precio">$999.999</div>
             </div>
-            <div class="mas"><i class="fa fa-plus fa-lg"></i></div>
-            <div class="precio">$999.999</div>
           </div>
-          
+
         </div>
+
       </div>
     </div>
     <form class="formulario" method="POST" action="{{ route('generar.venta') }}" autocomplete="off" onsubmit="return abrir_login();">@csrf
@@ -80,11 +88,16 @@
             <i class="fa fa-times-circle fa-3x"></i>
           </div>
           <div class="cabecera">
-            <div class="row">
-              <div class="col-xs-4 col-sm-4">Producto</div>
-              <div class="col-xs-3 col-sm-3 text-center">Cantidad</div>
-              <div class="col-xs-2 col-sm-3 align-valor">Valor</div>
-              <div class="col-xs-1 col-sm-1 align-valor">Eliminar</div>
+            <div class="titulo-col">
+              Resumen de compra
+            </div>
+            <div class="cabecera-tabla">
+              <div class="row">
+                <div class="col-xs-4 col-sm-6">Producto</div>
+                <div class="col-xs-3 col-sm-2 text-center">Cantidad</div>
+                <div class="col-xs-2 col-sm-2 align-valor">Valor</div>
+                <div class="col-xs-1 col-sm-2 align-valor">Eliminar</div>
+              </div>
             </div>
           </div>
           <table class="table table-hover">
@@ -102,12 +115,9 @@
                 <td>$999.999</td>
                 <td><i class="fa fa-trash fa-lg"></i></td>
               </tr>
-            
-              
-              
+
             </tbody>
 
-          
           </table>
           <table class="table table-hover" hidden>
             <tbody id="tb_lista_carro_datos"></tbody>
@@ -135,8 +145,7 @@
                   </div>
                 </div>
               </div>
-              
-              </div>
+
               <div class="col-sm-6" hidden>
                 <div class="form-group">
                   <div class="input-group">
@@ -146,6 +155,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-sm-6">
                 <div class="form-group">
                   <div class="input-group">
@@ -154,8 +164,9 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6">
-              </div>
+
+              <div class="col-sm-6"></div>
+
               <div class="col-sm-6">
                 <div class="form-group">
                   <div class="input-group">
@@ -164,6 +175,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-sm-6">
                 <div class="form-group">
                   <div class="btn-group dcto" data-toggle="buttons">
@@ -176,6 +188,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-sm-6">
                 <div class="form-group">
                   <div class="input-group">
@@ -184,71 +197,70 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-12">
+
+              <div class="col-sm-12 mp">
                 <label for="">Metodo de Pago</label>
               </div>
+
               <div class="col-sm-6">
                 <div class="form-group">
                   <div class="btn-group dcto" data-toggle="buttons">
                     <!--<label class="btn btn-primary" hidden>
                       <input type="radio" name="options_pago" id="option3" required value="mach"> Match
                     </label>-->
-                    
+
                     <label class="btn btn-primary active focus">
                       <input type="radio" name="options_pago" id="option45" value="flow" checked="checked"> Flow
                     </label>
                     <!--<label class="btn btn-primary" hidden>
                       <input type="radio" name="options_pago" id="option6" value="trasferencia">Trasferencia
                     </label>-->
-                    
+
                   </div>
                 </div>
               </div>
+
               <div class="col-sm-6">
                 <div class="form-group">
                   <div class="btn-group dcto" data-toggle="buttons">
-                  
+
                     <label class="btn btn-primary " for="radios-0" data-toggle="modal" data-target="#myModalDespacho" onclick="lista_direccion();">
                       <input type="radio" name="tipo_entrega" required value="despacho" > Despacho
                     </label>
                     <label class="btn btn-primary active focus " for="radios-1" checked="checked" data-toggle="modal" data-target="#myModal" onclick="work_flow_retiro();quitar_direccion_despacho();">
                       <input type="radio" name="tipo_entrega" value="retiro" checked="checked"> Retiro
                     </label>
-                  
-                    
+
                   </div>
                 </div>
               </div>
+
               <div class="col-sm-12">
               <textarea class="form-control" id="observacion" name="observacion" placeholder="Observacion"></textarea>
               </div>
+
               <div class="col-sm-12">
                 <button type="submit" class="comprar btn-block" name="button" id="singlebutton" disabled>Comprar</button>
               </div>
+
             </div>
 
           </form>
         </div>
       </div>
     </form>
-    
-    
+
     @include('layouts.modal.retiro')
 
     @include('layouts.modal.despacho')
 
-
     @include('layouts.modal.bodega')
-    
-    
+
     @include('layouts.modal.compra')
-    
-    
+
     @include('layouts.modal.pago')
 
-    
     @include('layouts.modal.estadopago')
-    
 
     @include('layouts.partialsindex.script')
   </body>

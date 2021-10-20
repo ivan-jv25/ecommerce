@@ -89,10 +89,10 @@ function mostrar_bodegas(bodegas){
         const element = bodegas[i];
         let selected = (element.id == id_bodega_defecto) ? 'selected' : '';
         lista +='<option value="'+element.id+'" '+selected+'>'+element.nombre+'</option>';
-        
+
     }
     document.getElementById('id_tienda_retiro').innerHTML= lista;
-    
+
 }
 
 function mostrar_bodegas2(){
@@ -101,10 +101,10 @@ function mostrar_bodegas2(){
         const element = lista_bodega[i];
         let selected = (element.id == id_bodega_defecto) ? 'selected' : '';
         lista +='<option value="'+element.id+'" '+selected+'>'+element.nombre+'</option>';
-        
+
     }
     document.getElementById('id_tienda_retiro2').innerHTML= lista;
-    
+
 }
 
 function mostrar_lista_producto(lista){
@@ -117,14 +117,15 @@ function mostrar_lista_producto(lista){
         lista_productos +='<div class="prod">'+
         '<img class="thumb" async  src="'+imagen+'" alt="">'+
         '<div class="detal">'+
-        '<h5>'+element.nombre.substring(0,30)+'</h5>'+
+        '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
+        '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo+'</p>'+
         '<div class="nuevo" onclick="add_producto_simple('+i+');">en Stock</div>'+
         '</div>'+
         '<div class="mas" onclick="add_producto_simple('+i+');" ><i class="fa fa-plus fa-lg"></i></div>'+
         '<div class="precio">$'+formatonumero(element.precio_venta)+'</div>'+
-        '</div>';   
+        '</div>';
     }
-    
+
     document.getElementById('lista_col2').innerHTML= lista_productos;
 }
 function mostrar_lista_producto_favorito(lista){
@@ -136,14 +137,15 @@ function mostrar_lista_producto_favorito(lista){
         lista_productos +='<div class="prod">'+
         '<img class="thumb" async  src="'+imagen+'" alt="">'+
         '<div class="detal">'+
-        '<h5>'+element.nombre.substring(0,30)+'</h5>'+
+        '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
+        '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo+'</p>'+
         '<div class="nuevo" onclick="add_producto_favorito('+i+');">en Stock</div>'+
         '</div>'+
         '<div class="mas" onclick="add_producto_favorito('+i+');" ><i class="fa fa-plus fa-lg"></i></div>'+
         '<div class="precio">$'+formatonumero(element.precio_venta)+'</div>'+
-        '</div>';   
+        '</div>';
     }
-    
+
     document.getElementById('lista_col1').innerHTML= lista_productos;
 }
 
@@ -180,7 +182,7 @@ function existe_producto(producto){
         if (element.codigo == producto.codigo) {
             aux_index = i;
             return true;
-        }        
+        }
     }
     return false;
 }
@@ -194,7 +196,7 @@ function mostrar_lista_carro(){
     }else{
         document.getElementById("singlebutton").disabled = true;
     }
-    
+
 
     for (let i = 0; i < lista_carro.length; i++) {
         const element = lista_carro[i];
@@ -216,8 +218,8 @@ function mostrar_lista_carro(){
             '<td><input type="text" name="item[]"  value="'+(i+1)+'"></td>'+
             '<td><input type="text" name="codigo[]"  value="'+element.codigo+'"></td>'+
             '<td><input type="text" name="cantidad[]"  value="'+element.cantidad+'"></td>'+
-            '<td><input type="text" name="precio_unitario[]" value="'+element.precio+'"></td>'+   
-            '<td><input type="text" name="precio_total[]" value="'+element.total+'"></td>'+   
+            '<td><input type="text" name="precio_unitario[]" value="'+element.precio+'"></td>'+
+            '<td><input type="text" name="precio_total[]" value="'+element.total+'"></td>'+
             '</tr>';
     }
     set_storage();
@@ -260,7 +262,7 @@ function lista_carrito_bodega2(conmensaje = true){
     if(lista_carro.length == 0){ lista_todo_bien.push(false); }
     for (let i = 0; i < lista_carro.length; i++) {
         const element = lista_carro[i];
-        
+
         if(element.cantidad > get_stock_by_codigo(element.codigo,id_bodega)){
             lista_todo_bien.push(false);
         }else{
@@ -273,7 +275,7 @@ function lista_carrito_bodega2(conmensaje = true){
         if(conmensaje){
             alert("Tienes Productos Sin el Stock Suficiente.");
         }
-        
+
     }else{
         document.getElementById("singlebutton").disabled = false;
     }
@@ -367,11 +369,11 @@ function get_inventario(){
 function get_stock_by_codigo(codigo,id_bodega){
     try {
         let dato = lista_inventario.filter(producto => producto.id_producto == codigo && producto.id_bodega == id_bodega)[0];
-        return dato.stock;    
+        return dato.stock;
     } catch (error) {
-        return 0;    
+        return 0;
     }
-    
+
 }
 
 function get_categorias(){
@@ -379,7 +381,7 @@ function get_categorias(){
         url: URL_CATEGORIA,
         success: function(respuesta) {
             let categoria = respuesta
-            let lista = "<option value=''>Seleccionar Categorias</option>";
+            let lista = "<option value=''>Todas las categorías</option>";
             for (let i = 0; i < categoria.length; i++) {
                 const element = categoria[i];
                 lista += "<option value=" + element.id + ">"+ element.nombre + "</option>";
@@ -404,7 +406,7 @@ function filtro_categoria(id) {
 
 function work_flow_retiro(){
     carga_bodega();
-    
+
     lista_carrito_bodega();
 }
 
@@ -474,7 +476,7 @@ function cargar_datos_venta(){
                     case 4:
                         alert("anulada");
                         break;
-                
+
                     default:
                         break;
                 }
@@ -500,7 +502,7 @@ function cargar_estado_venta(datos){
     let Detalle   = datos.Detalle
     let Direccion = datos.Direccion
     let Cliente  = datos.Cliente
-    
+
     let lista_compra = '';
     $("#myModalEstadoPago").modal()
 
@@ -513,7 +515,7 @@ function cargar_estado_venta(datos){
             '<td>$'+formatonumero(element.total)+'</td>'+
         '</tr>';
     }
-    
+
     let fecha = datos.Venta.created_at.substr(0,10);
 
     let informacion_cliente = '<strong>'+Cliente.razon_social+'</strong><br>'+Cliente.direccion+'<br>'+Cliente.ciudad+','+Cliente.comuna+'<br>'+'Email: '+Cliente.correo;
@@ -522,7 +524,7 @@ function cargar_estado_venta(datos){
     let informacion_empresa = '<strong>'+datos_empresa.nombre+'</strong><br>'+datos_empresa.direccion+'<br>'+datos_empresa.ciudad+','+datos_empresa.comuna+'<br>'+'Telefono:'+datos_empresa.telefono+'<br>'+'Email: '+datos_empresa.correo;
     informacion_empresa = informacion_empresa.toUpperCase();
 
-    
+
     document.getElementById('lista_compra').innerHTML      = lista_compra;
     document.getElementById('dv_fecha').innerHTML          = fecha;
     document.getElementById('id_invoice').innerHTML        = "#"+datos.Venta.id;
@@ -561,7 +563,7 @@ function seleccion_bodega(){
 }
 
 function bodega_defecto(){
-    
+
     id_bodega_defecto = document.getElementById('id_tienda_retiro2').value;
     document.getElementById('id_bodega').value = id_bodega_defecto;
     carga_productos();
@@ -569,7 +571,7 @@ function bodega_defecto(){
 }
 
 function bodega_defecto2(){
-    
+
     id_bodega_defecto = document.getElementById('id_tienda_retiro').value;
     document.getElementById('id_bodega').value = id_bodega_defecto;
     carga_productos()
@@ -616,7 +618,7 @@ function guardar_direccion(){
         });
 
     }
-    
+
 }
 
 function seleccion_direccion(id){
@@ -699,11 +701,11 @@ function comprar_denuevo(TokenVenta){
                 try {
                     let producto = buscar_producto(element.codigo_producto);
                     let obj_detalle = { codigo : element.codigo_producto, nombre : element.nombre, precio : element.valor_producto, cantidad : element.cantidad, total : element.total, ID_CATEGORIA: producto.id_familia,imagen: producto.imagen };
-                    add_carrito(obj_detalle);    
+                    add_carrito(obj_detalle);
                 } catch (error) {
                     toastr.info("Producto :"+element.nombre+". No Existe en Esta Tienda ", '', {timeOut: 2000})
                 }
-                
+
             }
             lista_carrito_bodega2();
         },
@@ -725,7 +727,7 @@ function abrir_registrarte(){
 }
 
 function cerrar_todo(){
-    
+
 
     $("#collapseOne").removeClass("in");
     document.getElementById('collapseOne').setAttribute("aria-expanded", false)

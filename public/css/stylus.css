@@ -1,8 +1,26 @@
+.titulo-col{
+  padding: 15px 40px;
+  border-bottom: solid 1px #ccc;
+}
+
+.cabecera .titulo-col{
+  border-bottom: none;
+}
+
 .sesion{
   position: absolute;
-  top: 15px;
+  top: 20px;
   right: 100px;
   color: #999;
+  cursor: pointer;
+}
+
+.sesion a{
+  color:#FFF;
+}
+
+.sesion i{
+  margin-right: 5px;
 }
 
 form .form-group{
@@ -181,7 +199,7 @@ body{
 }
 #cerrar-menu{
   position: fixed;
-  top: 15px;
+  top: 20px;
   right: 35px;
   cursor: pointer;
   z-index: 999999;
@@ -224,13 +242,14 @@ header{
 }
 
 header .logo{
-  max-width:100px;
+  max-width: 131px;
+  max-height: 40px;
 }
 
 header .hamburguesa{
   cursor: pointer;
   float:right;
-  margin-top:3px;
+  margin-top:8px;
 }
 
 .cerrar-carro{
@@ -257,9 +276,9 @@ header .hamburguesa:hover img{
   top: 0;
   bottom: 0;
   right: 45%;
-  background:#FFF;
+  background:#eaeaea;
   position:fixed;
-  padding-top:50px;
+  padding-top:60px;
   overflow: hidden;
 }
 .seccion-02{
@@ -268,19 +287,35 @@ header .hamburguesa:hover img{
   top: 0;
   bottom: 0;
   right: 0;
-  padding-top:60px;
+  padding-top: 142px;
+}
+
+.table-hover>tbody>tr{
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+}
+
+.table-hover>tbody>tr:hover{
+  background-color: #e9e9e9 !important;
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+}
+
+#myModalBodegaDefecto .row.form-group{
+  padding: 20px;
+}
+
+#myModalBodegaDefecto img.tienda{
+  width:180px;
+  margin-bottom: 20px;
 }
 
 .resultados{
-  position:fixed;
-  top: 52%;
-  bottom: 0;
-  right: 0;
-  left: 55%;
+  position:relative;
   background:#fff;
-  border-left:10px solid #f7f7f7;
-  padding:10px 10px;
-  padding-top: 20px;
+  padding: 40px;
 }
 
 .fran-supa{
@@ -305,6 +340,10 @@ header .hamburguesa:hover img{
   border: solid 1px white;
 }
 
+.fran-supa .buscador form input::placeholder{
+  color:#000 !important;
+}
+
 .fran-supa .buscador form input:focus{
   border-color: rgb(255, 144, 0);
   box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075)inset, 0 0 8px rgba(255,144,0,0.6);
@@ -315,15 +354,14 @@ header .hamburguesa:hover img{
   background: none;
   border: none;
   position: absolute;
-  padding-top: 12px;
-  padding-bottom:12px;
   padding-right: 20px;
   padding-left: 20px;
   right: 0;
+  line-height: 50px;
 }
 
 .fran-supa .buscador form button img.buscar{
-  width: 25px;
+  width: 20px;
 }
 
 .fran-supa .filtro{
@@ -346,7 +384,7 @@ header .hamburguesa:hover img{
 
 .listado-productos{
   position: fixed;
-  top: 100px;
+  top: 110px;
   bottom: 0;
   left: 0;
   right: 45%;
@@ -386,13 +424,39 @@ header .hamburguesa:hover img{
 .listado-productos .prod{
   padding: 20px 30px;
   position: relative;
-  overflow: auto;
+  background: #FFF !important;
+  margin-bottom: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding-left: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: 80px;
+  overflow: hidden;
+  box-shadow: 3px 3px 3px rgb(0 0 0 / 5%);
+}
+
+.detal h5{
+  margin-top: 13px;
+  margin-bottom: 0px;
+  max-width: 260px;
+}
+
+p.lead{
+  font-size: .9em;
+  margin-bottom: 5px;
+}
+
+#lista_col1, #lista_col2{
+  padding: 15px;
 }
 
 .listado-productos .prod .thumb{
   width: 80px;
   float: left;
-  margin: 10px 0px;
+  margin: 0px;
+  border-right:solid 1px #eaeaea;
 }
 
 .listado-productos .prod h3{
@@ -417,30 +481,29 @@ header .hamburguesa:hover img{
 }
 
 .listado-productos .prod:hover{
-  background: #f2f2f2;
   transition: 0.5s ease;
   -o-transition: 0.5s ease;
   -webkit-transition: 0.5s ease;
-  cursor: pointer;
 }
 
 .listado-productos .prod .mas{
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
   z-index: 10;
   background: transparent;
   border: solid 1px #ccc;
-  float: right;
   color: #ccc;
   text-align: center;
-  margin-top: 30px;
   transition: 0.5s ease;
   -o-transition: 0.5s ease;
   -webkit-transition: 0.5s ease;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  border-radius: 50%;
   opacity: 0;
+  line-height: 80px;
+  padding: 0px 20px;
+  margin-right: -50px;
+  cursor: pointer;
 }
 
 .listado-productos .prod:hover .mas{
@@ -448,13 +511,19 @@ header .hamburguesa:hover img{
   background: #ff7e00;
   color: #fff;
   border-color: #ff7e00;
+  right: 0;
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+  position: absolute;
+  margin-right: 0px;
 }
 
 .listado-productos .prod .precio{
   background: transparent;
   position: absolute;
   right: 30px;
-  top: 43px;
+  top: 25px;
   color: #333;
   text-align: center;
   transition: 0.5s ease;
@@ -480,24 +549,32 @@ header .hamburguesa:hover img{
 
 .carro table{
   margin: auto;
-  margin-top: 30px;
-  width: 85%;
+  margin-top: 0px;
+  width: 100%;
 }
 
 .carro .cabecera{
   position: fixed;
-  top: 50px;
-  right: 1%;
-  left: 56%;
+  top: 60px;
+  right: 0;
+  left: 55%;
   background: #f7f7f7;
-  padding: 12px 12px;
-  padding-bottom: 15px;
+  padding: 0;
   color: #999;
   border-bottom: solid 1px #ccc;
 }
 
+.cabecera-tabla{
+  padding-left: 35px;
+  padding-right: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: #eaeaea;
+}
+
 .carro img.thumb{
   width: 60px;
+  margin-right: 7px;
 }
 
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
@@ -542,7 +619,7 @@ form button.btn-block{
   border: solid 1px #ccc;
   color: #ccc;
   text-align: center;
-  margin-top: 25px;
+  margin-top: 17px;
   transition: 0.5s ease;
   -o-transition: 0.5s ease;
   -webkit-transition: 0.5s ease;
@@ -600,6 +677,47 @@ form button.btn-block{
   border-color: #9E9E9E;
 }
 
+#tb_lista_carro tr td:nth-child(1){
+  width: 50%;
+}
+
+#tb_lista_carro tr td:nth-child(2), #tb_lista_carro tr td:nth-child(3), #tb_lista_carro tr td:nth-child(4){
+  width: 20%;
+  text-align: center;
+}
+
+.fa-trash{
+  cursor: pointer;
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+}
+
+.fa-trash:hover{
+  color: #ff7e00;
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+}
+
+.mp{
+  display: none;
+}
+
+@media (min-width: 1800px) {
+  .resultados{
+  }
+  .carro{
+    height: 54vh !important;
+  }
+}
+
+@media (max-width: 1680px) {
+  .carro{
+    height: 53vh !important;
+  }
+}
+
 @media (max-width: 1024px) {
   .cerrar-carro{
     display: block;
@@ -645,11 +763,8 @@ form button.btn-block{
     padding: 12px 12px;
   }
   .resultados{
-    top: 52%;
-    left: 0;
     border-left:inherit;
     background: #efefef;
-    padding-top: 60px;
   }
   #menu{
     left: 0;
@@ -671,9 +786,6 @@ form button.btn-block{
     text-align: left;
   }
   .resultados{
-    padding-top: 80px;
-    top: 54%;
-    padding: 80px;
   }
   header .logo {
     max-width: 110px;
@@ -734,9 +846,6 @@ form button.btn-block{
     height: inherit;
   }
   .resultados{
-    top: 0%;
-    padding: 40px;
-    padding-top: 30px;
     position: relative;
   }
   #menu .formulario{
@@ -768,27 +877,56 @@ form button.btn-block{
 
 }
 
-@media (min-width: 1362px) {
-  .carro{
-    height: 43vh;
-  }
-  .carro table.table tr td:nth-child(3), .carro table.table tr td:nth-child(4){
-    padding-top: 35px;
-  }
-}
-
 @media (min-width: 1440px) {
   .carro{
     height: 50vh;
   }
   .carro table.table tr td:nth-child(3), .carro table.table tr td:nth-child(4){
-    padding-top: 35px;
+    padding-top: 28px;
   }
   .resultados{
-    top: 58%;
-    padding-top: 10px;
   }
 }
+
+@media (max-width: 1536px) {
+  .carro {
+    height: 43vh !important;
+  }
+  .resultados{
+    padding: 20px 40px;
+  }
+}
+
+@media (max-width: 1440px) {
+  .carro{
+    height: 49vh !important;
+  }
+}
+
+@media (max-width: 1362px) {
+  .carro{
+    height: 31vh !important;
+  }
+  .carro table.table tr td:nth-child(3), .carro table.table tr td:nth-child(4){
+    padding-top: 35px;
+  }
+  .detal h5{
+    max-width: 180px;
+  }
+  #tb_lista_carro tr td:nth-child(1){
+    width: 43%;
+  }
+
+  #tb_lista_carro tr td:nth-child(2), #tb_lista_carro tr td:nth-child(3){
+    width: 15%;
+    text-align: center;
+  }
+  #tb_lista_carro tr td:nth-child(4){
+    width: 10%;
+  }
+}
+
+
 @media (min-width: 1680px) {
   .resultados form .form-group{
     margin-bottom: 15px !important;
@@ -796,17 +934,6 @@ form button.btn-block{
 }
 @media (min-width: 1681px) {
   .resultados{
-    padding: 5%;
-    padding-top: 3.5%;
-  }
-}
-
-@media (min-width: 1800px) {
-  .resultados{
-    padding-top: 4.5%;
-  }
-  .carro{
-    height: 48vh;
   }
 }
 
@@ -818,8 +945,6 @@ form button.btn-block{
 
 @media (min-width: 2800px) {
   .resultados{
-    padding: 10%;
-    padding-top: 4.5%;
   }
   .carro{
     height: 51vh;
