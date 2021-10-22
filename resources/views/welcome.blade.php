@@ -83,23 +83,24 @@
     </div>
     <form class="formulario" method="POST" action="{{ route('generar.venta') }}" autocomplete="off" onsubmit="return abrir_login();">@csrf
       <div class="seccion-02">
+        <div class="cabecera">
+          <div class="titulo-col">
+            Resumen de compra
+          </div>
+          <div class="cabecera-tabla">
+            <div class="row">
+              <div class="col-xs-4 col-sm-6">Producto</div>
+              <div class="col-xs-3 col-sm-2 text-center">Cantidad</div>
+              <div class="col-xs-2 col-sm-2 align-valor">Valor</div>
+              <div class="col-xs-1 col-sm-2 align-valor">Eliminar</div>
+            </div>
+          </div>
+        </div>
         <div class="carro">
           <div class="cerrar-carro">
             <i class="fa fa-times-circle fa-3x"></i>
           </div>
-          <div class="cabecera">
-            <div class="titulo-col">
-              Resumen de compra
-            </div>
-            <div class="cabecera-tabla">
-              <div class="row">
-                <div class="col-xs-4 col-sm-6">Producto</div>
-                <div class="col-xs-3 col-sm-2 text-center">Cantidad</div>
-                <div class="col-xs-2 col-sm-2 align-valor">Valor</div>
-                <div class="col-xs-1 col-sm-2 align-valor">Eliminar</div>
-              </div>
-            </div>
-          </div>
+
           <table class="table table-hover">
             <tbody id="tb_lista_carro">
               <tr>
@@ -130,7 +131,7 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <div class="input-group">
-                    <div class="input-group-addon">Código dscto.</div>
+                    <div class="input-group-addon" title="Descuento, promoción, codigo de vendedor"><i class="fa fa-info-circle"></i> Código</div>
                     <input type="text" class="form-control" id="exampleInputAmount" placeholder="">
                   </div>
                 </div>

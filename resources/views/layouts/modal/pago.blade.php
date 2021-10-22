@@ -11,12 +11,12 @@
             <img class="sc-Rmtcm jRcmKS" src="https://www.flow.cl/images/header/logo-flow.svg" alt="logo">
               <input type="text" name="token" id="token_flow" hidden>
               <button id="btn_pago" name="singlebutton" class="btn btn-block btn-warning">Pagar</button>
-              
+
             </form>
-            
+
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
       </div>

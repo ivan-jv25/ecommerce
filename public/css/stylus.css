@@ -281,13 +281,19 @@ header .hamburguesa:hover img{
   padding-top:60px;
   overflow: hidden;
 }
+
+::-webkit-scrollbar {
+    display: none;
+}
+
 .seccion-02{
   position:fixed;
   left: 55%;
   top: 0;
   bottom: 0;
   right: 0;
-  padding-top: 142px;
+  padding-top: 60px;
+  border-left: solid 1px #ccc;
 }
 
 .table-hover>tbody>tr{
@@ -313,9 +319,11 @@ header .hamburguesa:hover img{
 }
 
 .resultados{
-  position:relative;
+  position:fixed;
   background:#fff;
   padding: 40px;
+  bottom: 0;
+  font-family: monospace;
 }
 
 .fran-supa{
@@ -441,11 +449,26 @@ header .hamburguesa:hover img{
   margin-top: 13px;
   margin-bottom: 0px;
   max-width: 260px;
+  text-transform: lowercase;
+  color: #000;
+}
+
+.detal h5::first-letter{
+  text-transform: uppercase;
+}
+
+#tb_lista_carro{
+  text-transform: lowercase;
 }
 
 p.lead{
   font-size: .9em;
   margin-bottom: 5px;
+  color: #888;
+}
+
+.fa-trash{
+  color: #999;
 }
 
 #lista_col1, #lista_col2{
@@ -524,7 +547,7 @@ p.lead{
   position: absolute;
   right: 30px;
   top: 25px;
-  color: #333;
+  color: #999;
   text-align: center;
   transition: 0.5s ease;
   -o-transition: 0.5s ease;
@@ -532,6 +555,8 @@ p.lead{
   line-height: 30px;
   font-size: 1.3em;
   z-index: 9;
+  font-family: monospace;
+
 }
 
 .listado-productos .prod:hover .precio{
@@ -542,9 +567,13 @@ p.lead{
 }
 
 .carro{
-  height: 46vh;
   overflow: scroll;
-  position: relative;
+  padding-bottom: 313px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 55%;
+  top: 164px;
 }
 
 .carro table{
@@ -553,11 +582,7 @@ p.lead{
   width: 100%;
 }
 
-.carro .cabecera{
-  position: fixed;
-  top: 60px;
-  right: 0;
-  left: 55%;
+.cabecera{
   background: #f7f7f7;
   padding: 0;
   color: #999;
@@ -567,8 +592,8 @@ p.lead{
 .cabecera-tabla{
   padding-left: 35px;
   padding-right: 35px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   background: #eaeaea;
 }
 
@@ -686,6 +711,10 @@ form button.btn-block{
   text-align: center;
 }
 
+#tb_lista_carro tr td:nth-child(2), #tb_lista_carro tr td:nth-child(3){
+  font-family: monospace;
+}
+
 .fa-trash{
   cursor: pointer;
   transition: 0.5s ease;
@@ -704,17 +733,41 @@ form button.btn-block{
   display: none;
 }
 
-@media (min-width: 1800px) {
-  .resultados{
-  }
-  .carro{
-    height: 54vh !important;
+@media (min-width: 1680px) {
+  .resultados form .form-group{
+    margin-bottom: 15px !important;
   }
 }
 
-@media (max-width: 1680px) {
+@media (min-width: 1440px) {
+  .carro table.table tr td:nth-child(3), .carro table.table tr td:nth-child(4){
+    padding-top: 28px;
+  }
+}
+
+@media (max-width: 1362px) {
+  .carro table.table tr td:nth-child(3), .carro table.table tr td:nth-child(4){
+    padding-top: 35px;
+  }
+  .detal h5{
+    max-width: 180px;
+  }
+  #tb_lista_carro tr td:nth-child(1){
+    width: 43%;
+  }
+
+  #tb_lista_carro tr td:nth-child(2), #tb_lista_carro tr td:nth-child(3){
+    width: 15%;
+    text-align: center;
+  }
+  #tb_lista_carro tr td:nth-child(4){
+    width: 10%;
+  }
+  .resultados{
+    padding: 20px;
+  }
   .carro{
-    height: 53vh !important;
+    padding-bottom: 273px;
   }
 }
 
@@ -748,13 +801,17 @@ form button.btn-block{
     right: 0;
     z-index: 9999999;
     background: rgba(255, 255, 255, 1);
-    padding-top: 50px;
+    padding-top: 0px;
   }
   .seccion-01{
     right: 0;
   }
   .listado-productos{
     right: 0;
+  }
+  .carro{
+    left: 0;
+    top: 101px;
   }
   .carro .cabecera{
     top: 0;
@@ -779,16 +836,14 @@ form button.btn-block{
     margin-top: 15px;
   }
   .align-valor{
-    text-align: left;
+    text-align: right;
   }
   .carro table.table tr td:nth-child(3), .carro table.table tr td:nth-child(4){
     padding-top: 25px;
     text-align: left;
   }
-  .resultados{
-  }
   header .logo {
-    max-width: 110px;
+    max-width: 120px;
   }
   header .hamburguesa{
     margin-top: 5px;
@@ -796,20 +851,22 @@ form button.btn-block{
   header .hamburguesa img{
     width: 40px;
   }
-  .resultados .form-group .input-group{
-    margin: auto;
-  }
   .resultados .form-group .input-group input.form-control{
     width: 100%;
   }
   .carro{
-    height: 50vh;
     border-bottom: solid 1px #dcdcdc;
+    max-height: inherit;
+    left: 0;
+    top: 101px;
+    padding: 0px 20px;
+    padding-bottom: 273px;
   }
   .listado-productos .prod{
     text-align: center;
-    padding-bottom: 20px;
     border-bottom: solid 1px #eaeaea;
+    padding: 15px 0px;
+    text-align: center;
   }
   .listado-productos .prod .thumb{
     width: 70px;
@@ -817,6 +874,15 @@ form button.btn-block{
   }
   .detal{
     display: block;
+    margin-left: 0;
+  }
+  .detal h5 {
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+  .detal p.lead{
+    margin-bottom: 11px;
   }
   .listado-productos .prod h3{
     display: block;
@@ -829,24 +895,38 @@ form button.btn-block{
     right: 0;
   }
   .listado-productos .prod .mas{
-    display: none;
+    left:0;
+  }
+  .listado-productos .prod:hover .mas{
+    background: transparent !important;
+    opacity: 0;
+  }
+  .listado-productos .prod:hover .precio{
+    opacity: 1;
   }
   .prod hr{
     margin-bottom: 0;
     padding-bottom: 0;
     margin-top: 30px;
   }
+  .seccion-01{
+    padding-top: 55px;
+  }
+  .seccion-02{
+    overflow: auto;
+    padding-top: 0;
+  }
+  #lista_col1{
+    padding-left: 30px !important;
+  }
+  #lista_col2{
+    padding-right: 30px !important;
+  }
 }
 
 @media (max-width: 600px) {
   .pop-up{
     padding-top: 45%;
-  }
-  .carro{
-    height: inherit;
-  }
-  .resultados{
-    position: relative;
   }
   #menu .formulario{
     width: 80%;
@@ -861,6 +941,11 @@ form button.btn-block{
   .sesion{
     display: none;
   }
+  .carro{
+    top: 95px;
+    padding: 0px;
+    padding-bottom: 390px;
+  }
   .carro img.thumb{
     display: none;
   }
@@ -869,84 +954,73 @@ form button.btn-block{
   }
   .carro table {
     margin-top: 0;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
   }
-  .seccion-02{
-    overflow: auto;
+  .fran-supa .buscador{
+    width: 100%;
   }
-
-}
-
-@media (min-width: 1440px) {
-  .carro{
-    height: 50vh;
+  .fran-supa .filtro{
+    width: 100%;
   }
-  .carro table.table tr td:nth-child(3), .carro table.table tr td:nth-child(4){
-    padding-top: 28px;
+  .fran-supa .filtro select{
+    width: 96%;
+  }
+  .listado-productos{
+    top: 155px;
+  }
+  .fran-supa .buscador form input{
+    padding-left: 23px;
+  }
+  header{
+    padding: 10px 20px;
+  }
+  .titulo-col{
+    font-size: .9em;
+  }
+  #lista_col1, #lista_col2 {
+    padding: 10px !important;
+  }
+  #lista_col1{
+    padding-right: 5px !important;
+  }
+  #lista_col2{
+    padding-left: 5px !important;
   }
   .resultados{
-  }
-}
-
-@media (max-width: 1536px) {
-  .carro {
-    height: 43vh !important;
-  }
-  .resultados{
-    padding: 20px 40px;
-  }
-}
-
-@media (max-width: 1440px) {
-  .carro{
-    height: 49vh !important;
-  }
-}
-
-@media (max-width: 1362px) {
-  .carro{
-    height: 31vh !important;
-  }
-  .carro table.table tr td:nth-child(3), .carro table.table tr td:nth-child(4){
-    padding-top: 35px;
-  }
-  .detal h5{
-    max-width: 180px;
+    right: 0;
+    left: 0;
   }
   #tb_lista_carro tr td:nth-child(1){
-    width: 43%;
+    width: 30%;
   }
-
-  #tb_lista_carro tr td:nth-child(2), #tb_lista_carro tr td:nth-child(3){
-    width: 15%;
-    text-align: center;
+  #tb_lista_carro tr td:nth-child(2) {
+    width: 20%;
   }
-  #tb_lista_carro tr td:nth-child(4){
-    width: 10%;
+  #tb_lista_carro tr td:nth-child(3) {
+    width: 18%;
   }
-}
-
-
-@media (min-width: 1680px) {
-  .resultados form .form-group{
-    margin-bottom: 15px !important;
+  .form-group .btn-group.dcto{
+    margin-left: 0px;
   }
-}
-@media (min-width: 1681px) {
+  .cabecera-tabla{
+    padding-left: 15px;
+    padding-right: 0px;
+  }
+  .cabecera .titulo-col{
+    font-size: 1.2em;
+    padding: 10px 15px;
+  }
+  .carro table.table tbody td:nth-child(1), .carro table.table tbody td:nth-child(1){
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  .seccion-02 .carro .mas, .seccion-02 .carro .menos {
+    margin-top: 6px;
+  }
+  .carro table.table tr td:nth-child(3), .carro table.table tr td:nth-child(4) {
+    padding-top: 16px;
+  }
   .resultados{
-  }
-}
-
-@media (min-width: 2050px) {
-  .carro{
-    height: 52vh;
-  }
-}
-
-@media (min-width: 2800px) {
-  .resultados{
-  }
-  .carro{
-    height: 51vh;
+    padding: 20px 10px;
   }
 }
