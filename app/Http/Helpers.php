@@ -64,7 +64,7 @@ function WEB_SERVICE_PRODUCTOS(){
     
     $respuesta = false;
     try {
-        Producto::truncate();
+        //Producto::truncate();
         $URL = get_url_servidor('productivo').'/api/productos';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('get', $URL, ['headers' => ['Content-Type' => 'application/json','token' => obtener_token() ],]);
@@ -72,14 +72,28 @@ function WEB_SERVICE_PRODUCTOS(){
         $resultado =json_decode($resultado);
 
         foreach ($resultado as $key => $value) {
-            $array_aux = [ 'nombre' => $value->nombre, 'precio_venta' => $value->precio_venta, 'precio_venta_neto' => $value->precio_venta_neto, 'codigo' => $value->codigo, 'id_familia' => $value->id_familia, 'imagen' => ($value->imagen == null) ? 'Sin Imagen' : $value->imagen, 'exento' => ($value->excento === 'true') ? true : false, 'favorito' => false, ];
-            $producto = new Producto($array_aux);
-            $producto->save();
+            $existe = existe_producto($value->codigo);
+            if($existe == -1){
+                $array_aux = [ 'nombre' => $value->nombre, 'precio_venta' => $value->precio_venta, 'precio_venta_neto' => $value->precio_venta_neto, 'codigo' => $value->codigo, 'id_familia' => $value->id_familia, 'imagen' => ($value->imagen == null) ? 'Sin Imagen' : $value->imagen, 'exento' => ($value->excento === 'true') ? true : false, 'favorito' => false, ];
+                $producto = new Producto($array_aux);
+                $producto->save();
+            }else{
+                $producto = Producto::find($existe);
+
+                $producto->nombre            = $value->nombre;
+                $producto->precio_venta      = $value->precio_venta;
+                $producto->precio_venta_neto = $value->precio_venta_neto;
+                $producto->id_familia        = $value->id_familia;
+                $producto->exento            = ($value->excento === 'true') ? true : false;
+                $producto->save();
+            }
+            
         }
         $respuesta = true;
         
     } catch (\Throwable $th) {
         //throw $th;
+        //dd($th);
     }
     return $respuesta;
 }
@@ -87,22 +101,24 @@ function WEB_SERVICE_PRODUCTOS(){
 function WEB_SERVICE_BODEGA(){
     $respuesta = false;
     try {
-        Bodega::truncate();
+        //Bodega::truncate();
         $URL = get_url_servidor('productivo').'/api/bodega';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('get', $URL, ['headers' => ['Content-Type' => 'application/json','token' => obtener_token() ],]);
         $resultado = $response->getBody()->getContents();
         $resultado =json_decode($resultado);
         foreach ($resultado as $key => $value) {
-            
-            $array_aux = [
-                'id' =>$value->id,
-                'nombre' =>$value->descripcion,
-                'estado' =>1,
-            ];
-         
-            $bodega = new Bodega($array_aux);
-            $bodega->save();
+
+            $existe = existe_registro_bodega($value->id);
+            if(!$existe){
+                $array_aux = ['id' =>$value->id,'nombre' =>$value->descripcion,'estado' =>1,];
+                $bodega = new Bodega($array_aux);
+                $bodega->save();
+            }else{
+                $bodega = Bodega::find($value->id);
+                $bodega->nombre = $value->descripcion;
+                $bodega->save();
+            }
         }
         $respuesta = true;
     } catch (\Throwable $th) {
@@ -181,18 +197,25 @@ function WEB_SERVICE_SUBFAMILIA(){
         $resultado = $response->getBody()->getContents();
         $resultado =json_decode($resultado);
         foreach ($resultado as $key => $value) {
-            
-            $array_aux =[
-                'id'=>$value->id,
-                'nombre'=>$value->nombre,
-                'id_familia'=>$value->id_familia,
-            ];
-            $subfamilia = new SubFamilia($array_aux);
-            $subfamilia->save();
+
+            $existe = existe_registro_subfamilia($value->id);
+            if(!$existe){
+                $array_aux =[ 'id'=>$value->id, 'nombre'=>$value->nombre, 'id_familia'=>$value->id_familia, ];
+                $subfamilia = new SubFamilia($array_aux);
+                $subfamilia->save();
+            }else{
+                $subfamilia = SubFamilia::find($value->id);
+                
+
+                $subfamilia->nombre     = $value->nombre;
+                $subfamilia->id_familia = $value->id_familia;
+                $subfamilia->save();
+            }
         }
         $respuesta = true;
     } catch (\Throwable $th) {
         //throw $th;
+       
         $respuesta = false;
     }
     return $respuesta;
@@ -873,3 +896,19 @@ function push_notification_android2($device_id,$title,$message,$data){
     
     $resultado =json_decode($resultado);
 }
+
+function existe_producto($codigo){
+    $existe = DB::table('productos')->select('id')->where('codigo',$codigo)->first();
+    return ($existe == null) ? -1 : $existe->id;
+}
+
+function existe_registro_bodega($id){
+    $existe = DB::table('bodegas')->select('id')->where('id',$id)->first();
+    return ($existe == null) ?false : true;
+}
+
+function existe_registro_subfamilia($id){
+    $existe = DB::table('sub_familias')->select('id')->where('id',$id)->first();
+    return ($existe == null) ?false : true;
+}
+
