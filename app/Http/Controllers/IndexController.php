@@ -833,7 +833,7 @@ class IndexController extends Controller
         $file   = $request->file('filebutton');
         $nombre = $file->getClientOriginalName();
         
-       \Storage:: disk('public')->put('/logo/logo.png',  \File::get($file));
+       \Storage:: disk('public')->put('\logo\logo.png',  \File::get($file));
 
        return redirect()->route('home');
     }

@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <img src="img/logo/logo.png" id="img1" class="logo" alt="Logo Appnet" style="max-width: 50%;">
+                        <img src="img/logo/logo.png" id="img1" class="logo" alt="Logo Appnet" style="max-width: 50%;" >
                     </div>
                     
 
