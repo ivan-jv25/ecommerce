@@ -1,5 +1,5 @@
 <header>
-      <img src="img/logo.png" class="logo" alt="Logo Appnet">
+      <img src="img/logo/logo.png" class="logo" alt="Logo Appnet">
       @guest
       <div class="sesion"><a onclick="abrir_registrarte()"><i class="fa fa-user fa-lg"></i> Registrate</a></div>
       @else
