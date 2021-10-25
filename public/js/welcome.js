@@ -559,7 +559,7 @@ function formatonumero(numero){
 }
 
 function seleccion_bodega(){
-    if(lista_bodega.length < 1){
+    if(lista_bodega.length != 0){
         mostrar_bodegas2();
         $("#myModalBodegaDefecto").modal();
     }
