@@ -559,8 +559,10 @@ function formatonumero(numero){
 }
 
 function seleccion_bodega(){
-    mostrar_bodegas2()
-    $("#myModalBodegaDefecto").modal()
+    if(lista_bodega.length < 1){
+        mostrar_bodegas2();
+        $("#myModalBodegaDefecto").modal();
+    }
 }
 
 function bodega_defecto(){
