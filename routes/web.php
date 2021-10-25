@@ -18,12 +18,17 @@ Auth::routes();
 
 
 Route::group(['middleware' => 'auth'], function () {
+
     Route::post('Generar/Venta/', 'IndexController@genera_venta')->name('generar.venta');
     Route::get('Ajax/Obtener/Empresa', 'IndexController@get_data_empresa')->name('ajax.obtener.empresa');
+
     Route::group(['middleware' => 'admin'], function () {
+
         Route::get('/home', 'HomeController@index')->name('home');
-        Route::get('Admin/Panel/Carga', function () { return view('admin.panel_carga');})->name('admin.panel.carga');
-        Route::get('Admin/Panel/Ventas', function () { return view('admin.ventas');})->name('admin.ventas');
+
+        Route::get('Admin/Panel/Carga', 'IndexController@admin_panel_carga')->name('admin.panel.carga');
+        Route::get('Admin/Panel/Ventas', 'IndexController@admin_panel_venta')->name('admin.ventas');
+
         Route::post('Ajax/Obtener/Token', 'IndexController@obtener_token')->name('ajax.obtener.token');
         Route::get('Ajax/Obtener/Carga', 'IndexController@carga_data_guardada')->name('ajax.obtener.carga');
         Route::get('Ajax/Obtener/Carga/Productos', 'IndexController@obtener_productos')->name('ajax.obtener.carga.productos');

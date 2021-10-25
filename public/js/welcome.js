@@ -171,7 +171,6 @@ function add_carrito(producto){
     }
 
     toastr.info("Producto :"+producto.nombre+". Agregado ", '', {timeOut: 1000})
-    document.getElementById('dv_carrito').innerHTML= lista_carro.length;
     mostrar_lista_carro();
     calculo_monto();
 }
@@ -225,6 +224,8 @@ function mostrar_lista_carro(){
     set_storage();
     document.getElementById('tb_lista_carro').innerHTML = lista;
     document.getElementById('tb_lista_carro_datos').innerHTML = lista_data;
+
+    document.getElementById('dv_carrito').innerHTML= lista_carro.length;
 
     lista_carrito_bodega2(false)
 }

@@ -18,6 +18,12 @@ use Yajra\Datatables\Datatables;
 
 class IndexController extends Controller
 {
+    public function admin_panel_carga(){
+        return view('admin.panel_carga');
+    }
+    public function admin_panel_venta(){
+        return view('admin.ventas');
+    }
     public function index(Request $request){
         $token_venta = ($request->TokenVenta == null) ? 0 : $request->TokenVenta;
         $pagado = ($request->pago == null) ? 0 : $request->pago;
@@ -821,9 +827,6 @@ class IndexController extends Controller
         $datos = (array)json_decode($datos);
         return $datos;
     }
-
-
-
 
 
     private function existe_empresa(){
