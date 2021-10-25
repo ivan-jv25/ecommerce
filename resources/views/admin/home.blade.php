@@ -3,6 +3,44 @@
 @section('content')
 
 
+<form action="{{ route('ajax.carga.datos.logo') }}" method="POST" accept-charset="utf-8" enctype="multipart/form-data" autocomplete="off">
+@csrf
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Cargar Logo eCommerce</div>
+
+                <div class="card-body">
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-6 control-label" for="filebutton">Seleccion de Logo</label>
+                            <div class="col-md-6">
+                                <input id="filebutton" name="filebutton" class="input-file" type="file" accept="image/x-png">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            
+                            <div class="col-md-4">
+                                <button id="singlebutton" name="singlebutton" class="btn btn-primary">Cargar Logo</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="img/logo.png" id="img1" class="logo" alt="Logo Appnet" style="max-width: 50%;">
+                    </div>
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+<hr>
+
 <div class="container">
     <div class="row justify-content">
         <div class="col-md-6">
@@ -196,6 +234,8 @@
     </div>
 </div>
 
+
+
 <div class="container" hidden>
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -217,23 +257,16 @@
 </div>
 
 <script>
-    var token = '{{csrf_token()}}';
-    var URL_TEST_FLOW        = "{{ route('ajax.generar.pago.flow') }}";
-    var URL_CARGA_DATOS_FLOW = "{{ route('ajax.carga.datos.flow') }}";
-    var URL_GET_DATOS_FLOW   = "{{ route('ajax.get.datos.flow') }}";
-
-    var URL_CARGA_CORREO   = "{{ route('ajax.carga.correo') }}";
-    var URL_GET_CORREO   = "{{ route('ajax.get.correo') }}";
-
+    var token                          = '{{csrf_token()}}';
+    var URL_TEST_FLOW                  = "{{ route('ajax.generar.pago.flow') }}";
+    var URL_CARGA_DATOS_FLOW           = "{{ route('ajax.carga.datos.flow') }}";
+    var URL_GET_DATOS_FLOW             = "{{ route('ajax.get.datos.flow') }}";
+    var URL_CARGA_CORREO               = "{{ route('ajax.carga.correo') }}";
+    var URL_GET_CORREO                 = "{{ route('ajax.get.correo') }}";
     var URL_CARGA_CONFIGURACION_CORREO = "{{ route('ajax.configuracion.carga.correo') }}";
-    var URL_GET_CONFIGURACION_CORREO = "{{ route('ajax.get.correo.configuracion') }}";
-
-
-    var URL_CARGA_DATOS_EMPRESA = "{{ route('ajax.carga.datos.empresa') }}";
-    var URL_GET_DATOS_EMPRESA = "{{ route('ajax.obtener.empresa') }}";
-
-
-    
+    var URL_GET_CONFIGURACION_CORREO   = "{{ route('ajax.get.correo.configuracion') }}";
+    var URL_CARGA_DATOS_EMPRESA        = "{{ route('ajax.carga.datos.empresa') }}";
+    var URL_GET_DATOS_EMPRESA          = "{{ route('ajax.obtener.empresa') }}";
 
     $(document).ready(function(){
         get_datos_flow();
@@ -241,6 +274,21 @@
         get_correos_configuracion();
         get_datos_empresa();
     });
+
+    function init() {
+        var inputFile = document.getElementById('filebutton');
+        inputFile.addEventListener('change', mostrarImagen, false);
+    }
+    function mostrarImagen(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            var img = document.getElementById('img1');
+            img.src= event.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+    window.addEventListener('load', init, false);
     
 </script>
 <script src="{{ asset('js/admin_panel_carga.js') }}"></script>

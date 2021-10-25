@@ -51,6 +51,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('Ajax/Get/Correo/Configuracion', 'IndexController@get_configuracion_correo')->name('ajax.get.correo.configuracion');
         Route::post('Ajax/Carga/Datos/Empresa', 'IndexController@carga_datos_empresa')->name('ajax.carga.datos.empresa');
 
+        Route::post('Ajax/Carga/Datos/Logo', 'IndexController@carga_logo')->name('ajax.carga.datos.logo');
+
         /*TEST FLOW*/
         Route::post('Ajax/Carga/Datos/FLOW', 'IndexController@carga_datos_flow')->name('ajax.carga.datos.flow');
         Route::get('Ajax/Get/Datos/FLOW', 'IndexController@get_datos_flow')->name('ajax.get.datos.flow');

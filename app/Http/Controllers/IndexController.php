@@ -828,6 +828,16 @@ class IndexController extends Controller
         return $datos;
     }
 
+    public function carga_logo(Request $request){
+
+        $file   = $request->file('filebutton');
+        $nombre = $file->getClientOriginalName();
+        
+       \Storage:: disk('public')->put('logo.png',  \File::get($file));
+
+       return redirect()->route('home');
+    }
+
 
     private function existe_empresa(){
         return existe_credenciales();
