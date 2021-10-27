@@ -9,20 +9,20 @@
                 </div>
 
                 <div class="card-body">
-
-                    <div class="col-md-4 m-auto">
+                  <div class="row">
+                    <div class="col-3">
                         <div class="form-group">
                             <label for="sel1">Desde :</label>
                             <input id="desde" name="desde" type="date" class="form-control input-md" value="{{getPrimerUltimoFecha()['primero']}}" onchange="ventas_totales();">
                         </div>
                     </div>
-                    <div class="col-md-4 m-auto">
+                    <div class="col-3">
                         <div class="form-group">
                             <label for="sel1">Hasta :</label>
                             <input id="hasta" name="hasta" type="date" class="form-control input-md" value="{{getPrimerUltimoFecha()['ultimo']}}" onchange="ventas_totales();">
                         </div>
                     </div>
-                    <div class="col-md-4 m-auto">
+                    <div class="col-3">
                         <div class="form-group">
                             <label for="sel1">Tipo de Ventas :</label>
                             <select class="form-control" id="tipo_venta" name="tipo_venta" onchange="ventas_totales();">
@@ -32,7 +32,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4 m-auto">
+                    <div class="col-3">
                         <div class="form-group">
                             <label for="sel1">Tipo de Recepción :</label>
                             <select class="form-control" id="tipo_recepcion" name="tipo_recepcion" onchange="ventas_totales();">
@@ -42,6 +42,9 @@
                             </select>
                         </div>
                     </div>
+                  </div>
+
+
 
                 </div>
             </div>
