@@ -6,8 +6,8 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <table  class="table table-bordered" style="width:100%" border ='1' id="table_panel_producto">
-                    <thead class="thead-dark">
+                <table  class="table table-striped" style="width:100%;" border ='0' id="table_panel_producto">
+                    <thead class="thead-clear">
                     <tr>
                         <th>#</th>
                         <th>Producto</th>
@@ -19,12 +19,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                   
+
                     </tbody>
                 </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

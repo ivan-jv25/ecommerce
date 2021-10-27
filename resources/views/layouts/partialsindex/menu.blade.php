@@ -16,7 +16,7 @@
             <div class="panel-body">
               <form class="formulario" method="POST" action="{{ route('login') }}">
               @csrf
-              <label for="usuario">Nombe</label>
+              <label for="usuario">Correo</label>
               <input type="text" class="form-control" name="email" value="" placeholder="Nombre usuario" required>
               <label for="contraseña">Contraseña</label>
               <input type="password" class="form-control" name="password" value="" placeholder="Contraseña" required>
@@ -63,7 +63,7 @@
                 <input type="text" class="form-control" name="comuna" value="" placeholder="Comuna" required>
                 <label for="usuario">Ciudad</label>
                 <input type="text" class="form-control" name="ciudad" value="" placeholder="Ciudad" required>
-                
+
                 <button type="submit" class="boton"  name="button">Registrar</button>
               </form>
             </div>
@@ -80,9 +80,9 @@
               </a>
             </h4>
           </div>
-        </div>  
+        </div>
         @endif
-        
+
 
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingOne">

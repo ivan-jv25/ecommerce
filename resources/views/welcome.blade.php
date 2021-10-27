@@ -49,34 +49,14 @@
 
           <div class="titulo-col">Destacados</div>
 
-          <div id="lista_col1">
-            <div class="prod">
-              <img class="thumb" src="img/productos/k2mini.png" alt="">
-              <div class="detal">
-                <h3>K2 MINI</h3>
-                <div class="nuevo">A Pedido</div>
-              </div>
-              <div class="mas"><i class="fa fa-plus fa-lg"></i></div>
-              <div class="precio">$999.999</div>
-            </div>
-          </div>
+          <div id="lista_col1"></div>
         </div>
 
         <div class="col-2">
 
           <div class="titulo-col">Todos los productos</div>
 
-          <div id="lista_col2">
-            <div class="prod">
-              <img class="thumb" src="img/productos/t2lite.png" alt="">
-              <div class="detal">
-                <h3>T2 LITE</h3>
-                <div class="nuevo">en Stock</div>
-              </div>
-              <div class="mas"><i class="fa fa-plus fa-lg"></i></div>
-              <div class="precio">$999.999</div>
-            </div>
-          </div>
+          <div id="lista_col2"></div>
 
         </div>
 
