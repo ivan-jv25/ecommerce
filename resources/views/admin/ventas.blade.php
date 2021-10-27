@@ -7,7 +7,6 @@
                 <div class="card-header">
                     Listado de Ventas
                 </div>
-
                 <div class="card-body">
                   <div class="row">
                     <div class="col-3">
@@ -43,13 +42,8 @@
                         </div>
                     </div>
                   </div>
-
-
-
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>

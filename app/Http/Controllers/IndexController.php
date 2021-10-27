@@ -31,7 +31,7 @@ class IndexController extends Controller
         return view('welcome')->with('TokenVenta',$token_venta)->with('pagado',$pagado);
     }
     public function registro_usuario(Request $request){
-        
+
 
         $nombre = (string) $request->nombre;
         $correo = (string) $request->correo;
@@ -46,7 +46,7 @@ class IndexController extends Controller
         $ciudad = (string) $request->ciudad;
 
         $empresa = new Empresa();
-        
+
         $empresa->rut          = $rut_empresa;
         $empresa->razon_social = $razon_social;
         $empresa->giro         = $giro;
@@ -80,7 +80,7 @@ class IndexController extends Controller
                     'Telefono'    => $telefono,
                 ]
             ];
-        
+
             $envio_cliente = json_encode($envio_cliente);
             WEB_SERVICE_CLIENTE($envio_cliente);
 
@@ -89,8 +89,8 @@ class IndexController extends Controller
             send_mail($correo,'Bienveido a eCommerce',$mensaje);
 
         }
-        
-        
+
+
         return redirect()->route('welcome');
 
 
@@ -99,22 +99,22 @@ class IndexController extends Controller
     public function obtener_token(Request $request){
         $existe_empresa = $this->existe_empresa();
         if (!$existe_empresa) {
-            
+
             $rut_empresa = $request->rut_empresa;
             $username    = $request->username;
             $password    = $request->password;
-            
+
             $login=(object)[
                 'empresa'  => $rut_empresa,
                 'username' => $username,
                 'password' => $password,
             ];
-            
+
             guardar_credenciales($login);
         }else{
             $login = json_decode(obtener_credenciales());
         }
-        
+
         WEB_SERVICE_LOGIN($login);
 
         return [
@@ -152,11 +152,11 @@ class IndexController extends Controller
                 ['Tipo' => 'FormaPago', 'Estado' => null, 'id'=>'td_carga_formapago'],
             ],
         ];
-        
+
 
 
         return $respuesta;
-        
+
     }
 
     public function obtener_productos(){
@@ -218,14 +218,14 @@ class IndexController extends Controller
 
     public function genera_venta(Request $request){
 
-       
-        
+
+
         $id_empresa = Auth::user()->id_empresa;
         $email      = Auth::user()->email;
         $empresa    = get_empresa($id_empresa);
         $dato       = 0;
         $dataForm   = $request->all();
-        
+
         $array_venta=[
             'rut'            => $empresa->rut,
             'folio'          => $dato,
@@ -249,13 +249,13 @@ class IndexController extends Controller
         $venta->save();
         $id_venta = $venta->id;
 
-        for ($i=0; $i < count($dataForm['item']); $i++) { 
+        for ($i=0; $i < count($dataForm['item']); $i++) {
             $item            = (int)$dataForm['item'][$i];
             $codigo          = (string)$dataForm['codigo'][$i];
             $cantidad        = (int)$dataForm['cantidad'][$i];
             $precio_unitario = (int)$dataForm['precio_unitario'][$i];
             $precio_total    = (int)$dataForm['precio_total'][$i];
-            
+
             $detalle =[
                 'id_venta'        => $id_venta,
                 'item'            => $item,
@@ -263,7 +263,7 @@ class IndexController extends Controller
                 'nombre'          => $codigo,
                 'cantidad'        => $cantidad,
                 'valor_producto'  => $precio_unitario,
-                'total'           => $precio_total, 'valor_descuento' => 0, 
+                'total'           => $precio_total, 'valor_descuento' => 0,
             ];
             $dv = new DetalleVenta($detalle);
             $dv->save();
@@ -284,17 +284,17 @@ class IndexController extends Controller
                 ];
 
                 $respuesta = $this->pago_flow($datos);
-                
-                DB::table('venta_flows')->insert( ['id_venta' => $id_venta, 'token' => $respuesta['token'],'url' => $respuesta['url'],'flowOrder' => $respuesta['flowOrder'],'estado' => 1 ] ); 
-                
+
+                DB::table('venta_flows')->insert( ['id_venta' => $id_venta, 'token' => $respuesta['token'],'url' => $respuesta['url'],'flowOrder' => $respuesta['flowOrder'],'estado' => 1 ] );
+
                 break;
-            
+
             default:
                 # code...
                 break;
         }
 
-        
+
 
         return redirect()->route('welcome', ['TokenVenta' => $Base64]);
 
@@ -303,7 +303,7 @@ class IndexController extends Controller
     public function ajax_ventas_totales(Request $request){
         $tipo_venta = $request->tipo_venta;
         $tipo_recepcion = $request->tipo_recepcion;
-        
+
         $desde = $request->desde;
         $hasta = $request->hasta;
 
@@ -322,7 +322,7 @@ class IndexController extends Controller
         ->editColumn('descuento', function ($libro) { return "$" . number_format($libro->descuento, 0, ",", "."); })
         ->editColumn('iva', function ($libro) { return "$" . number_format($libro->iva, 0, ",", "."); })
         ->editColumn('total_venta', function ($libro) { return "$" . number_format($libro->total_venta, 0, ",", "."); })
-        ->editColumn('accion', function ($libro) { return '<a href="'. route('generar.pdf',['TokenVenta'=> base64_encode($libro->id)]) .'" target="_blank" class="btn btn-block btn-warning">Ver Ticket</a>'; })
+        ->editColumn('accion', function ($libro) { return '<a href="'. route('generar.pdf',['TokenVenta'=> base64_encode($libro->id)]) .'" target="_blank" class="btn btn-block btn-secondary">Ver Ticket</a>'; })
         ->rawColumns(['created_at', 'neto', 'neto_exento', 'descuento', 'iva', 'total_venta', 'accion'])
         ->make(true);
 
@@ -331,7 +331,7 @@ class IndexController extends Controller
 
     public function ajax_ventas_cliente(Request $request){
 
-        
+
 
         $id_empresa = Auth::user()->id_empresa;
         $empresa = get_empresa($id_empresa);
@@ -339,8 +339,8 @@ class IndexController extends Controller
         $desde = $request->desde;
         $hasta = $request->hasta;
 
-        
-        
+
+
         $libro = DB::table('ventas')
         ->join('documento','documento.tipo','=','ventas.tipo_documento')
         ->select('ventas.id','ventas.rut','ventas.folio','ventas.id_direccion','ventas.tipo_entrega','ventas.descuento','ventas.neto','ventas.neto_exento','ventas.iva','ventas.total_venta','documento.nombre as tipo_documento','ventas.forma_pago','ventas.id_bodega','ventas.estado_pago','ventas.id_formapago','ventas.codigo_pago','ventas.created_at','ventas.updated_at')
@@ -363,7 +363,7 @@ class IndexController extends Controller
     }
 
     public function lista_categoria(){
-        
+
         $categoria = DB::table('sub_familias')->select('id','nombre','estado')->where('estado',1)->get();
         return $categoria;
     }
@@ -376,17 +376,17 @@ class IndexController extends Controller
 
         return Datatables::of($producto)
         ->editColumn('precio_venta', function ($producto) { return "$" . number_format($producto->precio_venta, 0, ",", "."); })
-        ->editColumn('favorito', function ($producto) { 
+        ->editColumn('favorito', function ($producto) {
             $favorito = ($producto->favorito == 1) ? 'SI':'NO';
-            return '<a onclick="cambiar_favorito_producto('.$producto->id.')" class="btn btn-primary btn-warning">'.$favorito.'</a>'; 
+            return '<a onclick="cambiar_favorito_producto('.$producto->id.')" class="btn btn-primary btn-warning">'.$favorito.'</a>';
         })
-        ->editColumn('estado', function ($producto) { 
+        ->editColumn('estado', function ($producto) {
             $estado = ($producto->estado == 1) ? 'SI':'NO';
-            return '<a onclick="cambiar_estado_producto('.$producto->id.')" class="btn btn-primary btn-warning">'.$estado.'</a>'; 
+            return '<a onclick="cambiar_estado_producto('.$producto->id.')" class="btn btn-primary btn-warning">'.$estado.'</a>';
         })
         ->rawColumns(['precio_venta', 'favorito', 'estado'])
         ->make(true);
-        
+
 
     }
 
@@ -396,13 +396,13 @@ class IndexController extends Controller
         $producto = DB::table('sub_familias')->select('id','nombre','estado');
 
         return Datatables::of($producto)
-        ->editColumn('estado', function ($producto) { 
+        ->editColumn('estado', function ($producto) {
             $estado = ($producto->estado == 1) ? 'SI':'NO';
-            return '<a onclick="cambiar_estado_subfamilia('.$producto->id.')" class="btn btn-primary btn-warning">'.$estado.'</a>'; 
+            return '<a onclick="cambiar_estado_subfamilia('.$producto->id.')" class="btn btn-primary btn-warning">'.$estado.'</a>';
         })
         ->rawColumns([ 'estado'])
         ->make(true);
-        
+
 
     }
 
@@ -411,9 +411,9 @@ class IndexController extends Controller
         $bodega = DB::table('bodegas')->select('id','nombre','estado');
 
         return Datatables::of($bodega)
-        ->editColumn('estado', function ($bodega) { 
+        ->editColumn('estado', function ($bodega) {
             $estado = ($bodega->estado == 1) ? 'SI':'NO';
-            return '<a onclick="cambiar_estado_bodega('.$bodega->id.')" class="btn btn-primary btn-warning">'.$estado.'</a>'; 
+            return '<a onclick="cambiar_estado_bodega('.$bodega->id.')" class="btn btn-primary btn-warning">'.$estado.'</a>';
         })
         ->rawColumns([ 'estado'])
         ->make(true);
@@ -491,34 +491,34 @@ class IndexController extends Controller
         $id_empresa = Auth::user()->id_empresa;
         $empresa    = get_empresa($id_empresa);
         $empresa->correo = Auth::user()->email;
-       
+
 
         $pago = [ 'Flow' => null, 'Match' => null, ];
         $direccion = null;
-        
+
 
         $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at','observacion')->where('id',$id_venta)->first();
-        
+
         $detalle   = DB::table('detalle_ventas')->select('id', 'id_venta', 'item', 'codigo_producto', 'nombre', 'cantidad', 'valor_producto', 'total', 'valor_descuento',)->where('id_venta',$id_venta)->get();
 
-        
+
 
         if($venta->id_direccion != 0){
             $direccion = DB::table('direccions')->select()->where('id',$venta->id_direccion)->first();
         }
-        
+
 
         switch ($venta->forma_pago) {
             case 'flow':
                 $pago_flow = DB::table('venta_flows')->select('url','token','flowOrder','estado')->where('id_venta',$id_venta)->first();
                 $pago['Flow'] = $pago_flow;
                 break;
-            
+
             default:
                 # code...
                 break;
         }
-        
+
         $respuesta = [
             'Venta'     => $venta,
             'Detalle'   => $detalle,
@@ -552,51 +552,51 @@ class IndexController extends Controller
                 $token = $venta_flow->token;
 
                 $estado_flow = $this->pago_flow_status($token);
-                
+
 
                 $respuesta['estado'] = true;
                 $respuesta['pago']['Flow'] = $estado_flow;
 
 
                 //DB::table('venta_flows')->where('id', $venta_flow->id)->update(['estado' => $estado_flow->status]);
-                
+
 
 
                 break;
-            
+
             default:
                 # code...
                 break;
         }
 
-       
+
 
         return $respuesta;
 
     }
 
     public function generar_pdf(Request $request){
-        
+
         $token    = $request->TokenVenta;
         $id_venta = (int)base64_decode($token);
 
 
-        
-        
+
+
 
         if($id_venta == 0){
             dd("PDF no Existe");
         }
-        
-        
+
+
 
         $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at')->where('id',$id_venta)->first();
-        
+
         $detalle   = DB::table('detalle_ventas')->select('id', 'id_venta', 'item', 'codigo_producto', 'nombre', 'cantidad', 'valor_producto', 'total', 'valor_descuento',)->where('id_venta',$id_venta)->get();
 
 
 
-        
+
 
         $pdf = PDF::loadView('pdf.ticket', compact('venta', 'detalle'), ['name' => 'data']);
         $pdf->setPaper('A6', 'legal');
@@ -627,7 +627,7 @@ class IndexController extends Controller
             'subject'         => $comentario,
 
         ];
-        
+
         return (array)FLOW_PAY_CREATE($datos);
     }
 
@@ -636,7 +636,7 @@ class IndexController extends Controller
             'apiKey'        => API_KEY_FLOW(),
             'token'          => 'EC31F74F9D6175FE01EFDC34E9686D69558CEF4D',
         ];
-        
+
         $respuesta =FLOW_PAY_STATUS($datos);
         dd($respuesta->status,$respuesta);
     }
@@ -671,7 +671,7 @@ class IndexController extends Controller
             }
 
             $respuesta['respuesta'] = true;
-            
+
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -679,7 +679,7 @@ class IndexController extends Controller
     }
 
     public function get_datos_flow(){
-        
+
         $API_KEY_FLOW    = DB::table('tokens')->select('token')->where('tipo','API_KEY_FLOW')->first();
         $SECRET_KEY_FLOW = DB::table('tokens')->select('token')->where('tipo','SECRET_KEY_FLOW')->first();
 
@@ -756,10 +756,10 @@ class IndexController extends Controller
     }
 
     public function guardar_direccion(Request $request){
-        
+
         $respuesta['respuesta'] = false;
         $respuesta['id'] = 0;
-        
+
         $id_empresa = Auth::user()->id_empresa;
         $empresa    = get_empresa($id_empresa);
 
@@ -786,9 +786,9 @@ class IndexController extends Controller
         $lista = DB::table('direccions')->select('id','direccion','ciudad','comuna');
 
         return Datatables::of($lista)
-        ->editColumn('accion', function ($lista) { 
-            
-            return '<a class="btn btn-primary btn-warning" onclick="seleccion_direccion('.$lista->id.')">Seleccionar</a>'; 
+        ->editColumn('accion', function ($lista) {
+
+            return '<a class="btn btn-primary btn-warning" onclick="seleccion_direccion('.$lista->id.')">Seleccionar</a>';
         })
         ->rawColumns([ 'accion'])
         ->make(true);
@@ -832,7 +832,7 @@ class IndexController extends Controller
 
         $file   = $request->file('filebutton');
         $nombre = $file->getClientOriginalName();
-        
+
        \Storage:: disk('public')->put('\logo\logo.png',  \File::get($file));
 
        return redirect()->route('home');
@@ -847,7 +847,7 @@ class IndexController extends Controller
         $token_sesion=$data['token'];
         $return_url= route("ajax.generar.pago.flow.confirmacion",['_token'=>$token_sesion, 'TokenVenta'=>$data['TokenVenta']]);
         $return_url_confirmacion =  route("api.recibe.informacion.flow");
-        
+
         $datos = [
             'currency'        => 'CLP',
             'amount'          => $data['amount'],
@@ -858,7 +858,7 @@ class IndexController extends Controller
             'subject'         => $data['subject'],
 
         ];
-        
+
         return (array)FLOW_PAY_CREATE($datos);
 
     }
@@ -868,7 +868,7 @@ class IndexController extends Controller
             'apiKey' => API_KEY_FLOW(),
             'token'  => $token,
         ];
-        
+
         $respuesta = FLOW_PAY_STATUS($datos);
         return $respuesta;
     }
@@ -921,7 +921,7 @@ class IndexController extends Controller
               font-family: "Titillium Web Regular";
               src: url(fonts/TitilliumWeb-Regular.ttf);
             }
-      
+
             body{
               background: #F7F7F7;
               font-size: 12px;
@@ -1041,8 +1041,7 @@ class IndexController extends Controller
           </div>
         </body>
       </html>
-      
+
         ';
     }
 }
-
