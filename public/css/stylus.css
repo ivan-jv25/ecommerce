@@ -578,6 +578,7 @@ p.lead{
   float: left;
   margin: 0px;
   border-right:solid 1px #eaeaea;
+  height: 80px;
 }
 
 .listado-productos .prod h3{
@@ -870,6 +871,9 @@ form button.btn-block{
 }
 
 @media (max-width: 1024px) {
+  .detal h5 {
+    max-width: 215px;
+  }
   .cerrar-carro{
     display: block;
   }
@@ -1023,6 +1027,19 @@ form button.btn-block{
 }
 
 @media (max-width: 600px) {
+  body.unacol .seccion-01 .col-2 .prod{
+    width: 80%;
+    margin: auto;
+    margin-bottom: 10px;
+  }
+
+  body.unacol #lista_col2{
+    text-align: center;
+  }
+
+  body.unacol .seccion-01 .col-2 .prod:nth-child(n+1) {
+    margin-left: 0%;
+  }
   .pop-up{
     padding-top: 45%;
   }
