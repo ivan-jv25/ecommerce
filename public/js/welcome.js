@@ -49,7 +49,11 @@ function carga_productos_favorito(){
         url: URL_PRODUCTOS_FAVORITO,
         success: function(respuesta) {
             lista_productos_favorito = respuesta;
-            mostrar_lista_producto_favorito(respuesta);
+            if(lista_productos_favorito.length != 0){
+                $("body").removeClass("unacol");
+                mostrar_lista_producto_favorito(respuesta);
+            }
+            
         },
         error: function() {
             console.log("No se ha podido obtener la información");
@@ -112,10 +116,10 @@ function mostrar_lista_producto(lista){
     for (let i = 0; i < lista.length; i++) {
         const element = lista[i];
 
-        let imagen = (element.imagen == 'Sin Imagen') ? 'img/productos/t2lite.png' : element.imagen;
+        let imagen = (element.imagen == 'Sin Imagen') ? 'img/no-imagen.png' : element.imagen;
 
         lista_productos +='<div class="prod">'+
-        '<img class="thumb" async  src="'+imagen+'" alt="">'+
+        '<img class="thumb" async  src="'+imagen+'" alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
         '<div class="detal">'+
         '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
         '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo+'</p>'+
@@ -132,10 +136,10 @@ function mostrar_lista_producto_favorito(lista){
     let lista_productos = '';
     for (let i = 0; i < lista.length; i++) {
         const element = lista[i];
-        let imagen = (element.imagen == 'Sin Imagen') ? 'img/productos/t2lite.png' : element.imagen;
+        let imagen = (element.imagen == 'Sin Imagen') ? 'img/no-imagen.png' : element.imagen;
 
         lista_productos +='<div class="prod">'+
-        '<img class="thumb" async  src="'+imagen+'" alt="">'+
+        '<img class="thumb" async  src="'+imagen+'" alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
         '<div class="detal">'+
         '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
         '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo+'</p>'+
@@ -738,3 +742,9 @@ function cerrar_todo(){
     $("#collapseTwo").removeClass("in");
     document.getElementById('collapseTwo').setAttribute("aria-expanded", false)
 }
+
+function imgError(){
+    console.log("hola");
+}
+
+
