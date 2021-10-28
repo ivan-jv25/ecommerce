@@ -1,3 +1,20 @@
+body.unacol  .seccion-01 .col-1{
+  display: none;
+}
+
+body.unacol  .seccion-01 .col-2{
+  left: 0%;
+}
+
+body.unacol  .seccion-01 .col-2 .prod{
+  width: 48%;
+  display: inline-block;
+}
+
+body.unacol  .seccion-01 .col-2 .prod:nth-child(n+1){
+  margin-left: 2%;
+}
+
 #app nav a.navbar-brand{
   margin-left: 0px;
   margin-right: 80px !important;
