@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('Ajax/Get/Correo', 'IndexController@get_correo_aviso')->name('ajax.get.correo');
         Route::post('Ajax/Carga/Configuracion/Correo', 'IndexController@carga_configuracion_correo')->name('ajax.configuracion.carga.correo');
         Route::get('Ajax/Get/Correo/Configuracion', 'IndexController@get_configuracion_correo')->name('ajax.get.correo.configuracion');
+        Route::get('Ajax/Test/Correo/Configuracion', 'IndexController@test_envio_correo')->name('ajax.test.envio.correo');
         Route::post('Ajax/Carga/Datos/Empresa', 'IndexController@carga_datos_empresa')->name('ajax.carga.datos.empresa');
 
         Route::post('Ajax/Carga/Datos/Logo', 'IndexController@carga_logo')->name('ajax.carga.datos.logo');
@@ -58,6 +59,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('Ajax/Get/Datos/FLOW', 'IndexController@get_datos_flow')->name('ajax.get.datos.flow');
         Route::get('Ajax/Generar/Pago/FLOW', 'IndexController@pago_flow_test')->name('ajax.generar.pago.flow');
         Route::get('Ajax/Generar/Pago/FLOW/estado', 'IndexController@pago_flow_status_test')->name('ajax.generar.pago.flow.estado');
+
+        Route::get('Ajax/Cambiar/Estado/FLOW', 'IndexController@cambiar_estado_flow')->name('ajax.cambiar.estado.flow');
     });
 
 });

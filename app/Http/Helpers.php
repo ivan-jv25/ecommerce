@@ -84,6 +84,7 @@ function WEB_SERVICE_PRODUCTOS(){
                 $producto->precio_venta      = $value->precio_venta;
                 $producto->precio_venta_neto = $value->precio_venta_neto;
                 $producto->id_familia        = $value->id_familia;
+                $producto->imagen            = ($value->imagen == null) ? 'Sin Imagen' : $value->imagen;
                 $producto->exento            = ($value->excento === 'true') ? true : false;
                 $producto->save();
             }
@@ -506,13 +507,11 @@ function generar_formato_venta(int $id_venta){
 
 function FLOW_PAY_CREATE($datos = null){
     
-    
     $dato      = FLOW_PAY_SIGNATURE($datos);
-    
     $params    = $dato['params'];
     $signature = $dato['signature'];
-    
-    $url = 'https://sandbox.flow.cl/api';
+    //$url = 'https://sandbox.flow.cl/api';
+    $url = URL_FLOW();
     $url = $url . '/payment/create';
     
     $params["s"] = $signature;
@@ -539,7 +538,8 @@ function FLOW_PAY_CREATE($datos = null){
 }
 
 function FLOW_PAY_STATUS($datos = null){
-    $url = 'https://sandbox.flow.cl/api';
+    //$url = 'https://sandbox.flow.cl/api';
+    $url = URL_FLOW();
     $url = $url . '/payment/getStatus';
 
     $dato      = FLOW_PAY_SIGNATURE($datos);
@@ -578,16 +578,17 @@ function FLOW_PAY_SIGNATURE($datos = null){
     $respuesta = [ 'params' => $params, 'signature' => $signature, ];
     return $respuesta;
 }
-
+function URL_FLOW(){
+    $token = DB::table('tokens')->select('token')->where('tipo','FLOW')->first()->token;
+    return $token;
+}
 function API_KEY_FLOW(){
-    //return '28F56082-BF69-41FF-AAC4-2FL575C8D8E6';
     $token = DB::table('tokens')->select('token')->where('tipo','API_KEY_FLOW')->first()->token;
     return $token;
     
 }
 
 function SECRET_KEY_FLOW(){
-    //return 'f01f946ddc531e41da18507046f9419325c78269';
     $token = DB::table('tokens')->select('token')->where('tipo','SECRET_KEY_FLOW')->first()->token;
     return $token;
 }
@@ -619,21 +620,14 @@ function envio_correo(int $id_venta){
 
     try {
         $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at')->where('id',$id_venta)->first();
-        
-
         $detalle   = DB::table('detalle_ventas')->select('id', 'id_venta', 'item', 'codigo_producto', 'nombre', 'cantidad', 'valor_producto', 'total', 'valor_descuento',)->where('id_venta',$id_venta)->get();
 
-        
-
         $datos_cliente = datos_cliente($venta->rut);
-
-        
     
         $informacion_correo = informacion_correo();
-        $email = $datos_cliente['email'];
-        //$email = 'ivansaavedra@appnet.cl';
-        $cc = $informacion_correo['copia'];
-        $cc = null;
+        $email  = $datos_cliente['email'];
+        $cc     = $informacion_correo['principal'];
+        $cc2    = $informacion_correo['copia'];
         $asunto = $informacion_correo['asunto'];
 
         $detalle_html = '';
@@ -738,21 +732,12 @@ function envio_correo(int $id_venta){
         </html>
         ';
 
+        $estado = send_mail($email,$asunto,$mensaje,$cc,$cc2);
         
-        
-
-        $estado = send_mail($email,$asunto,$mensaje,$cc);
-        
-
     } catch (\Throwable $th) {
         //throw $th;
 
     }
-    
-
-   
-
-   
 }
 
 function datos_cliente($rut){
@@ -775,28 +760,32 @@ function informacion_correo(){
 }
 
 
-function send_mail($email,$asunto,$mensaje,$cc = null){
+function send_mail($email,$asunto,$mensaje,$cc = null,$cc2 = null){
     
     $respuesta = false;
     try {
+
+        $existe = DB::table('tokens')->select('token')->where('tipo','correo_configuracion')->first()->token;
+        $json = json_decode($existe);
+
         $mail = new PHPMailer\PHPMailer();
-        $mail->isSMTP(); // tell to use smtp
-        $mail->CharSet = "utf-8"; // set charset to utf8
-        $mail->SMTPAuth = true;  // use smpt auth
-        $mail->SMTPSecure = "ssl"; // or ssl
-        $mail->Host = "mail.appnet.cl";
-        $mail->Port = 465; // most likely something different for you. This is the mailtrap.io port i use for testing. 
-        $mail->Username = "test@appnet.cl";
-        $mail->Password = "J&uuU^EXW;K6";
-        $mail->setFrom("info@appnet.cl", "Appnet Technology");
+        $mail->isSMTP();
+        $mail->CharSet = "utf-8";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "ssl";
+        $mail->Host = $json->host;
+        $mail->Port = $json->port;
+        $mail->Username = $json->correo;
+        $mail->Password = $json->password;
+        $mail->setFrom($json->correo, "eCommerce");
         $mail->Subject = $asunto;
         $mail->isHTML(true);
         $mail->Body = $mensaje;
         $mail->addAddress($email, "Recipient Name");
-        if($cc != null){ $mail->AddCC($cc, 'Person One'); }
+        if($cc != null){ $mail->AddCC($cc, 'Copia 1'); }
+        if($cc2 != null){ $mail->AddCC($cc2, 'Copia 2'); }
         
         $respuesta = $mail->send();
-        //$respuesta = true;
     } catch (phpmailerException $e) {
         //dd("Error mail",$e);
         $respuesta = false;

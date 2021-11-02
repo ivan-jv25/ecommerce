@@ -682,18 +682,42 @@ class IndexController extends Controller
 
         $API_KEY_FLOW    = DB::table('tokens')->select('token')->where('tipo','API_KEY_FLOW')->first();
         $SECRET_KEY_FLOW = DB::table('tokens')->select('token')->where('tipo','SECRET_KEY_FLOW')->first();
+        $URL_FLOW        = DB::table('tokens')->select('token')->where('tipo','FLOW')->first();
 
         $API_KEY_FLOW    = ($API_KEY_FLOW == null) ? '' : $API_KEY_FLOW->token;
         $SECRET_KEY_FLOW = ($SECRET_KEY_FLOW == null) ? '' : $SECRET_KEY_FLOW->token;
+        $URL_FLOW        = ($URL_FLOW == null) ? '' : $URL_FLOW->token;
 
         $API_KEY_FLOW    = ($API_KEY_FLOW == '') ? '' :  ocultar_string($API_KEY_FLOW);
         $SECRET_KEY_FLOW = ($SECRET_KEY_FLOW == '') ? '' :  ocultar_string($SECRET_KEY_FLOW);
+        $URL_FLOW = ($URL_FLOW == 'https://sandbox.flow.cl/api') ? 0 : 1;
+
+
 
 
         return [
             'API_KEY_FLOW'    => $API_KEY_FLOW,
             'SECRET_KEY_FLOW' => $SECRET_KEY_FLOW ,
+            'URL_FLOW' => $URL_FLOW ,
         ];
+    }
+
+    public function cambiar_estado_flow(Request $request){
+        try {
+            $url = ($request->estado == 0) ? 'https://sandbox.flow.cl/api' : 'https://www.flow.cl/api';
+            $existe     = $this->existe_url_flow();
+
+            if($existe){
+                DB::table('tokens')->where('tipo', 'FLOW')->update(['token' => $url]);
+            }else{
+                DB::table('tokens')->insert( ['tipo' => 'FLOW', 'token' => $url] );
+            }
+            $respuesta['respuesta'] = true;
+            $respuesta['estado'] = ($url == 'https://sandbox.flow.cl/api') ? 0 : 1;
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        return $respuesta;
     }
 
     public function carga_correo_aviso(Request $request){
@@ -839,6 +863,24 @@ class IndexController extends Controller
     }
 
 
+    public function test_envio_correo(){
+        $respuesta = false;
+        try {
+            $informacion_correo = informacion_correo();
+            
+            $email     = Auth::user()->email;
+            $cc        = $informacion_correo['principal'];
+            $cc2       = $informacion_correo['copia'];
+            $asunto    = $informacion_correo['asunto'];
+            $mensaje   = "Prueba de envio de correo";
+            $respuesta = send_mail($email,$asunto,$mensaje,$cc,$cc2);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        return [ 'Respuesta' => $respuesta ];
+    }
+
+
     private function existe_empresa(){
         return existe_credenciales();
     }
@@ -899,6 +941,11 @@ class IndexController extends Controller
 
     private function existe_empresa2(){
         $existe = DB::table('tokens')->select('id')->where('tipo','empresa')->first();
+        return ($existe == null) ? false : true;
+    }
+
+    private function existe_url_flow(){
+        $existe = DB::table('tokens')->select('id')->where('tipo','FLOW')->first();
         return ($existe == null) ? false : true;
     }
 

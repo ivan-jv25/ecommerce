@@ -3,8 +3,7 @@
 @section('content')
 
 
-<form action="{{ route('ajax.carga.datos.logo') }}" method="POST" accept-charset="utf-8" enctype="multipart/form-data" autocomplete="off">
-@csrf
+
 <div class="container">
   <div class="">
     <nav>
@@ -17,24 +16,30 @@
       </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
+      <!--Carga Logo-->  
       <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        
         <div class="card text-center">
-            <div class="card-body">
-                <div class="anti-row">
-                  <div class="form-group">
-                    <label class="control-label" for="filebutton">Selección de Logo</label>
-                    <div class="col-12">
-                        <input id="filebutton" name="filebutton" class="input-file" type="file" accept="image/x-png">
+            <form action="{{ route('ajax.carga.datos.logo') }}" method="POST" accept-charset="utf-8" enctype="multipart/form-data" autocomplete="off">
+            @csrf
+                <div class="card-body">
+                    <div class="anti-row">
+                    <div class="form-group">
+                        <label class="control-label" for="filebutton">Selección de Logo</label>
+                        <div class="col-12">
+                            <input id="filebutton" name="filebutton" class="input-file" type="file" accept="image/x-png">
+                        </div>
                     </div>
-                  </div>
-                  <img src="img/logo/logo.png" id="img1" class="logo" alt="Logo">
+                    <img src="img/logo/logo.png" id="img1" class="logo" alt="Logo">
+                    </div>
                 </div>
-            </div>
-            <div class="card-footer">
-              <button id="singlebutton" name="singlebutton" class="btn btn-success">Cargar Logo</button>
-            </div>
+                <div class="card-footer">
+                <button id="singlebutton" name="singlebutton" class="btn btn-success">Cargar Logo</button>
+                </div>
+            </form>
         </div>
       </div>
+      <!--Conexion Flow-->  
       <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
         <div class="card text-center">
             <div class="card-body">
@@ -50,6 +55,21 @@
                         <input id="SECRET_KEY_FLOW" name="SECRET_KEY_FLOW" type="text" placeholder="SECRET_KEY_FLOW" class="form-control input-md">
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="form-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <select class="form-control" id="estado_flow">
+                                <option value="">Seleccionar un Modo</option>
+                                <option value="0">Modo Desarrollador</option>
+                                <option value="1">Modo Productivo</option>
+                            </select>
+                        </div>
+                        <a onclick="cambio_estado_flow()" class="btn btn-success">Confirmar Cambio</a>
+                    </div>
+                </div>
+
+
             </div>
             <div class="card-footer">
               <button onclick="carga_datos_flow()" id="grabar_flow" class="btn btn-success">Grabar</button>
@@ -57,6 +77,7 @@
             </div>
         </div>
       </div>
+      <!--Correo Alerta-->  
       <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
         <div class="card text-center">
 
@@ -88,7 +109,7 @@
             </div>
         </div>
       </div>
-
+      <!--Configuracion Correo-->  
       <div class="tab-pane fade" id="nav-cuatro" role="tabpanel" aria-labelledby="nav-contact-tab">
         <div class="card text-center">
 
@@ -125,12 +146,13 @@
             </div>
             <div class="card-footer">
               <button id="button1id" onclick="guardar_configuracion_correo();" class="btn btn-success">Grabar</button>
+              <button id="button1id" onclick="test_envio_correo();" class="btn btn-success"> <div id="td_carga_test_correo"></div> Test Configuracion</button>
             </div>
         </div>
 
 
       </div>
-
+      <!--Datos Empresa-->  
       <div class="tab-pane fade" id="nav-cinco" role="tabpanel" aria-labelledby="nav-contact-tab">
         <div class="card text-center">
 
@@ -189,7 +211,7 @@
   </div>
 
 </div>
-</form>
+
 
 
 
@@ -224,6 +246,8 @@
     var URL_GET_CONFIGURACION_CORREO   = "{{ route('ajax.get.correo.configuracion') }}";
     var URL_CARGA_DATOS_EMPRESA        = "{{ route('ajax.carga.datos.empresa') }}";
     var URL_GET_DATOS_EMPRESA          = "{{ route('ajax.obtener.empresa') }}";
+    var URL_GET_TEST_ENVIO_CORREO      = "{{ route('ajax.test.envio.correo') }}";
+    var URL_CAMBIO_ESTADO_FLOW         = "{{ route('ajax.cambiar.estado.flow') }}";
 
     $(document).ready(function(){
         get_datos_flow();

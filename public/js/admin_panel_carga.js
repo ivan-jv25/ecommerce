@@ -398,14 +398,17 @@ function get_datos_flow(){
                 return_grabar_flow     = false;
                 return_SECRET_KEY_FLOW = '';
                 return_API_KEY_FLOW    = '';
+                return_URL_FLOW        = '';
             }else{
                 return_grabar_flow     = true;
                 return_SECRET_KEY_FLOW = respuesta.SECRET_KEY_FLOW;
                 return_API_KEY_FLOW    = respuesta.API_KEY_FLOW;
+                return_URL_FLOW        = respuesta.URL_FLOW;
             }
-            document.getElementById('API_KEY_FLOW').value   = return_API_KEY_FLOW;
-            document.getElementById('SECRET_KEY_FLOW').value =return_SECRET_KEY_FLOW;
-            document.getElementById("grabar_flow").disabled = return_grabar_flow;
+            document.getElementById('API_KEY_FLOW').value    = return_API_KEY_FLOW;
+            document.getElementById('SECRET_KEY_FLOW').value = return_SECRET_KEY_FLOW;
+            document.getElementById("grabar_flow").disabled  = return_grabar_flow;
+            document.getElementById("estado_flow").value     = return_URL_FLOW;
         },
         error: function() {
             console.log("No se ha podido obtener la información");
@@ -588,6 +591,41 @@ function get_datos_empresa(){
             console.log("No se ha podido obtener la información");
         }
     });   
+}
+
+function test_envio_correo(){
+    $.ajax({
+        url: URL_GET_TEST_ENVIO_CORREO,
+        beforeSend: function() {
+            document.getElementById('td_carga_test_correo').innerHTML= '<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>';
+        },
+        success: function(respuesta) {
+            let estado = respuesta.Respuesta;
+            if(estado){
+                icono = '<span class="material-icons" style="color: green;font-size: 2rem;">check_circle_outline</span>';
+            }else{
+                icono = '<span class="material-icons" style="color: red;font-size: 2rem;">highlight_off</span>';
+            }
+            document.getElementById('td_carga_test_correo').innerHTML= icono;
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    }); 
+}
+
+function cambio_estado_flow(){
+    let estado = document.getElementById('estado_flow').value;
+    $.ajax({
+        url: URL_CAMBIO_ESTADO_FLOW, data:{ estado : estado },
+       
+        success: function(respuesta) {
+            document.getElementById('estado_flow').value = respuesta.estado;
+        },
+        error: function() {
+            console.log("No se ha podido obtener la información");
+        }
+    }); 
 }
 
 function init() {
