@@ -122,7 +122,7 @@ function mostrar_lista_producto(lista){
         '<img class="thumb" async  src="'+imagen+'" alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
         '<div class="detal">'+
         '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
-        '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo+'</p>'+
+        '<p class="lead" title="'+element.codigo.substring(0,20)+'">Código: '+element.codigo+'</p>'+
         '<div class="nuevo" onclick="add_producto_simple('+i+');">en Stock</div>'+
         '</div>'+
         '<div class="mas" onclick="add_producto_simple('+i+');" ><i class="fa fa-plus fa-lg"></i></div>'+
@@ -142,7 +142,7 @@ function mostrar_lista_producto_favorito(lista){
         '<img class="thumb" async  src="'+imagen+'" alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
         '<div class="detal">'+
         '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
-        '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo+'</p>'+
+        '<p class="lead" title="'+element.codigo.substring(0,20)+'">Código: '+element.codigo+'</p>'+
         '<div class="nuevo" onclick="add_producto_favorito('+i+');">en Stock</div>'+
         '</div>'+
         '<div class="mas" onclick="add_producto_favorito('+i+');" ><i class="fa fa-plus fa-lg"></i></div>'+
