@@ -67,6 +67,8 @@ function carga_bodega(){
         success: function(respuesta) {
             lista_bodega = respuesta;
             mostrar_bodegas(respuesta);
+            mostrar_bodegas2();
+            seleccion_bodega(lista_bodega)
         },
         error: function() {
             console.log("No se ha podido obtener la información");
@@ -561,8 +563,9 @@ function formatonumero(numero){
     return newnumber;
 }
 
-function seleccion_bodega(){
-    if(lista_bodega.length != 0){
+function seleccion_bodega(lista){
+    let largo_lista =  lista.length;
+    if(largo_lista > 1){
         mostrar_bodegas2();
         $("#myModalBodegaDefecto").modal();
     }

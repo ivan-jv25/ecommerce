@@ -51,17 +51,19 @@ var is_auth                = @if (Auth::check()) true @else false @endif ;
 
 $(document).ready(function(){
   get_storage();
-  carga_bodega2();
-  carga_bodega();
-
-  if(TokenVenta == '0'){
-    seleccion_bodega();
-  }
-  carga_productos();
- 
+  //carga_bodega2();
   get_inventario();
   get_categorias();
   carga_productos_favorito();
+  carga_productos();
+  
+
+  if(TokenVenta == '0'){
+    carga_bodega();
+  }
+
+ 
+  
   if(TokenVenta != '0'){
     get_datos_empresa();
     cargar_datos_venta();
