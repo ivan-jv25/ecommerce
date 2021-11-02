@@ -203,10 +203,10 @@ function mostrar_lista_carro(){
 
     for (let i = 0; i < lista_carro.length; i++) {
         const element = lista_carro[i];
-        let imagen = (element.imagen == 'Sin Imagen') ? 'img/productos/t2lite.png' : element.imagen;
+        let imagen = (element.imagen == 'Sin Imagen') ? 'img/no-imagen.png' : element.imagen;
         lista +='<tr>'+
             '<td>'+
-                '<img class="thumb" async  src="'+imagen+'"  alt="">'+
+                '<img class="thumb" async  src="'+imagen+'"  alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
                 '<span>'+element.nombre.substring(0,30)+'</span>'+
             '</td>'+
             '<td>'+
