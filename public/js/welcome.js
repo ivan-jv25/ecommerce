@@ -53,7 +53,7 @@ function carga_productos_favorito(){
                 $("body").removeClass("unacol");
                 mostrar_lista_producto_favorito(respuesta);
             }
-
+            
         },
         error: function() {
             console.log("No se ha podido obtener la información");
@@ -203,10 +203,10 @@ function mostrar_lista_carro(){
 
     for (let i = 0; i < lista_carro.length; i++) {
         const element = lista_carro[i];
-        let imagen = (element.imagen == 'Sin Imagen') ? 'img/productos/t2lite.png' : element.imagen;
+        let imagen = (element.imagen == 'Sin Imagen') ? 'img/no-imagen.png' : element.imagen;
         lista +='<tr>'+
             '<td>'+
-                '<img class="thumb" async  src="'+imagen+'"  alt="">'+
+                '<img class="thumb" async  src="'+imagen+'"  alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
                 '<span>'+element.nombre.substring(0,30)+'</span>'+
             '</td>'+
             '<td>'+
@@ -389,7 +389,7 @@ function get_categorias(){
             let lista = "<option value=''>Todas las categorías</option>";
             for (let i = 0; i < categoria.length; i++) {
                 const element = categoria[i];
-                lista += "<option value=" + element.id + ">• "+ element.nombre + "</option>";
+                lista += "<option value=" + element.id + ">"+ element.nombre + "</option>";
             }
             document.getElementById('lista_categoria').innerHTML = lista;
         },
@@ -746,3 +746,5 @@ function cerrar_todo(){
 function imgError(){
     console.log("hola");
 }
+
+
