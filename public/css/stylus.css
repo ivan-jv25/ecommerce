@@ -1,3 +1,16 @@
+#myModalEstadoPago table.table.resultado{
+  font-family: monospace;
+  text-align: right;
+}
+
+#myModalEstadoPago .invoice-info{
+  font-family: monospace;
+}
+
+#myModalEstadoPago .modal-body{
+  padding: 35px;
+}
+
 body.unacol  .seccion-01 .col-1{
   display: none;
 }

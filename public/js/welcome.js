@@ -53,7 +53,7 @@ function carga_productos_favorito(){
                 $("body").removeClass("unacol");
                 mostrar_lista_producto_favorito(respuesta);
             }
-            
+
         },
         error: function() {
             console.log("No se ha podido obtener la información");
@@ -757,5 +757,3 @@ function cerrar_todo(){
 function imgError(){
     console.log("hola");
 }
-
-
