@@ -7,8 +7,16 @@
   font-family: monospace;
 }
 
-#myModalEstadoPago .modal-body{
+#myModalEstadoPago .modal-body, #myModalEstadoPagoTriple .modal-body{
   padding: 35px;
+}
+
+#myModalEstadoPagoTriple .modal-body{
+  text-align: center;
+}
+
+#myModalEstadoPagoTriple .modal-body i{
+  color: #ff7e00;
 }
 
 body.unacol  .seccion-01 .col-1{

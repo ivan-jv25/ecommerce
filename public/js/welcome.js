@@ -480,16 +480,19 @@ function cargar_datos_venta(){
             if(pagado != 0){
                 switch (respuesta.Pago.Flow.estado) {
                     case 1:
-                        alert("pendiente de pago");
+                        //pendiente de pago
+                        cargar_estado_venta_triple();
                         break;
                     case 2:
                         cargar_estado_venta(respuesta);
                         break;
                     case 3:
-                        alert("rechazada");
+                        //rechazada
+                        cargar_estado_venta_triple();
                         break;
                     case 4:
-                        alert("anulada");
+                        //anulada
+                        cargar_estado_venta_triple();
                         break;
 
                     default:
@@ -554,6 +557,10 @@ function cargar_estado_venta(datos){
 
     try { document.getElementById('id_direccion_pago').innerHTML = Direccion.direccion+' ,'+Direccion.ciudad+' ,'+Direccion.comuna; } catch (error) { }
 
+}
+
+function cargar_estado_venta_triple(){
+  $("#myModalEstadoPagoTriple").modal()
 }
 
 

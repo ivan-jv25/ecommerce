@@ -242,6 +242,8 @@
 
     @include('layouts.modal.estadopago')
 
+    @include('layouts.modal.estadopagotriple')
+
     @include('layouts.partialsindex.script')
   </body>
 </html>
