@@ -124,9 +124,9 @@ function mostrar_lista_producto(lista){
         '<div class="detal">'+
         '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
         '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo.substring(0,10)+'</p>'+
-        '<div class="nuevo" onclick="add_producto_simple('+i+');">en Stock</div>'+
+        '<div class="nuevo" onclick="add_producto_simple(`'+element.codigo+'`);">en Stock</div>'+
         '</div>'+
-        '<div class="mas" onclick="add_producto_simple('+i+');" ><i class="fa fa-plus fa-lg"></i></div>'+
+        '<div class="mas" onclick="add_producto_simple(`'+element.codigo+'`);" ><i class="fa fa-plus fa-lg"></i></div>'+
         '<div class="precio">$'+formatonumero(element.precio_venta)+'</div>'+
         '</div>';
     }
@@ -144,9 +144,9 @@ function mostrar_lista_producto_favorito(lista){
         '<div class="detal">'+
         '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
         '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo.substring(0,10)+'</p>'+
-        '<div class="nuevo" onclick="add_producto_favorito('+i+');">en Stock</div>'+
+        '<div class="nuevo" onclick="add_producto_favorito(`'+element.codigo+'`);">en Stock</div>'+
         '</div>'+
-        '<div class="mas" onclick="add_producto_favorito('+i+');" ><i class="fa fa-plus fa-lg"></i></div>'+
+        '<div class="mas" onclick="add_producto_favorito(`'+element.codigo+'`);" ><i class="fa fa-plus fa-lg"></i></div>'+
         '<div class="precio">$'+formatonumero(element.precio_venta)+'</div>'+
         '</div>';
     }
@@ -154,16 +154,25 @@ function mostrar_lista_producto_favorito(lista){
     document.getElementById('lista_col1').innerHTML= lista_productos;
 }
 
-function add_producto_simple(index){
-    let producto    = lista_productos[index];
+function add_producto_simple(codigo){
+    let producto    = obtener_producto_simple(codigo);
     let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia,imagen: producto.imagen };
     add_carrito(obj_detalle);
 }
 
-function add_producto_favorito(index){
-    let producto    = lista_productos_favorito[index];
+function add_producto_favorito(codigo){
+    let producto    = obtener_producto_favorito(codigo);
     let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia,imagen: producto.imagen };
     add_carrito(obj_detalle);
+}
+
+function obtener_producto_simple(codigo){
+    let producto = lista_productos.filter(producto => producto.codigo == codigo);
+    return producto[0];
+}
+function obtener_producto_favorito(codigo){
+    let producto = lista_productos_favorito.filter(producto => producto.codigo == codigo);
+    return producto[0];
 }
 
 function add_carrito(producto){
