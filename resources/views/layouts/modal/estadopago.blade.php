@@ -10,7 +10,7 @@
       <div class="modal-body">
         <section class="invoice">
 
-          <h4>¡Gracias por su compra!<br><br>Nuestros ejeutivos se encargaran de tomar su pedido y ponerse en contacto con usted a la brevedad.</h4>
+          <h4>¡Gracias por su compra!<br><br>Nuestros ejecutivos se encargarán de tomar su pedido y ponerse en contacto con usted a la brevedad.</h4>
           <br>
           <div  id="pdfdiv">
             <div class="row invoice-info">
