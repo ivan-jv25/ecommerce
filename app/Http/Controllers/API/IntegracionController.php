@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
 use Validator;
+use Illuminate\Http\JsonResponse;
 
 class IntegracionController extends Controller
 {
@@ -59,7 +60,9 @@ class IntegracionController extends Controller
 
             }
         }
-        return "termina el proceso";
+
+        return new JsonResponse(['mensaje' => 'termina el proceso'], 200);
+        //return "termina el proceso";
     }
 
     public function sincronizar_firebase(Request $request){
