@@ -25,6 +25,7 @@
     @include('layouts.partialsindex.header')
 
     <div class="seccion-01">
+      
       <div class="fran-supa">
         <div class="buscador">
           <form action="">
