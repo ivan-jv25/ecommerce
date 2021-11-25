@@ -2,12 +2,12 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Seleccione una tienda de retiro</h4>
+            <h4 class="modal-title">¿En que sucursal quieres comprar?</h4>
           </div>
           <div class="modal-body">
             <div class="row form-group">
               <label class="col-md-12 control-label" for="id_tienda_retiro">
-                Tiendas de Retiro <br>
+                Selecciona una tienda <br>
               </label>
               <div class="col-md-12">
                 <select id="id_tienda_retiro2" class="form-control" onchange="bodega_defecto();">
