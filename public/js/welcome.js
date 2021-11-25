@@ -120,7 +120,8 @@ function mostrar_lista_producto(lista){
         let imagen = (element.imagen == 'Sin Imagen') ? 'img/no-imagen.png' : element.imagen;
 
         lista_productos +='<div class="prod">'+
-        '<img class="thumb" async  src="'+imagen+'" alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
+        '<div class="zoom">zoom</div>'+
+        '<img class="thumb" async  src="'+imagen+'" onclick="AbreProd('+i+',false)" alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
         '<div class="detal">'+
         '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
         '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo.substring(0,10)+'</p>'+
@@ -140,7 +141,8 @@ function mostrar_lista_producto_favorito(lista){
         let imagen = (element.imagen == 'Sin Imagen') ? 'img/no-imagen.png' : element.imagen;
 
         lista_productos +='<div class="prod">'+
-        '<img class="thumb" async  src="'+imagen+'" alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
+        '<div class="zoom">zoom</div>'+
+        '<img class="thumb" async  src="'+imagen+'" onclick="AbreProd('+i+',true)"  alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
         '<div class="detal">'+
         '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
         '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo.substring(0,10)+'</p>'+
@@ -763,4 +765,26 @@ function cerrar_todo(){
 
 function imgError(){
     console.log("hola");
+}
+
+function AbreProd(index,lista){
+  console.log(index,lista)
+  $("#ModalProd").modal();
+
+  let producto = null;
+
+  if (lista== true) {
+    producto = lista_productos_favorito[index]
+  }else {
+    producto = lista_productos[index]
+  }
+
+  document.getElementById("Modal_NombreProd").innerHTML = producto.nombre;
+  document.getElementById("Modal_PrecioProd").innerHTML = "$"+formatonumero(producto.precio_venta);
+  document.getElementById("Modal_ImgProd").src = (producto.imagen == 'Sin Imagen') ? 'img/no-imagen.png' : producto.imagen;
+  document.getElementById("Modal_CodigoProd").innerHTML = producto.codigo;
+
+  //let producto = (lista)?lista_productos_favorito[index]:lista_productos[index];
+
+  console.log(producto);
 }

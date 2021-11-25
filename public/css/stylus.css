@@ -565,7 +565,7 @@ header .hamburguesa:hover img{
 }
 
 .detal h5{
-  margin-top: 13px;
+  margin-top: 11px;
   margin-bottom: 0px;
   max-width: 260px;
   text-transform: lowercase;
@@ -584,6 +584,7 @@ p.lead{
   font-size: .9em;
   margin-bottom: 5px;
   color: #888;
+  font-family: monospace;
 }
 
 .fa-trash{
@@ -600,6 +601,32 @@ p.lead{
   margin: 0px;
   border-right:solid 1px #eaeaea;
   height: 80px;
+  cursor: pointer;
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+  z-index: 1;
+  opacity:1;
+  position: relative;
+}
+
+.listado-productos .prod .thumb:hover{
+  opacity: .3;
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+  -webkit-filter: blur(4px);
+   filter: blur(4px);
+}
+
+.zoom{
+  opacity: 1;
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  z-index: 0;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .listado-productos .prod h3{
@@ -614,13 +641,27 @@ p.lead{
   color: #ff7e00;
   border: solid 1px #ff7e00;
   display: inline-block;
-  padding: 3px 10px;
+  padding: 2px 10px;
+  padding-bottom: 0px;
   border-radius: 15px;
   font-size: 11px;
   font-weight: bold;
   position: relative;
   top: -3px;
   text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+}
+
+.listado-productos .prod .nuevo:hover{
+  background: #ff7e00;
+  color: #fff;
+  border: solid 1px #ff7e00;
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
 }
 
 .listado-productos .prod:hover{
@@ -853,6 +894,78 @@ form button.btn-block{
   display: none;
 }
 
+#ModalProd .modal-title{
+  font-weight: bold;
+  color: #000;
+  font-size: 18px;
+  text-transform: lowercase;
+}
+
+#ModalProd .modal-title::first-letter{
+  text-transform: uppercase;
+}
+
+#ModalProd p.lead{
+  font-size: 1em;
+  margin-bottom: 15px;
+  color: #000;
+}
+
+#ModalProd h4{
+  font-family: monospace;
+  font-size: 22px;
+}
+
+#ModalProd form{
+  width: 130px;
+  margin-top: 10px;
+}
+
+#ModalProd form input{
+  margin-bottom: 10px;
+  font-family: monospace;
+}
+
+#ModalProd form button.btn-agrega{
+  background: #ff7e00;
+  color: #FFF;
+}
+
+#ModalProd .modal-body{
+  padding: 45px 15px;
+}
+
+#ModalProd .modal-body img#Modal_ImgProd{
+  border: solid 1px #eaeaea;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
+
+#ModalProd #Modal_CodigoProd, #ModalProd h5{
+  font-family: monospace;
+}
+
+.bloqueimg{
+  text-align: right;
+}
+
+#myModalBodegaDefecto .modal-footer button.btn-secondary{
+  background: #ff7e00;
+  color: #fff;
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+}
+
+#myModalBodegaDefecto .modal-footer button.btn-secondary:hover{
+  background: #d97412;
+  color: #fff;
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+}
+
 @media (min-width: 1680px) {
   .resultados form .form-group{
     margin-bottom: 15px !important;
@@ -888,6 +1001,12 @@ form button.btn-block{
   }
   .carro{
     padding-bottom: 273px;
+  }
+}
+
+@media (min-width: 1200px){
+  .modal-xl {
+      width: 1140px !important;
   }
 }
 
@@ -951,7 +1070,17 @@ form button.btn-block{
   }
 }
 
+@media (min-width: 992px){
+  .modal-lg, .modal-xl {
+      width: 800px;
+  }
+}
+
 @media (max-width: 768px) {
+  .listado-productos .prod .mas{
+    margin-right: 0;
+    top: 100px;
+  }
   .form-group .btn-group.dcto{
     margin-left: 8px;
   }
@@ -993,6 +1122,7 @@ form button.btn-block{
   }
   .listado-productos .prod .thumb{
     width: 70px;
+    height: 70px;
     float: none;
   }
   .detal{
@@ -1044,6 +1174,27 @@ form button.btn-block{
   }
   #lista_col2{
     padding-right: 30px !important;
+  }
+  .zoom{
+    display: none;
+  }
+  #ModalProd .modal-dialog{
+    margin: 30px;
+    text-align: center;
+  }
+  #ModalProd .modal-title{
+    text-align: center;
+    padding: 0px 20px;
+  }
+  #ModalProd form{
+    margin: auto;
+  }
+  .bloqueimg{
+    text-align: center;
+  }
+  .bloqueimg img{
+    max-width: 200px;
+    margin-bottom: 20px;
   }
 }
 
