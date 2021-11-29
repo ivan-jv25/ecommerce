@@ -926,13 +926,40 @@ form button.btn-block{
   font-family: monospace;
 }
 
-#ModalProd form button.btn-agrega{
-  background: #ff7e00;
-  color: #FFF;
-}
-
 #ModalProd .modal-body{
   padding: 45px 15px;
+}
+
+#ModalProd .btn{
+  background: #ff7e00;
+  color: #FFF;
+  transition: 0.3s ease;
+  -o-transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+}
+
+#ModalProd .fa-times{
+  margin-right: -45px;
+  margin-top: -15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  -o-transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+}
+
+#ModalProd .fa-times:hover{
+  color: #999 !important;
+}
+
+#ModalProd .btn:hover{
+  background: #d56900;
+  transition: 0.3s ease;
+  -o-transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+}
+
+#ModalProd .btn i{
+  margin-left: 5px;
 }
 
 #ModalProd .modal-body img#Modal_ImgProd{

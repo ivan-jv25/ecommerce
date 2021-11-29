@@ -162,6 +162,20 @@ function add_producto_simple(codigo){
     add_carrito(obj_detalle);
 }
 
+function add_producto_simpleModal(){
+    let codigo = document.getElementById('Modal_CodigoProd').innerHTML;
+    let producto    = obtener_producto_simple(codigo);
+    let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia,imagen: producto.imagen };
+    add_carrito(obj_detalle);
+}
+
+function add_producto_favoritoModal(){
+    let codigo = document.getElementById('Modal_CodigoProd').innerHTML;
+    let producto    = obtener_producto_simple(codigo);
+    let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia,imagen: producto.imagen };
+    add_carrito(obj_detalle);
+}
+
 function add_producto_favorito(codigo){
     let producto    = obtener_producto_favorito(codigo);
     let obj_detalle = { codigo : producto.codigo, nombre : producto.nombre, precio : producto.precio_venta, cantidad : 1, total : producto.precio_venta, ID_CATEGORIA: producto.id_familia,imagen: producto.imagen };
