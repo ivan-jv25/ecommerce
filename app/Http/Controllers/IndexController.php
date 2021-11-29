@@ -190,12 +190,12 @@ class IndexController extends Controller
 
     public function lista_producto_normal(Request $request){
         $id_bodega = $request->id;
-        $lista = DB::table('inventarios')->join('productos','productos.codigo','=','inventarios.id_producto')->select('productos.nombre','productos.codigo','productos.precio_venta','productos.id_familia','productos.imagen','productos.exento')->where('productos.estado',1)->where('inventarios.id_bodega',$id_bodega)->get();
+        $lista = DB::table('inventarios')->join('productos','productos.codigo','=','inventarios.id_producto')->select('productos.nombre','productos.descripcion','productos.codigo','productos.precio_venta','productos.id_familia','productos.imagen','productos.exento')->where('productos.estado',1)->where('inventarios.id_bodega',$id_bodega)->get();
         return $lista;
     }
 
     public function lista_producto_favorito(){
-        $lista = DB::table('productos')->select('nombre','codigo','precio_venta','id_familia','imagen','exento')->where('favorito',1)->where('estado',1)->get();
+        $lista = DB::table('productos')->select('nombre','productos.descripcion','codigo','precio_venta','id_familia','imagen','exento')->where('favorito',1)->where('estado',1)->get();
         return $lista;
     }
 

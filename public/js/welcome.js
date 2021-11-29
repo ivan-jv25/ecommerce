@@ -782,15 +782,19 @@ function imgError(){
 }
 
 function AbreProd(index,lista){
-  console.log(index,lista)
+  
   $("#ModalProd").modal();
 
   let producto = null;
 
   if (lista== true) {
     producto = lista_productos_favorito[index]
+    document.getElementById('btn_prod_simple').style.display = 'none'
+    document.getElementById('btn_prod_favorito').style.display = ''
   }else {
     producto = lista_productos[index]
+    document.getElementById('btn_prod_simple').style.display = ''
+  document.getElementById('btn_prod_favorito').style.display = 'none'
   }
 
   document.getElementById("Modal_NombreProd").innerHTML = producto.nombre;
@@ -798,7 +802,14 @@ function AbreProd(index,lista){
   document.getElementById("Modal_ImgProd").src = (producto.imagen == 'Sin Imagen') ? 'img/no-imagen.png' : producto.imagen;
   document.getElementById("Modal_CodigoProd").innerHTML = producto.codigo;
 
-  //let producto = (lista)?lista_productos_favorito[index]:lista_productos[index];
+  document.getElementById("Modal_Descripcion").innerHTML = producto.descripcion;
 
-  console.log(producto);
+
+  
+
+
+
+  
+
+  
 }

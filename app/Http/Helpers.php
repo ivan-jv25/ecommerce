@@ -74,13 +74,14 @@ function WEB_SERVICE_PRODUCTOS(){
         foreach ($resultado as $key => $value) {
             $existe = existe_producto($value->codigo);
             if($existe == -1){
-                $array_aux = [ 'nombre' => $value->nombre, 'precio_venta' => $value->precio_venta, 'precio_venta_neto' => $value->precio_venta_neto, 'codigo' => $value->codigo, 'id_familia' => $value->id_familia, 'imagen' => ($value->imagen == null) ? 'Sin Imagen' : $value->imagen, 'exento' => ($value->excento === 'true') ? true : false, 'favorito' => false, ];
+                $array_aux = [ 'nombre' => $value->nombre, 'descripcion' => $value->descripcion, 'precio_venta' => $value->precio_venta, 'precio_venta_neto' => $value->precio_venta_neto, 'codigo' => $value->codigo, 'id_familia' => $value->id_familia, 'imagen' => ($value->imagen == null) ? 'Sin Imagen' : $value->imagen, 'exento' => ($value->excento === 'true') ? true : false, 'favorito' => false, ];
                 $producto = new Producto($array_aux);
                 $producto->save();
             }else{
                 $producto = Producto::find($existe);
 
                 $producto->nombre            = $value->nombre;
+                $producto->descripcion       = $value->descripcion;
                 $producto->precio_venta      = $value->precio_venta;
                 $producto->precio_venta_neto = $value->precio_venta_neto;
                 $producto->id_familia        = $value->id_familia;

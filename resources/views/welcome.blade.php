@@ -37,15 +37,18 @@
                 <i class="fa fa-times fa-lg pull-right fa-2x" data-dismiss="modal" aria-label="Close"></i>
                 <h3 class="modal-title" id="Modal_NombreProd">Nombre Producto</h3>
                 <h5>Código: <span id="Modal_CodigoProd">0000</span></h5>
-                <!--p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                <p class="lead">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p-->
+                <p class="lead" id="Modal_Descripcion">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+                
                 <h4 id="Modal_PrecioProd">$999.999</h4>
-                <div class="btn btn-agrega" onclick="add_producto_simpleModal();">Agregar al Carro <i class="fa fa-plus-circle fa-lg"></i></div>
-                <div class="btn btn-agrega" onclick="add_producto_favoritoModal();">Agregar al Carro <i class="fa fa-plus-circle fa-lg"></i></div>
+
+                <div class="btn btn-agrega" onclick="add_producto_simpleModal();" id="btn_prod_simple">Agregar al Carro <i class="fa fa-plus-circle fa-lg"></i></div>
+                <div class="btn btn-agrega" onclick="add_producto_favoritoModal();" id="btn_prod_favorito">Agregar al Carro <i class="fa fa-plus-circle fa-lg"></i></div>
+
                 <!--form class="" action="" method="">
                   <input type="number" class="form-control" name="" placeholder="00" value="">
                   <button type="submit" name="button" class="btn btn-agrega">Agregar al Carro</button>
                 </form-->
+
               </div>
             </div>
           </div>
