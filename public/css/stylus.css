@@ -1014,6 +1014,11 @@ form button.btn-block{
   .carro table.table tr td:nth-child(3), .carro table.table tr td:nth-child(4){
     padding-top: 28px;
   }
+  .listado-productos .prod .precio{
+    right: 20px;
+    top: 35px;
+    text-align: right !important;
+  }
 }
 
 @media (max-width: 1362px) {
