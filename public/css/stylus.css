@@ -1014,6 +1014,9 @@ form button.btn-block{
   .carro table.table tr td:nth-child(3), .carro table.table tr td:nth-child(4){
     padding-top: 28px;
   }
+}
+
+@media (max-width: 1440px) and (min-width: 1025px) {
   .listado-productos .prod .precio{
     right: 20px;
     top: 35px;
