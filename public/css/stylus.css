@@ -707,17 +707,22 @@ p.lead{
   background: transparent;
   position: absolute;
   right: 30px;
-  top: 25px;
+  top: 18px;
   color: #999;
   text-align: center;
   transition: 0.5s ease;
   -o-transition: 0.5s ease;
   -webkit-transition: 0.5s ease;
-  line-height: 30px;
+  line-height: 22px;
   font-size: 1.3em;
   z-index: 9;
   font-family: monospace;
+}
 
+.listado-productos .prod .precio::after{
+  content: "IVA Incl.";
+  font-size: .6em;
+  display: block;
 }
 
 .listado-productos .prod:hover .precio{
@@ -1177,8 +1182,10 @@ form button.btn-block{
   }
   .listado-productos .prod .precio{
     position: relative;
-    top: 0;
+    top: 10px;
+    line-height: 15px;
     right: 0;
+    margin-bottom: 5px;
   }
   .listado-productos .prod .mas{
     left:0;
