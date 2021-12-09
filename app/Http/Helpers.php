@@ -440,6 +440,11 @@ function get_empresa(int $id){
     return $empresa;
 }
 
+function obtener_datos_empresa(){
+    $token = DB::table('tokens')->select('token')->where('tipo','empresa')->first()->token;
+    return $token;
+}
+
 function generar_formato_venta(int $id_venta){
 
     $venta         = DB::table('ventas')->select()->where('id',$id_venta)->first();
@@ -619,7 +624,12 @@ function ocultar_string($texto){
 
 function envio_correo(int $id_venta){
 
+   
+
     try {
+        $empresa = json_decode(obtener_datos_empresa());
+        
+        $URL = route('welcome');
         $venta     = DB::table('ventas')->select('id', 'rut', 'folio', 'id_direccion', 'tipo_entrega', 'descuento', 'neto', 'neto_exento', 'iva', 'total_venta', 'tipo_documento', 'forma_pago', 'id_bodega', 'estado_pago', 'id_formapago', 'codigo_pago', 'created_at')->where('id',$id_venta)->first();
         $detalle   = DB::table('detalle_ventas')->select('id', 'id_venta', 'item', 'codigo_producto', 'nombre', 'cantidad', 'valor_producto', 'total', 'valor_descuento',)->where('id_venta',$id_venta)->get();
 
@@ -678,17 +688,17 @@ function envio_correo(int $id_venta){
             <div class="cabecera">
               <div class="columna">
                 <div class="logo">
-                  <a href="http://appnettech.cl" target="_blank">
-                    <img src="http://appnettech.cl/appnettech/img/logo-black.png" alt="">
+                  <a href="'.$URL.'" target="_blank">
+                    <img src="'.$URL.'/img/logo/logo.png" alt="">
                   </a>
                 </div>
               </div>
               <div class="columna">
                 <div class="datos">
                   <p style="text-align:left; margin-bottom: 5px; padding-bottom: 5px; border-bottom:solid 1px #ccc;">RUT: 66666666-6</p>
-                  <p style="text-align:left; margin-bottom: 5px; padding-bottom: 5px; border-bottom:solid 1px #ccc;">Razon social: DEMO</p>
-                  <p style="text-align:left; margin-bottom: 5px; padding-bottom: 5px; border-bottom:solid 1px #ccc;">Direccion: VARAS Mena 980</p>
-                  <p style="text-align:left; margin-bottom: 5px; padding-bottom: 5px; border-bottom:solid 1px #ccc;">Telefono: +569 123456789</p>
+                  <p style="text-align:left; margin-bottom: 5px; padding-bottom: 5px; border-bottom:solid 1px #ccc;">'.$empresa->nombre.'</p>
+                  <p style="text-align:left; margin-bottom: 5px; padding-bottom: 5px; border-bottom:solid 1px #ccc;">Direccion: '.$empresa->direccion.'</p>
+                  <p style="text-align:left; margin-bottom: 5px; padding-bottom: 5px; border-bottom:solid 1px #ccc;">Telefono: '.$empresa->telefono.'</p>
                 </div>
               </div>
         
@@ -732,7 +742,7 @@ function envio_correo(int $id_venta){
           </body>
         </html>
         ';
-
+        
         $estado = send_mail($email,$asunto,$mensaje,$cc,$cc2);
         
     } catch (\Throwable $th) {

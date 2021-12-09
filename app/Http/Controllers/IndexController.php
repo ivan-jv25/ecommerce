@@ -949,9 +949,13 @@ class IndexController extends Controller
         return ($existe == null) ? false : true;
     }
 
+    
     private function mensaje_registro(){
+        
         $id_empresa = Auth::user()->id_empresa;
         $empresa    = get_empresa($id_empresa);
+        $URL = route('welcome');
+        
 
         return '
         <html lang="es" dir="ltr">
@@ -960,122 +964,25 @@ class IndexController extends Controller
           <meta name="viewport" content="width=500, initial-scale=1">
           <title>Registro nuevo usuario Productor/Restaurante</title>
           <style media="screen">
-            @font-face {
-              font-family: "Titillium Web SemiBold";
-              src: url(fonts/TitilliumWeb-SemiBold.ttf);
-            }
-            @font-face {
-              font-family: "Titillium Web Regular";
-              src: url(fonts/TitilliumWeb-Regular.ttf);
-            }
+            @font-face { font-family: "Titillium Web SemiBold"; src: url(fonts/TitilliumWeb-SemiBold.ttf); }
+            @font-face { font-family: "Titillium Web Regular"; src: url(fonts/TitilliumWeb-Regular.ttf); }
 
-            body{
-              background: #F7F7F7;
-              font-size: 12px;
-              padding: 0;
-              margin: 0;
-            }
-            .contenido{
-              background: #FFF;
-              width: 40%;
-              margin: auto;
-              padding: 5em;
-              padding-left: 0px;
-              padding-right: 0px;
-              box-sizing: border-box;
-              text-align: center;
-              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-              border-radius: 20px;
-              padding-bottom: 8em;
-              margin-bottom: 2em;
-              min-width: 440px;
-            }
-            .logo{
-              margin-top: 3%;
-              text-align: center;
-              margin-bottom: 4em;
-            }
-            .logo img{
-              max-width: 120px;
-            }
-            .contenido h2{
-              font-family: "Titillium Web SemiBold";
-              font-size: 4em;
-              margin-top: .3em;
-              margin-bottom: 1em;
-            }
-            .contenido p{
-              font-family: "Titillium Web Regular";
-              font-size: 1.8em;
-              color: #424242;
-              width: 60%;
-              margin: auto;
-              min-width: 370px;
-            }
-            .contenido p a{
-              color: #BE1120;
-              transition: 0.5s ease;
-              -o-transition: 0.5s ease;
-              -webkit-transition: 0.5s ease;
-            }
-            .contenido p a:hover{
-              opacity: .5;
-              transition: 0.5s ease;
-              -o-transition: 0.5s ease;
-              -webkit-transition: 0.5s ease;
-            }
-            .contenido p strong{
-              color: #2A244A;
-              font-family: "Titillium Web SemiBold";
-            }
-            .contenido a.link{
-              color: #fff;
-              background: #FF9C00;
-              font-size: 1.6em;
-              font-family: "Titillium Web Regular";
-              text-decoration: none;
-              padding: .8em 1em;
-              display: inline-block;
-              border-radius: 50px;
-              margin-top: 10px;
-              letter-spacing: 1px;
-              box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
-              transition: 0.5s ease;
-              -o-transition: 0.5s ease;
-              -webkit-transition: 0.5s ease;
-            }
-            .contenido a.link:hover{
-              color: #BE1120;
-              background: #FFF;
-              transition: 0.5s ease;
-              -o-transition: 0.5s ease;
-              -webkit-transition: 0.5s ease;
-            }
-            .redes{
-              text-align: center;
-            }
-            .redes a{
-              margin: 0px 5px;
-              transition: 0.5s ease;
-              -o-transition: 0.5s ease;
-              -webkit-transition: 0.5s ease;
-            }
-            .redes a:hover{
-              opacity: .5;
-              transition: 0.5s ease;
-              -o-transition: 0.5s ease;
-              -webkit-transition: 0.5s ease;
-            }
-            .redes a img{
-              max-width: 40px;
-            }
-            .redes p{
-              font-family: "Titillium Web SemiBold";
-              color: #333333;
-              font-size: 1.4em;
-              margin-top: 0;
-              letter-spacing: 1px;
-            }
+            body{ background: #F7F7F7; font-size: 12px; padding: 0; margin: 0; }
+            .contenido{ background: #FFF; width: 40%; margin: auto; padding: 5em; padding-left: 0px; padding-right: 0px; box-sizing: border-box; text-align: center; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); border-radius: 20px; padding-bottom: 8em; margin-bottom: 2em; min-width: 440px; }
+            .logo{ margin-top: 3%; text-align: center; margin-bottom: 4em; }
+            .logo img{ max-width: 120px; }
+            .contenido h2{ font-family: "Titillium Web SemiBold"; font-size: 4em; margin-top: .3em; margin-bottom: 1em; }
+            .contenido p{ font-family: "Titillium Web Regular"; font-size: 1.8em; color: #424242; width: 60%; margin: auto; min-width: 370px; }
+            .contenido p a{ color: #BE1120; transition: 0.5s ease; -o-transition: 0.5s ease; -webkit-transition: 0.5s ease; }
+            .contenido p a:hover{ opacity: .5; transition: 0.5s ease; -o-transition: 0.5s ease; -webkit-transition: 0.5s ease; }
+            .contenido p strong{ color: #2A244A; font-family: "Titillium Web SemiBold"; }
+            .contenido a.link{ color: #fff; background: #FF9C00; font-size: 1.6em; font-family: "Titillium Web Regular"; text-decoration: none; padding: .8em 1em; display: inline-block; border-radius: 50px; margin-top: 10px; letter-spacing: 1px; box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15); transition: 0.5s ease; -o-transition: 0.5s ease; -webkit-transition: 0.5s ease; }
+            .contenido a.link:hover{ color: #BE1120; background: #FFF; transition: 0.5s ease; -o-transition: 0.5s ease; -webkit-transition: 0.5s ease; }
+            .redes{ text-align: center; }
+            .redes a{ margin: 0px 5px; transition: 0.5s ease; -o-transition: 0.5s ease; -webkit-transition: 0.5s ease; }
+            .redes a:hover{ opacity: .5; transition: 0.5s ease; -o-transition: 0.5s ease; -webkit-transition: 0.5s ease; }
+            .redes a img{ max-width: 40px; }
+            .redes p{ font-family: "Titillium Web SemiBold"; color: #333333; font-size: 1.4em; margin-top: 0; letter-spacing: 1px; }
           </style>
         </head>
         <body>
@@ -1084,7 +991,7 @@ class IndexController extends Controller
             <p>Gracias por registrarse en nuestro eCommerce, ahora podras comprar con mayor facilidad.</p>
             <br>
             <p><strong>ir a sitio web</strong></p>
-            <a class="link" href="https://demo.appnetstore.cl/" target="_blank">https://demo.appnetstore.cl/</a>
+            <a class="link" href="'.$URL.'" target="_blank">'.$URL.'</a>
           </div>
         </body>
       </html>
