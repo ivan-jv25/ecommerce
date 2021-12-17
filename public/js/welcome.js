@@ -749,7 +749,7 @@ function comprar_denuevo(TokenVenta){
                 }
 
             }
-            
+
             lista_carrito_bodega2();
         },
         error: function() {
@@ -777,10 +777,10 @@ function cerrar_todo(){
     document.getElementById('collapseTwo').setAttribute("aria-expanded", false)
 
     try {
-        if(window.screen.width < 768){
-            $(".seccion-02").fadeOut();    
+        if(window.screen.width <= 768){
+            $(".seccion-02").fadeOut();
         }
-        
+
     } catch (error) {}
 }
 
