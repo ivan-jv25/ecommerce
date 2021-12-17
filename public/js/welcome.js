@@ -768,14 +768,15 @@ function abrir_registrarte(){
 }
 
 function cerrar_todo(){
-
-
     $("#collapseOne").removeClass("in");
     document.getElementById('collapseOne').setAttribute("aria-expanded", false)
 
     $("#collapseTwo").removeClass("in");
     document.getElementById('collapseTwo').setAttribute("aria-expanded", false)
 
+    try {
+        $(".seccion-02").fadeOut();
+    } catch (error) {}
 }
 
 function imgError(){
