@@ -775,7 +775,7 @@ function cerrar_todo(){
     document.getElementById('collapseTwo').setAttribute("aria-expanded", false)
 
     try {
-        if(window.screen.width <= 768){
+        if(window.screen.width <= 1024){
             $(".seccion-02").fadeOut();
         }
 
