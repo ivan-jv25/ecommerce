@@ -1,5 +1,3 @@
-const { forIn } = require("lodash");
-
 var lista_productos          = null;
 var lista_productos_favorito = null
 var lista_carro              = [];
