@@ -197,7 +197,7 @@ function add_carrito(producto){
         lista_carro[index].cantidad ++;
         lista_carro[index].total = lista_carro[index].cantidad * lista_carro[index].precio;
     }else{
-        lista_carro.push(producto);
+        lista_carro.unshift(producto);
     }
 
     toastr.info("Producto :"+producto.nombre+". Agregado ", '', {timeOut: 1000})
@@ -226,7 +226,9 @@ function mostrar_lista_carro(){
         document.getElementById("singlebutton").disabled = true;
     }
 
-    for (let i = lista_carro.length-1 ; i > 0; i--) {
+    
+    for (let i = 0; i < lista_carro.length; i++) {
+    
         const element = lista_carro[i];
         let imagen = (element.imagen == 'Sin Imagen') ? 'img/no-imagen.png' : element.imagen;
         lista +='<tr>'+
@@ -747,7 +749,7 @@ function comprar_denuevo(TokenVenta){
                 }
 
             }
-
+            
             lista_carrito_bodega2();
         },
         error: function() {
@@ -776,9 +778,9 @@ function cerrar_todo(){
 
     try {
         if(window.screen.width <= 768){
-            $(".seccion-02").fadeOut();
+            $(".seccion-02").fadeOut();    
         }
-
+        
     } catch (error) {}
 }
 
