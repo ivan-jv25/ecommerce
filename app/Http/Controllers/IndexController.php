@@ -190,7 +190,7 @@ class IndexController extends Controller
 
     public function lista_producto_normal(Request $request){
         $id_bodega = $request->id;
-        $lista = DB::table('inventarios')->join('productos','productos.codigo','=','inventarios.id_producto')->select('productos.nombre','productos.descripcion','productos.codigo','productos.precio_venta','productos.id_familia','productos.imagen','productos.exento')->where('productos.estado',1)->where('inventarios.id_bodega',$id_bodega)->get();
+        $lista = DB::table('inventarios')->join('productos','productos.codigo','=','inventarios.id_producto')->select('productos.nombre','productos.descripcion','productos.codigo','productos.precio_venta','productos.id_familia','productos.imagen','productos.exento')->where('productos.estado',1)->where('inventarios.id_bodega',$id_bodega)->inRandomOrder()->get();
         return $lista;
     }
 

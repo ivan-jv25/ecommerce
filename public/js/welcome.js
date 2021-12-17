@@ -1,3 +1,5 @@
+const { forIn } = require("lodash");
+
 var lista_productos          = null;
 var lista_productos_favorito = null
 var lista_carro              = [];
@@ -226,8 +228,7 @@ function mostrar_lista_carro(){
         document.getElementById("singlebutton").disabled = true;
     }
 
-
-    for (let i = 0; i < lista_carro.length; i++) {
+    for (let i = lista_carro.length-1 ; i > 0; i--) {
         const element = lista_carro[i];
         let imagen = (element.imagen == 'Sin Imagen') ? 'img/no-imagen.png' : element.imagen;
         lista +='<tr>'+
@@ -744,10 +745,11 @@ function comprar_denuevo(TokenVenta){
                     let obj_detalle = { codigo : element.codigo_producto, nombre : element.nombre, precio : element.valor_producto, cantidad : element.cantidad, total : element.total, ID_CATEGORIA: producto.id_familia,imagen: producto.imagen };
                     add_carrito(obj_detalle);
                 } catch (error) {
-                    toastr.info("Producto :"+element.nombre+". No Existe en Esta Tienda ", '', {timeOut: 2000})
+                    toastr.info("Producto :"+element.nombre+". No Existe en Esta Tienda ", '', {timeOut: 500})
                 }
 
             }
+            
             lista_carrito_bodega2();
         },
         error: function() {
@@ -775,7 +777,10 @@ function cerrar_todo(){
     document.getElementById('collapseTwo').setAttribute("aria-expanded", false)
 
     try {
-        $(".seccion-02").fadeOut();
+        if(window.screen.width < 768){
+            $(".seccion-02").fadeOut();    
+        }
+        
     } catch (error) {}
 }
 
