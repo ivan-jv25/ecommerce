@@ -12,6 +12,7 @@
               </a>
             </h4>
           </div>
+          <h5>Inicia sesión para realizar una compra.</h5>
           <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
               <form class="formulario" method="POST" action="{{ route('login') }}">
