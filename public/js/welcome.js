@@ -775,6 +775,7 @@ function cerrar_todo(){
 
     $("#collapseTwo").removeClass("in");
     document.getElementById('collapseTwo').setAttribute("aria-expanded", false)
+
 }
 
 function imgError(){
@@ -782,7 +783,7 @@ function imgError(){
 }
 
 function AbreProd(index,lista){
-  
+
   $("#ModalProd").modal();
 
   let producto = null;
@@ -805,11 +806,11 @@ function AbreProd(index,lista){
   document.getElementById("Modal_Descripcion").innerHTML = producto.descripcion;
 
 
-  
 
 
 
-  
 
-  
+
+
+
 }

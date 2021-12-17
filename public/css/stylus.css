@@ -124,6 +124,7 @@ body.unacol  .seccion-01 .col-2 .prod:nth-child(n+1){
 
 .cabecera .titulo-col{
   border-bottom: none;
+  color: #000;
 }
 
 .sesion{
@@ -413,6 +414,7 @@ header .hamburguesa:hover img{
   right: 0;
   padding-top: 60px;
   border-left: solid 1px #ccc;
+  box-shadow: -5px 0px 10px rgb(0 0 0 / 25%);
 }
 
 .table-hover>tbody>tr{
@@ -914,6 +916,7 @@ form button.btn-block{
   font-size: 1em;
   margin-bottom: 15px;
   color: #000;
+  font-family: arial;
 }
 
 #ModalProd h4{
