@@ -40,6 +40,8 @@ body.unacol  .seccion-01 .col-2 .prod:nth-child(n+1){
   margin-left: 60px;
   font-size: 18px;
   margin-bottom: 0;
+  color: #ff7e00;
+  font-weight: 900;
 }
 
 #menu .panel-body{
@@ -1017,6 +1019,8 @@ form button.btn-block{
   text-align: center;
   font-size: 24px;
 }
+
+
 
 @media (min-width: 1680px) {
   .resultados form .form-group{

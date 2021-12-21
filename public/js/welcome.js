@@ -226,9 +226,9 @@ function mostrar_lista_carro(){
         document.getElementById("singlebutton").disabled = true;
     }
 
-    
+
     for (let i = 0; i < lista_carro.length; i++) {
-    
+
         const element = lista_carro[i];
         let imagen = (element.imagen == 'Sin Imagen') ? 'img/no-imagen.png' : element.imagen;
         lista +='<tr>'+
@@ -749,7 +749,7 @@ function comprar_denuevo(TokenVenta){
                 }
 
             }
-            
+
             lista_carrito_bodega2();
         },
         error: function() {
@@ -777,10 +777,10 @@ function cerrar_todo(){
     document.getElementById('collapseTwo').setAttribute("aria-expanded", false)
 
     try {
-        if(window.screen.width <= 768){
-            $(".seccion-02").fadeOut();    
+        if(window.screen.width <= 1024){
+            $(".seccion-02").fadeOut();
         }
-        
+
     } catch (error) {}
 }
 
