@@ -8,9 +8,9 @@
 
 
 
-<script src="{{ asset('datatable/dataTables.bootstrap4.css') }}"></script>
-<script src="{{ asset('datatable/buttons.bootstrap4.css') }}"></script>
-<script src="{{ asset('datatable/responsive.bootstrap4.css') }}"></script>
+<link src="{{ asset('datatable/dataTables.bootstrap4.css') }}"></link>
+<link src="{{ asset('datatable/buttons.bootstrap4.css') }}"></link>
+<link src="{{ asset('datatable/responsive.bootstrap4.css') }}"></link>
 <script src="{{ asset('datatable/jszip.js') }}"></script>
 <script src="{{ asset('datatable/pdfmake.js') }}"></script>
 <script src="{{ asset('datatable/vfs_fonts.js') }}"></script>
