@@ -53,9 +53,14 @@ var TokenVenta             = '{{ $TokenVenta }}';
 var pagado                 = '{{ $pagado }}';
 var token                  = '{{csrf_token()}}';
 var is_auth                = @if (Auth::check()) true @else false @endif ;
+
+var error = '{{$error}}';
     
 
 $(document).ready(function(){
+  if(error != ''){
+    toastr.info(error, '', {timeOut: 1000})
+  }
   get_storage();
   //carga_bodega2();
   get_inventario();

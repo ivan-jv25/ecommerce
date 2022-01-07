@@ -26,15 +26,20 @@ class IndexController extends Controller
     }
     public function index(Request $request){
         $token_venta = ($request->TokenVenta == null) ? 0 : $request->TokenVenta;
-        $pagado = ($request->pago == null) ? 0 : $request->pago;
+        $pagado      = ($request->pago == null) ? 0 : $request->pago;
+        $error       = ($request->Error != null) ? 'Error, Correo Ya Existe' : '';
 
-        return view('welcome')->with('TokenVenta',$token_venta)->with('pagado',$pagado);
+        return view('welcome')->with('TokenVenta',$token_venta)->with('pagado',$pagado)->with('error',$error);
     }
     public function registro_usuario(Request $request){
 
 
         $nombre = (string) $request->nombre;
         $correo = (string) $request->correo;
+        if($this->existe_correo_usuario($correo)){
+            
+            return redirect()->route('welcome', ['Error' => 'correo']);
+        }
         $telefono = (string) $request->telefono;
         $password = (string) $request->password;
 
@@ -998,4 +1003,10 @@ class IndexController extends Controller
 
         ';
     }
+
+    private function existe_correo_usuario($correo){
+        $user = DB::table('users')->select('id')->where('email',$correo)->first();
+        return ($user != null) ? true : false;
+    }
+
 }
