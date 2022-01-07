@@ -121,7 +121,7 @@ function mostrar_lista_producto(lista){
 
         lista_productos +='<div class="prod">'+
         '<div class="zoom">zoom</div>'+
-        '<img class="thumb" async  src="'+imagen+'" onclick="AbreProd('+i+',false)" alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
+        '<img class="thumb" async  src="'+imagen+'" onclick="AbreProd(`'+element.codigo+'`,false)" alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
         '<div class="detal">'+
         '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
         '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo.substring(0,10)+'</p>'+
@@ -142,7 +142,7 @@ function mostrar_lista_producto_favorito(lista){
 
         lista_productos +='<div class="prod">'+
         '<div class="zoom">zoom</div>'+
-        '<img class="thumb" async  src="'+imagen+'" onclick="AbreProd('+i+',true)"  alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
+        '<img class="thumb" async  src="'+imagen+'" onclick="AbreProd(`'+element.codigo+'`,true)"  alt="" onError="this.onerror=null;this.src=`img/no-imagen.png`;">'+
         '<div class="detal">'+
         '<h5 title="'+element.nombre+'">'+element.nombre.substring(0,30)+'</h5>'+
         '<p class="lead" title="'+element.codigo+'">Código: '+element.codigo.substring(0,10)+'</p>'+
@@ -788,18 +788,20 @@ function imgError(){
     console.log("hola");
 }
 
-function AbreProd(index,lista){
+function AbreProd(codigo,lista){
 
   $("#ModalProd").modal();
 
   let producto = null;
 
   if (lista== true) {
-    producto = lista_productos_favorito[index]
+    //producto = lista_productos_favorito[index]
+    producto    = obtener_producto_favorito(codigo);
     document.getElementById('btn_prod_simple').style.display = 'none'
     document.getElementById('btn_prod_favorito').style.display = ''
   }else {
-    producto = lista_productos[index]
+    //producto = lista_productos[index]
+    producto    = obtener_producto_simple(codigo);
     document.getElementById('btn_prod_simple').style.display = ''
   document.getElementById('btn_prod_favorito').style.display = 'none'
   }
