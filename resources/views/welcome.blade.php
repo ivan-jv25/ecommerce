@@ -117,19 +117,7 @@
 
           <table class="table table-hover">
             <tbody id="tb_lista_carro">
-              <tr>
-                <td>
-                  <img class="thumb" src="img/productos/d2scombo.png" alt="">
-                  <span>D2s COMBO</span>
-                </td>
-                <td>
-                  <div class="menos"><i class="fa fa-minus fa-lg"></i></div>
-                    1
-                  <div class="mas"><i class="fa fa-plus fa-lg"></i></div>
-                </td>
-                <td>$999.999</td>
-                <td><i class="fa fa-trash fa-lg"></i></td>
-              </tr>
+              
 
             </tbody>
 

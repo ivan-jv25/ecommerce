@@ -4,21 +4,27 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.0/css/dataTables.bootstrap4.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.bootstrap4.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.css"/>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.11.0/js/dataTables.bootstrap4.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.bootstrap4.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.js"></script>
+
+
+
+
+<script src="{{ asset('datatable/dataTables.bootstrap4.css') }}"></script>
+<script src="{{ asset('datatable/buttons.bootstrap4.css') }}"></script>
+<script src="{{ asset('datatable/responsive.bootstrap4.css') }}"></script>
+<script src="{{ asset('datatable/jszip.js') }}"></script>
+<script src="{{ asset('datatable/pdfmake.js') }}"></script>
+<script src="{{ asset('datatable/vfs_fonts.js') }}"></script>
+<script src="{{ asset('datatable/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('datatable/dataTables.bootstrap4.js') }}"></script>
+
+
+<script src="{{ asset('datatable/dataTables.buttons.js') }}"></script>
+<script src="{{ asset('datatable/buttons.bootstrap4.js') }}"></script>
+<script src="{{ asset('datatable/buttons.colVis.js') }}"></script>
+<script src="{{ asset('datatable/buttons.html5.js') }}"></script>
+<script src="{{ asset('datatable/buttons.print.js') }}"></script>
+<script src="{{ asset('datatable/dataTables.responsive.js') }}"></script>
+<script src="{{ asset('datatable/responsive.bootstrap4.js') }}"></script>
 
 <script type="text/javascript">
 $( "#cerrar-menu" ).click(function() { $("#menu").hide("slide", { direction: "right" }, 200); });
