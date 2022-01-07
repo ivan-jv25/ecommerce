@@ -609,7 +609,7 @@ function bodega_defecto(){
     id_bodega_defecto = document.getElementById('id_tienda_retiro2').value;
     document.getElementById('id_bodega').value = id_bodega_defecto;
     carga_productos();
-    lista_carrito_bodega2();
+    lista_carrito_bodega2(false);
 }
 
 function bodega_defecto2(){
