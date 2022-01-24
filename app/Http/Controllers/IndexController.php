@@ -245,7 +245,7 @@ class IndexController extends Controller
             'forma_pago'     => $request->options_pago,
             'id_bodega'      => ( $request->id_bodega != null) ?  $request->id_bodega : obtener_id_bodega_defecto(),
             'estado_pago'    => $dato,
-            'id_formapago'   => $dato,
+            'id_formapago'   => 65,
             'codigo_pago'    => $dato,
             'observacion'    => $request->observacion,
         ];
