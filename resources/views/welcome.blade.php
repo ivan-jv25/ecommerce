@@ -225,10 +225,10 @@
                 <div class="form-group">
                   <div class="btn-group dcto" data-toggle="buttons">
 
-                    <label class="btn btn-primary " for="radios-0" data-toggle="modal" data-target="#myModalDespacho" onclick="lista_direccion();">
+                    <!--label class="btn btn-primary " for="radios-0" data-toggle="modal" data-target="#myModalDespacho" onclick="lista_direccion();" hidden>
                       <input type="radio" name="tipo_entrega" required value="despacho" > Despacho
-                    </label>
-                    <label class="btn btn-primary active focus " for="radios-1" checked="checked" data-toggle="modal" data-target="#myModal" onclick="work_flow_retiro();quitar_direccion_despacho();">
+                    </label-->
+                    <label class="btn btn-primary active focus " for="radios-1" checked="checked" data-toggle="modal" data-target="#myModal" onclick="lista_carrito_bodega();quitar_direccion_despacho();">
                       <input type="radio" name="tipo_entrega" value="retiro" checked="checked"> Retiro
                     </label>
 

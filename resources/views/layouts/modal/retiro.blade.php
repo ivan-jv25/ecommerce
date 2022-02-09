@@ -9,7 +9,7 @@
             <div class="row form-group">
               <label class="col-md-4 control-label" for="id_tienda_retiro">Tiendas de Retiro</label>
               <div class="col-md-8">
-                <select id="id_tienda_retiro" class="form-control" onchange="work_flow_change_bodega(); bodega_defecto2()">
+                <select id="id_tienda_retiro" class="form-control" onchange="work_flow_change_bodega(); ">
                   <option value="1">Option one</option>
                   <option value="2">Option two</option>
                 </select>
@@ -25,13 +25,7 @@
                   </tr>
                 </thead>
                 <tbody id="lista_carro_bodega">
-                  <tr>
-                    <td>
-                      <span>D2s COMBO</span>
-                    </td>
-                    <td>1</td>
-                    <td>1</td>
-                  </tr>
+                  
                 </tbody>
               </table>
 
