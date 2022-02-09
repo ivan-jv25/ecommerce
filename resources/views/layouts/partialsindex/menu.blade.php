@@ -2,17 +2,23 @@
       <div id="cerrar-menu">
         <img src="img/cerrar.svg" alt="">
       </div>
+
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         @guest
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
               <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                <img src="img/ingresar.svg" class="ico-ingresa" alt=""> Iniciar Sesión
+                <div class="contiene-items">
+                  <img src="img/ingresar.svg" class="ico-ingresa" alt="">
+                  <div class="texta">
+                    Iniciar Sesión<br>
+                    <small>Inicie para realizar una compra</small>
+                  </div>
+                </div>
               </a>
             </h4>
           </div>
-          <h5>Inicia sesión para realizar una compra.</h5>
           <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
               <form class="formulario" method="POST" action="{{ route('login') }}">
@@ -22,8 +28,6 @@
               <label for="contraseña">Contraseña</label>
               <input type="password" class="form-control" name="password" value="" placeholder="Contraseña" required>
               <button type="submit" class="boton"  name="button">Ingresar</button>
-              <br>
-              <a href="#">Recuperar contraseña</a>
               </form>
             </div>
           </div>
@@ -32,7 +36,15 @@
           <div class="panel-heading" role="tab" id="headingTwo">
             <h4 class="panel-title">
               <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                <img src="img/crear.svg" class="ico-ingresa" alt=""> Registrarse
+
+                <div class="contiene-items">
+                  <img src="img/crear.svg" class="ico-ingresa" alt="">
+                  <div class="texta">
+                    Registrarse<br>
+                    <small>Crea un usuario</small>
+                  </div>
+                </div>
+
               </a>
             </h4>
           </div>
@@ -64,54 +76,53 @@
                 <input type="text" class="form-control" name="comuna" value="" placeholder="Comuna" required>
                 <label for="usuario">Ciudad</label>
                 <input type="text" class="form-control" name="ciudad" value="" placeholder="Ciudad" required>
-
                 <button type="submit" class="boton"  name="button">Registrar</button>
               </form>
             </div>
           </div>
         </div>
         @else
-
         @if (Auth::user()->is_admin === 1)
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab" id="headingTres">
             <h4 class="panel-title">
               <a role="button" href="{{ route('home') }}">
-                <img src="img/ingresar.svg" class="ico-ingresa" alt=""> Panel Admin
+                <div class="contiene-items">
+                  <img src="img/ingresar.svg" class="ico-ingresa" alt="">
+                  <div class="texta">Panel Admin</div>
+                </div>
               </a>
             </h4>
           </div>
         </div>
         @endif
-
-
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab" id="headingCuatro">
             <h4 class="panel-title">
               <a role="button"  data-toggle="modal" data-target="#myModalCompras" onclick="cerrar_menu();lista_compra();">
-                <img src="img/ingresar.svg" class="ico-ingresa" alt=""> Registro de Compras
+                <div class="contiene-items">
+                  <img src="img/ingresar.svg" class="ico-ingresa" alt="">
+                  <div class="texta">Registro de Compras</div>
+                </div>
               </a>
             </h4>
           </div>
         </div>
-
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab" id="headingCinco">
             <h4 class="panel-title">
               <a role="button" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <img src="img/ingresar.svg" class="ico-ingresa" alt=""> Cerrar Session
+                <div class="contiene-items">
+                  <img src="img/ingresar.svg" class="ico-ingresa" alt="">
+                  <div class="texta">Cerrar Sesion</div>
+                </div>
               </a>
             </h4>
           </div>
         </div>
-
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
           @csrf
         </form>
-
-
-
         @endguest
       </div>
-
     </div>

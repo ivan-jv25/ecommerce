@@ -242,8 +242,7 @@ body{
 #menu .panel-default>.panel-heading{
   background-color: transparent !important;
   border-color: transparent !important;
-  padding: 60px !important;
-  padding-bottom: 30px !important;
+  padding: 0px !important;
 }
 
 #menu .formulario{
@@ -302,7 +301,7 @@ body{
 
 #menu .panel{
   background-color: transparent !important;
-  padding-bottom: 2em !important;
+  padding-bottom: 0em !important;
   transition: 0.3s ease;
   -o-transition: 0.3s ease;
   -webkit-transition: 0.3s ease;
@@ -360,7 +359,36 @@ body{
 
 #menu img.ico-ingresa{
   width: 45px;
-  margin-top: -12px;
+  margin-top: 0px;
+}
+
+#menu #accordion .panel .panel-heading a{
+  display: block;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#menu #accordion .panel .panel-heading a .contiene-items img{
+  vertical-align: top;
+}
+
+#menu #accordion .panel .panel-heading a .contiene-items.one-line{
+
+}
+
+#menu #accordion .panel .panel-heading a .texta{
+  display: inline-block;
+}
+
+#headingTres .texta, #headingCuatro .texta, #headingCinco .texta{
+  margin-top: 10px;
+}
+
+.texta small{
+  color: #ff7e00;
+  font-weight: 700;
 }
 
 #menu h3{
