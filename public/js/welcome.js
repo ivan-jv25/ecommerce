@@ -20,7 +20,8 @@ const filtrar = () =>{
     const texto = formulario.value.toLocaleLowerCase();
     for (let producto of lista_productos) {
         let nombre = producto.nombre.toLocaleLowerCase();
-        if(nombre.indexOf(texto) !== -1){ new_array.push(producto); }
+        let codigo = producto.codigo.toLocaleLowerCase();
+        if(nombre.indexOf(texto) !== -1 || codigo.indexOf(texto) !== -1 ){ new_array.push(producto); }
     }
     mostrar_lista_producto(new_array);
 }
