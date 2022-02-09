@@ -163,7 +163,8 @@
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon">Neto</div>
-                    <input type="text" class="form-control" id="id_neto" name="id_neto" placeholder="" readonly>
+                    <input type="text" class="form-control" id="id_neto" placeholder="" readonly>
+                    <input type="text" id="id_neto2" name="id_neto" placeholder="" hidden>
                   </div>
                 </div>
               </div>
@@ -172,7 +173,8 @@
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon">Iva 19%</div>
-                    <input type="text" class="form-control" id="id_iva" name="id_iva" placeholder="" readonly>
+                    <input type="text" class="form-control" id="id_iva" placeholder="" readonly>
+                    <input type="text" id="id_iva2" name="id_iva" placeholder="" hidden>
                   </div>
                 </div>
               </div>
@@ -194,7 +196,8 @@
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon total">Total</div>
-                    <input type="text" class="form-control" id="id_total" name="id_total" placeholder="" readonly>
+                    <input type="text" class="form-control" id="id_total"  placeholder="" readonly>
+                    <input type="text" id="id_total2" name="id_total" placeholder="" hidden>
                   </div>
                 </div>
               </div>

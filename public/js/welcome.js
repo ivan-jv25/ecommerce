@@ -357,9 +357,17 @@ function calculo_monto(){
     iva   = aux_iva;
     total = aux_total;
 
-    document.getElementById('id_neto').value  = neto;
-    document.getElementById('id_iva').value   = iva;
-    document.getElementById('id_total').value = total;
+    document.getElementById('id_neto').value  = '$'+formatonumero(neto);
+    document.getElementById('id_iva').value   = '$'+formatonumero(iva);
+    document.getElementById('id_total').value = '$'+formatonumero(total);
+
+
+    document.getElementById('id_neto2').value  = neto;
+    document.getElementById('id_iva2').value   = iva;
+    document.getElementById('id_total2').value = total;
+
+
+
 }
 
 function redondeo(numero){
