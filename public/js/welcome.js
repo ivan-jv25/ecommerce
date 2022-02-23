@@ -297,11 +297,12 @@ function lista_carrito_bodega2(conmensaje = true){
     for (let i = 0; i < lista_carro.length; i++) {
         const element = lista_carro[i];
 
-        if(element.cantidad > get_stock_by_codigo(element.codigo,id_bodega)){
-            lista_todo_bien.push(false);
-        }else{
-            lista_todo_bien.push(true);
-        }
+        //if(element.cantidad > get_stock_by_codigo(element.codigo,id_bodega)){
+            //lista_todo_bien.push(false);
+        //}else{
+            //lista_todo_bien.push(true);
+        //}
+
     }
     let dato = lista_todo_bien.filter(estado => estado==false);
     if(dato.length >0){
@@ -824,3 +825,51 @@ function AbreProd(codigo,lista){
   document.getElementById("Modal_Descripcion").innerHTML = producto.descripcion;
 
 }
+
+//Proceso de Entrega
+
+var checkRetiro = document.getElementById('EntregaRetiro');
+var checkDespacho = document.getElementById('EntregaDespacho');
+$('#contenidoDespacho').hide();
+
+checkRetiro.addEventListener("click", verificaCheckRetiro);
+checkDespacho.addEventListener("click", verificaCheckDespacho);
+
+function verificaCheckDespacho() {
+  if (checkDespacho.check = "true") {
+    $('#cambiaSucursal').hide();
+    $('#contenidoDespacho').show();
+  }
+}
+
+function verificaCheckRetiro() {
+  if (checkRetiro.check = "true") {
+    $('#cambiaSucursal').show();
+    $('#contenidoDespacho').hide();
+  }
+}
+
+//boton agrega direccion
+
+var btnAgregaDir = document.getElementById('agregarDireccion');
+btnAgregaDir.addEventListener("click", agregaDir);
+function agregaDir() {
+  $('#myModalEntrega').modal('toggle')
+  $('#myModalDespacho').modal('toggle')
+}
+
+//Avanza Siguiente
+
+//var btnEntregaSiguiente = document.getElementById('entregaSiguiente');
+//btnEntregaSiguiente.addEventListener("click", avanzaCheckOut);
+//function avanzaCheckOut() {
+  //btnEntregaSiguiente.preventDefault();
+  //$('#myModalEntrega').modal('toggle');
+  //$('#myModalPago').modal('toggle');
+//}
+
+document.getElementById("entregaSiguiente").addEventListener("click", function(event){
+  event.preventDefault()
+  $('#myModalEntrega').modal('toggle');
+  $('#myModalPago').modal('toggle');
+});

@@ -38,7 +38,7 @@
                 <h3 class="modal-title" id="Modal_NombreProd">Nombre Producto</h3>
                 <h5>Código: <span id="Modal_CodigoProd">0000</span></h5>
                 <p class="lead" id="Modal_Descripcion">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                
+
                 <h4 id="Modal_PrecioProd">$999.999</h4>
 
                 <div class="btn btn-agrega" onclick="add_producto_simpleModal();" id="btn_prod_simple">Agregar al Carro <i class="fa fa-plus-circle fa-lg"></i></div>
@@ -117,7 +117,7 @@
 
           <table class="table table-hover">
             <tbody id="tb_lista_carro">
-              
+
 
             </tbody>
 
@@ -134,7 +134,7 @@
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon" title="Descuento, promoción, codigo de vendedor"><i class="fa fa-info-circle"></i> Código</div>
-                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="">
+                    <input type="text" class="form-control" id="codigoVendedor" placeholder="">
                   </div>
                 </div>
               </div>
@@ -153,7 +153,7 @@
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon">Descuento</div>
-                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="">
+                    <input type="text" class="form-control" id="Descuento" placeholder="">
                     <div class="input-group-addon dscto">PS</div>
                   </div>
                 </div>
@@ -263,6 +263,8 @@
     @include('layouts.modal.compra')
 
     @include('layouts.modal.pago')
+
+    @include('layouts.modal.entrega')
 
     @include('layouts.modal.estadopago')
 
