@@ -854,22 +854,50 @@ function verificaCheckRetiro() {
 var btnAgregaDir = document.getElementById('agregarDireccion');
 btnAgregaDir.addEventListener("click", agregaDir);
 function agregaDir() {
-  $('#myModalEntrega').modal('toggle')
-  $('#myModalDespacho').modal('toggle')
+  $('#contenidoNewDir').show();
+}
+
+//boton ocultar
+
+var btnOcultar = document.getElementById('ocultar');
+btnOcultar.addEventListener("click", ocultaDir);
+function ocultaDir() {
+  $('#contenidoNewDir').hide();
 }
 
 //Avanza Siguiente
-
-//var btnEntregaSiguiente = document.getElementById('entregaSiguiente');
-//btnEntregaSiguiente.addEventListener("click", avanzaCheckOut);
-//function avanzaCheckOut() {
-  //btnEntregaSiguiente.preventDefault();
-  //$('#myModalEntrega').modal('toggle');
-  //$('#myModalPago').modal('toggle');
-//}
 
 document.getElementById("entregaSiguiente").addEventListener("click", function(event){
   event.preventDefault()
   $('#myModalEntrega').modal('toggle');
   $('#myModalPago').modal('toggle');
 });
+
+// Recepciona otra persona
+
+function checkealo() {
+  var checkBox = document.getElementById("otraRecepcion");
+  if (checkBox.checked == true){
+    $('#contenidoOtraRec').show();
+  } else {
+    $('#contenidoOtraRec').hide();
+  }
+}
+
+// Nombre Sucursal despacho Regiones
+
+function checkRadio() {
+  var radioCircle = document.getElementById("radioSucursal");
+  if (radioCircle.checked == true){
+    $('#nombreSucursal').show();
+  }
+}
+
+// Oculta Nombre Sucursal despacho Regiones
+
+function checkRadiodom() {
+  var radioCircledom = document.getElementById("radioDomicilio");
+  if (radioCircledom.checked == true){
+    $('#nombreSucursal').hide();
+  }
+}

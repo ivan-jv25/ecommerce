@@ -1,3 +1,29 @@
+#contenidoNewDir, #contenidoOtraRec{
+  display: none;
+}
+
+#medioEnvio{
+  display: none;
+}
+
+#nombreSucursal{
+  display: none;
+}
+
+.sucodom{
+  margin-bottom: 15px;
+}
+
+#btnAgregarDir{
+  margin: auto;
+}
+
+#ocultar{
+  float: right;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .modales form{
   width: 90%;
   margin: auto;

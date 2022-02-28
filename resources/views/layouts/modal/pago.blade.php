@@ -3,7 +3,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Confirmación de compra</h4>
+            <h4 class="modal-title">2.- Confirmación de compra</h4>
           </div>
           <div class="modal-body">
             <form id="form_test_flow">
@@ -39,6 +39,7 @@
               <p>Sucursal: <strong>Nombre Sucursal</strong></p>
               <p>Forma de entrega: <strong>Despacho</strong></p>
               <p>Dirección de envío: <strong>Walker Martinez #555, San Miguel, Santiago, RM</strong></p>
+              <p>Recepciona: <strong>Nombre Apellido Receptor</strong></p>
               <p>Valor despacho: <strong>$5.000</strong></p>
               <p>Tipo de documento: <strong>Boleta</strong></p>
               <p class="total">Total <strong>$240.000</strong></p>
