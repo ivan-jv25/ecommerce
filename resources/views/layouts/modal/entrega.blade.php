@@ -1,4 +1,4 @@
-<div class="modal fade modales" id="myModalEntrega" role="dialog">
+<div class="modal fade modales" id="myModalEntrega" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
